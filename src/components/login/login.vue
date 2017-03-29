@@ -1,16 +1,16 @@
 <template>
   <div class="login">
-      <p>我是header</p>
+      <p>登录</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'top'
+  name: 'login'
 }
 </script>
 
-<style>
+<style scoped>
 .login {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
