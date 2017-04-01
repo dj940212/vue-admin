@@ -20,5 +20,10 @@ export default {
 h1, h2{
   font-weight: normal;
   text-align: center;
+  position: absolute;
+  display: block;
+  width: 300px;
+  left: 300px;
+
 }
 </style>

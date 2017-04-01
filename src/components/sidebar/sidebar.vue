@@ -10,43 +10,45 @@
       <div class="tab">
           <ul class="menu">
               <li class="menu-item">
-                  <div class="menu-item-title" @click="toggleSidebar" :class="{active:sidebarActive}" >
-                      <i class="icon iconfont">&#xe604;</i>
+                  <div class="menu-item-title" @click="toggleSidebar1" :class="{active:sidebarActive1}" >
+                      <i class="icon iconfont">&#xe615;</i>
                       <span>定位物管理</span>
                   </div>
-                  <ul class="submenu" :class="{active:submenuActive}">
-                      <li class="submenu-item">用户与定位物登记</li>
-                      <li class="submenu-item">信息查询与修改</li>
-                      <li class="submenu-item">实时地图查询</li>
-                      <li class="submenu-item">实时轨迹查询</li>
-                  </ul>
+                  <transition name="slide">
+                      <ul class="submenu" v-show="submenuActive1">
+                          <li class="submenu-item">用户与定位物登记</li>
+                          <li class="submenu-item">信息查询与修改</li>
+                          <li class="submenu-item">实时地图查询</li>
+                          <li class="submenu-item">实时轨迹查询</li>
+                      </ul>
+                  </transition>
               </li>
               <li class="menu-item">
-                  <div class="menu-item-title">
-                      <i class="icon iconfont">&#xe619;</i>
+                  <div class="menu-item-title" @click="toggleSidebar2" :class="{active:sidebarActive2}">
+                      <i class="icon iconfont">&#xe607;</i>
                       <span>报警管理</span>
                   </div>
-                  <ul class="submenu">
+                  <ul class="submenu" v-show="submenuActive2">
                       <li class="submenu-item">用户报警登记</li>
                       <li class="submenu-item">报警记录查询</li>
                   </ul>
               </li>
               <li class="menu-item">
-                  <div class="menu-item-title">
-                      <i class="icon iconfont">&#xe605;</i>
+                  <div class="menu-item-title" @click="toggleSidebar3" :class="{active:sidebarActive3}">
+                      <i class="icon iconfont">&#xe6a3;</i>
                       <span>基站管理</span>
                   </div>
-                  <ul class="submenu">
+                  <ul class="submenu" v-show="submenuActive3">
                       <li class="submenu-item">基站数据</li>
                       <li class="submenu-item">基站状态查询</li>
                   </ul>
               </li>
               <li class="menu-item">
-                  <div class="menu-item-title">
+                  <div class="menu-item-title" @click="toggleSidebar4" :class="{active:sidebarActive4}">
                       <i class="icon iconfont">&#xe612;</i>
                       <span>历史纪录查询</span>
                   </div>
-                  <ul class="submenu">
+                  <ul class="submenu" v-show="submenuActive4">
                       <li class="submenu-item">助动车行驶记录查询</li>
                       <li class="submenu-item">助动车行驶轨迹查询</li>
                       <li class="submenu-item">相关视频调用</li>
@@ -57,9 +59,11 @@
           </ul>
       </div>
       <div class="copyright">
-          <span class="mess">Copyright @2017</span>
-          <span class="mess">上周郎阳科技有限公司</span>
-          <span class="mess">版权所有</span>
+          <div class="messBox">
+              <span class="mess">Copyright @2017</span>
+              <span class="mess">上周郎阳科技有限公司</span>
+              <span class="mess">版权所有</span>
+          </div>
       </div>
   </div>
 </template>
@@ -69,19 +73,33 @@ export default {
   name: 'sidebar',
   data () {
     return {
-      sidebarActive: false,
-      submenuActive: false
+      sidebarActive1: false,
+      submenuActive1: false,
+      sidebarActive2: false,
+      submenuActive2: false,
+      sidebarActive3: false,
+      submenuActive3: false,
+      sidebarActive4: false,
+      submenuActive4: false,
     }
   },
   methods: {
-      toggleSidebar: function(event){
-          this.sidebarActive = !this.sidebarActive;
-          this.submenuActive = !this.submenuActive;
-        //   event.target.style.display = "none";
-        // event.target.nextSibling.style.display = "block";
-        //   alert(event.target.nextSibling);
-        //   alert(document.getElementById('id'));
-      }
+      toggleSidebar1: function(){
+          this.sidebarActive1 = !this.sidebarActive1;
+          this.submenuActive1 = !this.submenuActive1;
+      },
+      toggleSidebar2: function(){
+          this.sidebarActive2 = !this.sidebarActive2;
+          this.submenuActive2 = !this.submenuActive2;
+      },
+      toggleSidebar3: function(){
+          this.sidebarActive3 = !this.sidebarActive3;
+          this.submenuActive3 = !this.submenuActive3;
+      },
+      toggleSidebar4: function(){
+          this.sidebarActive4 = !this.sidebarActive4;
+          this.submenuActive4 = !this.submenuActive4;
+      },
   }
 }
 </script>
@@ -121,7 +139,11 @@ export default {
 
     }
     .tab{
+        width: 240px;
+        height: 100%;
+        background-color:#4e4c75;
         .menu{
+            margin-bottom: 240px;
             .menu-item{
                 display: block;
                 width: 240px;
@@ -142,25 +164,53 @@ export default {
                         border-bottom: 1px solid #e6e6eb;
                     }
                     &.active{
-                        background-color: #03003a;
+                        // background-color: #03003a;
                     }
                 }
 
                 .submenu{
-                    display: none;
+                    background-color: #03003a;
                     &.active{
                         display: block;
                     }
+                    &.slide-enter-active, &.slide-leave-active{
+                    }
+                    &.slide-enter, &.slide-leave-active{
+                    }
                     .submenu-item{
-                        width: 240px;
+                        width: 176px;
                         height: 39px;
-                        background-color: #03003a;
                         line-height: 39px;
+                        padding-left: 64px;
+                        border-top: 1px solid #03003a;
+                        border-bottom: 1px solid #03003a;
+                        &:hover{
+                            border-top: 1px solid #fff;
+                            border-bottom: 1px solid #fff;
+                        }
                     }
 
                 }
             }
         }
+    }
+    .copyright{
+        width: 240px;
+        height: 140px;
+        position: fixed;
+        background-color: #03003a;
+        bottom: 0;
+        .messBox{
+            margin-top: 42px;
+            .mess{
+                display: block;
+                text-align: center;
+                margin-top: 8px;
+                font-size: 13px;
+                color: #fff;
+            }
+        }
+
     }
 }
 

@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <v-header></v-header>
-    <sidebar></sidebar>
+    <breadcrumb></breadcrumb>
+    <div class="sidebarWrapper">
+        <sidebar></sidebar>
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -9,23 +12,24 @@
 <script>
 import header from './components/header/header'
 import sidebar from './components/sidebar/sidebar'
+import breadcrumb from './components/breadcrumb/breadcrumb'
 export default {
   name: 'app',
   components:{
       "vHeader":header,
-      sidebar
+      sidebar,
+      breadcrumb
   }
 }
 </script>
 
 <style lang="less">
-@import "common/less/icon.less";
+@import "common/less/index.less";
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  .logo {
-      display: block;
-      margin: 0 auto;
+  .sidebarWrapper{
+    //   margin-top: 82px;
+
   }
 }
 </style>
