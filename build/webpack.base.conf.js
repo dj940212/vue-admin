@@ -54,8 +54,8 @@ module.exports = {
         }
       },
       {
-        test: /\.sass$/,
-        loaders: ['style', 'css', 'sass']
+        test: /\.less$/,
+        loaders: ['style', 'css', 'less']
       }
     ]
   }

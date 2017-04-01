@@ -1,22 +1,26 @@
 <template>
   <div id="app">
     <v-header></v-header>
-    <img class="logo" src="./assets/logo.png">
+    <sidebar></sidebar>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 import header from './components/header/header'
+import sidebar from './components/sidebar/sidebar'
 export default {
   name: 'app',
   components:{
-      "vHeader":header
+      "vHeader":header,
+      sidebar
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less">
+@import "common/less/icon.less";
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   .logo {
