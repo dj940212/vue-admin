@@ -108,6 +108,7 @@ export default {
 <style lang="less">
 .sidebar{
     position: relative;
+    padding-top: 82px;
     .avatar{
         position: relative;
         width: 240px;

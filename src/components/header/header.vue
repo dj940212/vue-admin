@@ -32,7 +32,8 @@ export default {
   height: 82px;
   width: 100%;
   background-color: #03003a;
-  /*position: fixed;*/
+  position: fixed;
+  z-index: 10;
   .top-left {
     display: inline-block;
     width: 240px;
