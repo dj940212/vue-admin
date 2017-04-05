@@ -28,8 +28,17 @@ export default {
       this.$refs.routerView.style.width = (window.innerWidth-240)+"px";
       this.$refs.routerView.style.height = (window.innerHeight-134)+"px";
 
+  },
+  methods:{
+      changeHeiWid:function(){
+          window.onresize=function() {
+              this.$refs.routerView.style.width = (window.innerWidth-240)+"px";
+              this.$refs.routerView.style.height = (window.innerHeight-134)+"px";
+          }
+      }
   }
 }
+
 </script>
 
 <style lang="less">

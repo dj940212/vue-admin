@@ -10,7 +10,7 @@
           </div>
           <div class="body">
               <div class="body-content">
-                  <form action="index.html" method="post">
+                  <form  class="" action="index.html" method="post">
                       姓名：<input type="text" name="name" value="">
                       <br>
                       警号：<input type="text" name="name" value="">
@@ -44,7 +44,14 @@
                   <i class="icon iconfont">&#xe659;</i>
                   <span>警员信息管理</span>
               </div>
-
+          </div>
+          <div class="body">
+              <div class="body-content">
+                  <span>对警员信息进行增删改查</span><br>
+                  <label for="">请输入权限验证码</label><br>
+                  <input type="text" name="" value="">
+                  <input type="button" name="" value="">
+              </div>
           </div>
       </div>
   </div>
@@ -60,7 +67,7 @@ export default {
 .userinfo {
     .info-right{
         display: inline-block;
-        width: 700px;
+        width: 65%;
         .header{
             height: 108px;
             margin-left: 22px;
@@ -71,7 +78,7 @@ export default {
             .content{
                 margin-left: 15px;
                 .icon{
-                    font-size: 30px;
+                    font-size: 32px;
                 }
                 span{
                     margin-left: 5px;
@@ -82,7 +89,15 @@ export default {
             background-color: #fff;
             margin-left: 22px;
             .body-content{
-
+                font-size: 18px;
+                margin-left: 20px;
+                input{
+                    border:1px solid #000;
+                    border-radius: 2px;
+                    margin: 10px 10px;
+                    height: 44px;
+                    width: 300px;
+                }
             }
 
 
@@ -90,16 +105,17 @@ export default {
     }
     .info-left{
         display: inline-block;
+        width: 32%;
         .header{
             height: 108px;
             margin-left: 22px;
             margin-top: 22px;
             background-color: #e6e6eb;
-            width: 300px;
             line-height: 108px;
             font-size: 28px;
             .content{
                 margin-left: 15px;
+                // height: 80%;
                 .icon{
                     font-size: 30px;
                 }
@@ -108,6 +124,19 @@ export default {
                 }
             }
 
+        }
+        .body{
+            background-color: #FFF;
+            margin-left: 22px;
+            .body-content{
+                input{
+                    border:1px solid #000;
+                    border-radius: 2px;
+                    margin: 10px 10px;
+                    height: 44px;
+                    width: 200px;
+                }
+            }
         }
     }
 }

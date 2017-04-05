@@ -7,6 +7,7 @@
               <span class="name">张某某</span>
           </div>
       </div>
+      <div class="divider"></div>
       <div class="tab" ref="tab">
           <ul class="menu">
               <li class="menu-item">
@@ -117,7 +118,7 @@ export default {
         width: 240px;
         height: 158px;
         background-color: #4e4c75;
-        border-bottom: 1px solid #fff;
+        // border-bottom: 1px solid #fff;
         img{
             position: absolute;
             top: 50%;
@@ -141,6 +142,14 @@ export default {
             }
         }
 
+    }
+    .divider{
+        background-image: linear-gradient(left, transparent, #fff, transparent);
+        height: 2px;
+        // margin: 3px 0;
+        overflow: hidden;
+        width: 240px;
+        background-color: #4e4c75;
     }
     .tab{
         width: 240px;
