@@ -2,10 +2,12 @@
   <div id="app">
     <v-header></v-header>
     <breadcrumb></breadcrumb>
-    <div class="sidebarWrapper">
+    <div class="sidebarWrapper" >
         <sidebar></sidebar>
     </div>
-    <router-view></router-view>
+    <div class="routerView" ref="routerView">
+        <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -19,6 +21,13 @@ export default {
       "vHeader":header,
       sidebar,
       breadcrumb
+  },
+  mounted:function () {
+      console.log(this.$refs.routerView);
+      console.log(document.body.clientHeight);
+      this.$refs.routerView.style.width = (window.innerWidth-240)+"px";
+      this.$refs.routerView.style.height = (window.innerHeight-134)+"px";
+
   }
 }
 </script>
@@ -27,9 +36,16 @@ export default {
 @import "common/less/index.less";
 
 #app {
-  .sidebarWrapper{
-    //   margin-top: 82px;
+    position: relative;
+    // width: 100%;
+    // height: 100%;
+    .routerView{
+        position: absolute;
+        display: inline-block;
+        top: 132px;
+        left: 240px;
+        background-color: #f2f2f2;
 
-  }
+    }
 }
 </style>

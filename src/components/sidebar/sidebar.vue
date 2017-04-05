@@ -1,13 +1,13 @@
 <template>
   <div class="sidebar">
       <div class="avatar">
-          <img src="./avatar.png" alt="" width="64" height="64">
+          <router-link to="/userinfo"><img src="./avatar.png" alt="" width="64" height="64"></router-link>
           <div class="text">
               <span class="police">警员：</span>
               <span class="name">张某某</span>
           </div>
       </div>
-      <div class="tab">
+      <div class="tab" ref="tab">
           <ul class="menu">
               <li class="menu-item">
                   <div class="menu-item-title" @click="toggleSidebar1" :class="{active:sidebarActive1}" >
@@ -16,9 +16,9 @@
                   </div>
                   <transition name="slide">
                       <ul class="submenu" v-show="submenuActive1">
-                          <li class="submenu-item">用户与定位物登记</li>
-                          <li class="submenu-item">信息查询与修改</li>
-                          <li class="submenu-item">实时地图查询</li>
+                          <li class="submenu-item"><router-link to="/userinfo">用户与定位物登记</router-link></li>
+                          <li class="submenu-item"><router-link to="/login">信息查询与修改</router-link></li>
+                          <li class="submenu-item"><router-link to="/userinfo">实时地图查询</router-link></li>
                           <li class="submenu-item">实时轨迹查询</li>
                       </ul>
                   </transition>
@@ -100,6 +100,9 @@ export default {
           this.sidebarActive4 = !this.sidebarActive4;
           this.submenuActive4 = !this.submenuActive4;
       },
+  },
+  mounted:function(){
+      this.$refs.tab.style.height = (window.innerHeight-381)+"px";
   }
 }
 </script>
@@ -141,10 +144,11 @@ export default {
     }
     .tab{
         width: 240px;
-        height: 100%;
+        // height: 100%;
         background-color:#4e4c75;
+        overflow-x: hidden;
         .menu{
-            margin-bottom: 240px;
+            margin-bottom: 220px;
             .menu-item{
                 display: block;
                 width: 240px;
@@ -188,6 +192,12 @@ export default {
                         &:hover{
                             border-top: 1px solid #fff;
                             border-bottom: 1px solid #fff;
+                        }
+                        a{
+                            color: #fff;
+                        }
+                        .router-link-active{
+                            color: #b3acac;
                         }
                     }
 
