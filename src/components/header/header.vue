@@ -34,6 +34,7 @@ export default {
   background-color: #03003a;
   position: fixed;
   z-index: 10;
+  box-shadow: 0px 3px 10px #212037;
   .top-left {
     display: inline-block;
     width: 180px;

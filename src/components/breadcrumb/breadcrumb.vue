@@ -30,7 +30,7 @@ export default {
         margin-left: 180px;
         margin-top: 64px;
         position: fixed;
-        border-radius: 5px 0 0 5px;
+        border-radius: 5px;
         .breadBox{
             color: #fff;
             font-size: 16px;

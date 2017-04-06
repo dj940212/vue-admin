@@ -6,7 +6,7 @@
               <span>实时地图查询</span>
           </div>
           <div class="search-box">
-              <input class="search-input" type="text" name="" value="">
+              <input class="search-input" type="text" name="" v-model="mac">
               <button class="search-button button" type="button" name="button">进入</button>
           </div>
       </div>
@@ -101,6 +101,15 @@ export default {
           amap.addControl(new AMap.ToolBar());
           amap.addControl(new AMap.Scale());
         });
+      },
+      getUserInfo:function(){
+
+      }
+
+  },
+  data(){
+      return {
+          mac:"请输入mac查询"
       }
   }
 }
