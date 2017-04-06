@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Login from '@/components/Login'
 import userinfo from '@/components/userinfo/userinfo'
+import mapsearch from '@/components/mapsearch/mapsearch'
 
 Vue.use(Router)
 
@@ -16,6 +17,10 @@ export default new Router({
       path: '/userinfo',
       name: 'userinfo',
       component: userinfo
+    },{
+      path: '/mapsearch',
+      name: 'mapsearch',
+      component: mapsearch
     }
   ]
 })

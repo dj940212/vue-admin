@@ -2,7 +2,7 @@
   <div class="header">
       <div class="top-left">
         <div class="text">
-          <img class="brand" src="./brand.png" alt="" width="52" height="52">
+          <img class="brand" src="./brand.png" alt="" width="42" height="42">
           <span class="company">郎阳科技</span>
           <span class="title">助动车管理系统</span>
         </div>
@@ -29,41 +29,42 @@ export default {
 
 <style lang="less" scoped>
 .header {
-  height: 82px;
+  height: 64px;
   width: 100%;
   background-color: #03003a;
   position: fixed;
   z-index: 10;
   .top-left {
     display: inline-block;
-    width: 240px;
+    width: 180px;
     height:81px;
     color: #fff;
     border-right: 1px solid #fff;
     .text{
       display: inline-block;
       position: absolute;
-      width: 240px;
-      height: 82px;
+      width: 180px;
+      height: 64px;
 
       .title{
         display: block;
         position: absolute;
-        left: 90px;
-        top: 47px;
+        left: 62px;
+        top: 37px;
+        font-size: 14px;
       }
       .company{
         display: block;
         position: absolute;
-        top: 20px;
-        left: 90px;
-        font-size: 18px;
+        top: 13px;
+        left: 62px;
+        font-size: 17px;
       }
       .brand{
         position: absolute;
         top: 50%;
-        margin-top: -26px;
-        margin-left: 24px;
+        margin-top: -21px;
+        margin-left: 10px;
       }
     }
   }
@@ -72,14 +73,13 @@ export default {
     display: inline-block;
     position: relative;
     /*width: 100%;*/
-    height: 82px;
+    height: 64px;
       .toggle{
-        /*display: inline-block;*/
         color: #fff;
         font-size: 25px;
         position: absolute;
-        top:50%;
-        margin-top: -12px;
+        /*top:50%;*/
+        /*margin-top: 0px;*/
         margin-left: 15px;
       }
       .rightIcon{
@@ -89,14 +89,14 @@ export default {
           color: #fff;
           display: inline-block;
           width: 70px;
-          height: 82px;
+          height: 64px;
           text-align: center;
           &:hover{
             background-color:#fff;
             color: #03003a;
           }
           .text{
-            line-height: 82px;
+            line-height: 64px;
           }
         }
       }
@@ -105,10 +105,11 @@ export default {
     position: relative;
     display: inline-block;
     color: #fff;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     .toggle{
       position: absolute;
-      height: 82px;
+      display: block;
+      height: 64px;
       top: -20px;
       .icon{
         font-size: 26px;

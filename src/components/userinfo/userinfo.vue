@@ -1,56 +1,61 @@
 <template>
   <div class="userinfo">
-      <div class="info-right">
+      <div class="info-left">
           <div class="header">
-              <div class="content">
+              <div class="title">
                   <i class="icon iconfont">&#xe630;</i>
                   <span>基本信息</span>
               </div>
-
           </div>
-          <div class="body">
-              <div class="body-content">
-                  <form  class="" action="index.html" method="post">
-                      姓名：<input type="text" name="name" value="">
-                      <br>
-                      警号：<input type="text" name="name" value="">
-                      <br>
-                      权限级别：<input type="text" name="name" value="">
-                      <br>
-                      所在单位：<input type="text" name="name" value="">
-                      <br>
-                      地址：
-                      <select name="cars">
-                        <option value="volvo">Volvo</option>
-                        <option value="saab">Saab</option>
-                        <option value="fiat">Fiat</option>
-                        <option value="audi">Audi</option>
-                      </select>
-                      <select name="cars">
-                        <option value="volvo">Volvo</option>
-                        <option value="saab">Saab</option>
-                        <option value="fiat">Fiat</option>
-                        <option value="audi">Audi</option>
-                      </select>
-                      <br>
-                      <input type="text" name="" value="填写详细地址">
-                  </form>
+          <div class="content">
+              <div class="photo">
+                  <img src="" alt="">
               </div>
+              <table>
+                  <tr>
+                      <th>姓名 :</th>
+                      <td>张三</td>
+                  </tr>
+                  <tr>
+                      <th>警号 :</th>
+                      <td>003204</td>
+                  </tr>
+                  <tr>
+                      <th>权限级别 :</th>
+                      <td>一级</td>
+                  </tr>
+                  <tr>
+                      <th>所在单位 :</th>
+                      <td>杭州市公安局余杭分局仓前派出所</td>
+                  </tr>
+                  <tr>
+                      <th>地址 :</th>
+                      <td>杭州市余杭区仓前镇仓兴街348号</td>
+                  </tr>
+                  <tr>
+                      <th>联系电话 :</th>
+                      <td>15244565678</td>
+                  </tr>
+              </table>
           </div>
       </div>
-      <div class="info-left">
+      <div class="info-right">
           <div class="header">
-              <div class="content">
+              <div class="title">
                   <i class="icon iconfont">&#xe659;</i>
                   <span>警员信息管理</span>
               </div>
           </div>
-          <div class="body">
-              <div class="body-content">
-                  <span>对警员信息进行增删改查</span><br>
-                  <label for="">请输入权限验证码</label><br>
-                  <input type="text" name="" value="">
-                  <input type="button" name="" value="">
+          <div class="content">
+              <div class="content-box">
+                  <div class="text">
+                      <span>对警员信息进行增删改查</span>
+                      <span>请输入权限验证码 :</span>
+                  </div>
+                  <div class="search-box">
+                      <input class="search-input" type="text" name="" value="">
+                      <button class="search-button" type="button" name="button">进入</button>
+                  </div>
               </div>
           </div>
       </div>
@@ -65,55 +70,69 @@ export default {
 
 <style lang="less" scoped>
 .userinfo {
-    .info-right{
+    .info-left{
         display: inline-block;
         width: 65%;
         .header{
-            height: 108px;
+            height: 64px;
             margin-left: 22px;
             margin-top: 22px;
             background-color: #e6e6eb;
-            line-height: 108px;
-            font-size: 28px;
-            .content{
+            line-height: 64px;
+            font-size: 24px;
+            .title{
                 margin-left: 15px;
                 .icon{
-                    font-size: 32px;
+                    font-size: 28px;
+                    position: relative;
+                    top: 2px;
                 }
                 span{
                     margin-left: 5px;
                 }
             }
         }
-        .body{
+        .content{
             background-color: #fff;
             margin-left: 22px;
-            .body-content{
+            .photo{
+                width: 150px;
+                height: 230px;
+                display: inline-block;
+                border: 1px solid #000;
+                margin:40px;
+                vertical-align: top;
+            }
+            table{
+                display: inline-block;
                 font-size: 18px;
-                margin-left: 20px;
-                input{
-                    border:1px solid #000;
-                    border-radius: 2px;
-                    margin: 10px 10px;
-                    height: 44px;
-                    width: 300px;
+                line-height: 50px;
+                margin-bottom: 90px;
+                margin-left: 40px;
+                margin-top: 30px;
+                th{
+                    text-align: right;
+                    padding-right: 15px;
+                    // font-weight:400;
+                }
+                td{
+                    color: #828282;
                 }
             }
-
-
         }
     }
-    .info-left{
+    .info-right{
         display: inline-block;
+        vertical-align: top;
         width: 32%;
         .header{
-            height: 108px;
+            height: 64px;
             margin-left: 22px;
             margin-top: 22px;
             background-color: #e6e6eb;
-            line-height: 108px;
+            line-height: 64px;
             font-size: 28px;
-            .content{
+            .title{
                 margin-left: 15px;
                 // height: 80%;
                 .icon{
@@ -125,16 +144,20 @@ export default {
             }
 
         }
-        .body{
-            background-color: #FFF;
+        .content{
             margin-left: 22px;
-            .body-content{
-                input{
-                    border:1px solid #000;
-                    border-radius: 2px;
-                    margin: 10px 10px;
-                    height: 44px;
-                    width: 200px;
+            background-color: #fff;
+            height: 419px;
+            .content-box{
+                padding-top: 50px;
+                margin-left: 30px;
+                padding-bottom: 100px;
+                .text{
+                    margin-bottom: 15px;
+                    span{
+                        display: block;
+                        line-height: 30px;
+                    }
                 }
             }
         }

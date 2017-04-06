@@ -5,7 +5,7 @@
     <div class="sidebarWrapper" >
         <sidebar></sidebar>
     </div>
-    <div class="routerView" ref="routerView">
+    <div class="routerView" ref="routerView" id="routerView">
         <router-view></router-view>
     </div>
   </div>
@@ -22,23 +22,15 @@ export default {
       sidebar,
       breadcrumb
   },
-  mounted:function () {
-      console.log(this.$refs.routerView);
-      console.log(document.body.clientHeight);
-      this.$refs.routerView.style.width = (window.innerWidth-240)+"px";
-      this.$refs.routerView.style.height = (window.innerHeight-134)+"px";
-
-  },
-  methods:{
-      changeHeiWid:function(){
-          window.onresize=function() {
-              this.$refs.routerView.style.width = (window.innerWidth-240)+"px";
-              this.$refs.routerView.style.height = (window.innerHeight-134)+"px";
-          }
-      }
-  }
+  // mounted:function () {
+  //     console.log(this.$refs.routerView);
+  //     console.log(document.body.clientHeight);
+  //     this.$refs.routerView.style.width = (window.innerWidth-180)+"px";
+  //     this.$refs.routerView.style.height = (window.innerHeight-116)+"px";
+  //
+  // }
 }
-
+// this.changeHeiWid()
 </script>
 
 <style lang="less">
@@ -51,9 +43,10 @@ export default {
     .routerView{
         position: absolute;
         display: inline-block;
-        top: 132px;
-        left: 240px;
+        top: 114px;
+        left: 180px;
         background-color: #f2f2f2;
+        overflow-x:hidden;
 
     }
 }

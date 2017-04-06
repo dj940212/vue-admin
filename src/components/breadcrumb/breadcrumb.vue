@@ -1,5 +1,5 @@
 <template>
-  <div class="breadcrumb" ref="breadcrumb">
+  <div class="breadcrumb" ref="breadcrumb" id="breadcrumb">
       <div class="breadBox">
           <span><i class="icon iconfont">&#xe604;</i>首页</span> &nbsp;/&nbsp;
           <span><i class="icon iconfont">&#xe630;</i>警员信息</span>
@@ -16,7 +16,7 @@ export default {
     }
   },
   mounted:function(){
-      this.$refs.breadcrumb.style.width = (document.body.clientWidth-240)+"px";
+    //   this.$refs.breadcrumb.style.width = (document.body.clientWidth-179)+"px";
   }
 }
 </script>
@@ -25,12 +25,12 @@ export default {
 <style lang="less" scoped>
     .breadcrumb{
         height: 50px;
-        // width: 100%;
         background-color: #4e4c75;
         border-left: 1px solid #fff;
-        margin-left: 240px;
-        margin-top: 82px;
+        margin-left: 180px;
+        margin-top: 64px;
         position: fixed;
+        border-radius: 5px 0 0 5px;
         .breadBox{
             color: #fff;
             font-size: 16px;

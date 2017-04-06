@@ -19,7 +19,7 @@
                       <ul class="submenu" v-show="submenuActive1">
                           <li class="submenu-item"><router-link to="/userinfo">用户与定位物登记</router-link></li>
                           <li class="submenu-item"><router-link to="/login">信息查询与修改</router-link></li>
-                          <li class="submenu-item"><router-link to="/userinfo">实时地图查询</router-link></li>
+                          <li class="submenu-item"><router-link to="/mapsearch">实时地图查询</router-link></li>
                           <li class="submenu-item">实时轨迹查询</li>
                       </ul>
                   </transition>
@@ -103,7 +103,7 @@ export default {
       },
   },
   mounted:function(){
-      this.$refs.tab.style.height = (window.innerHeight-381)+"px";
+      this.$refs.tab.style.height = (window.innerHeight-363)+"px";
   }
 }
 </script>
@@ -112,10 +112,10 @@ export default {
 <style lang="less">
 .sidebar{
     position: relative;
-    padding-top: 82px;
+    padding-top: 64px;
     .avatar{
         position: relative;
-        width: 240px;
+        width: 180px;
         height: 158px;
         background-color: #4e4c75;
         // border-bottom: 1px solid #fff;
@@ -148,16 +148,16 @@ export default {
         height: 2px;
         // margin: 3px 0;
         overflow: hidden;
-        width: 240px;
+        width: 180px;
         background-color: #4e4c75;
     }
     .tab{
-        width: 240px;
+        width: 180px;
         // height: 100%;
         background-color:#4e4c75;
         overflow-x: hidden;
         .menu{
-            margin-bottom: 220px;
+            margin-bottom: 140px;
             .menu-item{
                 display: block;
                 width: 240px;
@@ -169,8 +169,8 @@ export default {
                     border-bottom: 1px solid #4e4c75;
 
                     .iconfont{
-                        margin-right: 15px;
-                        margin-left: 24px;
+                        margin-right: 10px;
+                        margin-left: 20px;
                         font-size: 20px;
                     }
                     &:hover{
@@ -195,7 +195,7 @@ export default {
                         width: 176px;
                         height: 39px;
                         line-height: 39px;
-                        padding-left: 64px;
+                        padding-left: 30px;
                         border-top: 1px solid #03003a;
                         border-bottom: 1px solid #03003a;
                         &:hover{
@@ -215,10 +215,10 @@ export default {
         }
     }
     .copyright{
-        width: 240px;
+        width: 180px;
         height: 140px;
         position: fixed;
-        background-color: #03003a;
+        background-color: #3e465e;
         bottom: 0;
         .messBox{
             margin-top: 42px;
