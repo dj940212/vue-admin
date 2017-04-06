@@ -1,29 +1,12 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-  </div>
 </template>
 
 <script>
 export default {
-  name: 'hello',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  }
+  name: 'topbar'
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
-h1, h2{
-  font-weight: normal;
-  text-align: center;
-  position: absolute;
-  display: block;
-  width: 300px;
-  left: 300px;
+<style lang="less" scoped>
 
-}
 </style>

@@ -41,7 +41,7 @@
                   </div>
                   <ul class="submenu" v-show="submenuActive3">
                       <li class="submenu-item">基站数据</li>
-                      <li class="submenu-item">基站状态查询</li>
+                      <li class="submenu-item"><router-link to="/stationmap">基站状态查询</router-link></li>
                   </ul>
               </li>
               <li class="menu-item">
