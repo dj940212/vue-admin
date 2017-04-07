@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="title">
-            <i class="icon iconfont">{{icon}}</i>
+            <i class="icon iconfont">&#xe6a3;</i>
             <span>{{title}}</span>
         </div>
         <div class="search-box">

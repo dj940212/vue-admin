@@ -18,7 +18,7 @@
                   <transition name="slide">
                       <ul class="submenu" v-show="submenuActive1">
                           <li class="submenu-item"><router-link to="/userinfo">用户与定位物登记</router-link></li>
-                          <li class="submenu-item"><router-link to="/login">信息查询与修改</router-link></li>
+                          <li class="submenu-item"><router-link to="/userInfoManage">信息查询与修改</router-link></li>
                           <li class="submenu-item"><router-link to="/mapsearch">实时地图查询</router-link></li>
                           <li class="submenu-item">实时轨迹查询</li>
                       </ul>
@@ -30,7 +30,7 @@
                       <span>报警管理</span>
                   </div>
                   <ul class="submenu" v-show="submenuActive2">
-                      <li class="submenu-item">用户报警登记</li>
+                      <li class="submenu-item"><router-link to="/userCallReg">用户报警登记</router-link></li>
                       <li class="submenu-item">报警记录查询</li>
                   </ul>
               </li>

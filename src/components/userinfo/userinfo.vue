@@ -105,7 +105,7 @@ export default {
             }
             table{
                 display: inline-block;
-                font-size: 18px;
+                font-size: 16px;
                 line-height: 50px;
                 margin-bottom: 90px;
                 margin-left: 40px;
@@ -117,6 +117,7 @@ export default {
                 }
                 td{
                     color: #828282;
+                    font-size: 14px;
                 }
             }
         }

@@ -5,7 +5,7 @@
     <div class="sidebarWrapper" >
         <sidebar></sidebar>
     </div>
-    <div class="routerView" ref="routerView" id="routerView">
+    <div class="routerView" id="routerView">
         <router-view></router-view>
     </div>
   </div>
@@ -22,15 +22,7 @@ export default {
       sidebar,
       breadcrumb
   },
-  // mounted:function () {
-  //     console.log(this.$refs.routerView);
-  //     console.log(document.body.clientHeight);
-  //     this.$refs.routerView.style.width = (window.innerWidth-180)+"px";
-  //     this.$refs.routerView.style.height = (window.innerHeight-116)+"px";
-  //
-  // }
 }
-// this.changeHeiWid()
 </script>
 
 <style lang="less">

@@ -8,6 +8,11 @@ export default {
   name: 'stationmap',
   components:{
       topbar
+  },
+  data:function(){
+      return {
+         icon:"&#xe6a3;"
+      }
   }
 }
 </script>

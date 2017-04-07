@@ -5,6 +5,8 @@ import Login from '@/components/Login'
 import userinfo from '@/components/userinfo/userinfo'
 import mapsearch from '@/components/mapsearch/mapsearch'
 import stationmap from '@/components/stationmap/stationmap'
+import userInfoManage from '@/components/userInfoManage/userInfoManage'
+import userCallReg from '@/components/userCallReg/userCallReg'
 
 Vue.use(Router)
 
@@ -26,6 +28,14 @@ export default new Router({
       path: '/stationmap',
       name: 'stationmap',
       component: stationmap
-    }
+  },{
+      path: '/userInfoManage',
+      name: 'userInfoManage',
+      component: userInfoManage
+  },{
+      path: '/userCallReg',
+      name: 'userCallReg',
+      component: userCallReg
+  }
   ]
 })
