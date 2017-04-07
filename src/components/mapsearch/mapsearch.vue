@@ -7,7 +7,7 @@
     </div>
     <div class="search-box">
       <input class="search-input" type="text" name="" v-model="mac">
-      <button class="search-button button" type="button" name="button" @click="submit">搜索</button>
+      <button class="search-button class-button" type="button" name="button" @click="submit">搜索</button>
     </div>
   </div>
   <div class="content">
@@ -200,9 +200,9 @@ export default {
             }
         }
         .search-box {
-            display: inline-block;
+            // display: inline-block;
             float: right;
-            .button {
+            .class-button {
                 top: -3px;
                 left: -8px;
             }
@@ -216,16 +216,17 @@ export default {
         height: 85%;
         .real-time-map {
             width: 73%;
+            // width: 98%;
             height: 98%;
             margin-left: 10px;
             display: inline-block;
         }
         .info-box {
-            width: 25%;
+            width: 24%;
             height: 98%;
             display: inline-block;
             vertical-align: top;
-            margin-left: 10px;
+            margin-left: 15px;
             .module-ionfo {
                 margin-top: 20px;
             }
@@ -247,13 +248,14 @@ export default {
                     th {
                         border: 3px solid #fff;
                         // border-radius: 8px;
-                        line-height: 30px;
+                        // line-height: 30px;
+                        padding: 8px 10px;
                         width: 100px;
                     }
                     td {
                         border: 3px solid #fff;
                         // border-radius: 2px;
-                        padding-left: 10px;
+                        padding: 8px 10px;
                     }
                 }
 
@@ -263,12 +265,9 @@ export default {
 }
 
 // ====================media==================
-// @media only screen and (max-width:1100px){
-//     .info-box{
-//         display: block;
-//     }
-//     .real-time-map{
-//         width: 100%;
-//     }
-// }
+@media only screen and (max-width:1350px){
+    .real-time-map{
+        width: 98% !important;
+    }
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
       <div class="avatar">
-          <router-link to="/userinfo"><img src="./avatar.png" alt="" width="64" height="64"></router-link>
+          <router-link to="/userinfo"><img src="./avatar.jpg" alt="" width="64" height="64"></router-link>
           <div class="text">
               <span class="police">警员：</span>
               <span class="name">张某某</span>
@@ -31,7 +31,7 @@
                   </div>
                   <ul class="submenu" v-show="submenuActive2">
                       <li class="submenu-item"><router-link to="/userCallReg">用户报警登记</router-link></li>
-                      <li class="submenu-item">报警记录查询</li>
+                      <li class="submenu-item"><router-link to="/userCallSearch">报警记录查询</router-link></li>
                   </ul>
               </li>
               <li class="menu-item">
@@ -134,10 +134,11 @@ export default {
             display: inline-block;
             position: absolute;
             width: 102px;
-            top: 110px;
+            top: 115px;
             left: 50%;
-            margin-left: -51px;
+            margin-left: -46px;
             color: #fff;
+            font-size: 14px;
             .police{
             }
         }
@@ -167,7 +168,7 @@ export default {
                 .menu-item-title{
                     border-top:1px solid #4e4c75;
                     border-bottom: 1px solid #4e4c75;
-
+                    font-size: 14px;
                     .iconfont{
                         margin-right: 10px;
                         margin-left: 20px;
@@ -195,9 +196,10 @@ export default {
                         width: 176px;
                         height: 39px;
                         line-height: 39px;
-                        padding-left: 30px;
+                        padding-left: 45px;
                         border-top: 1px solid #03003a;
                         border-bottom: 1px solid #03003a;
+                        font-size: 13px;
                         &:hover{
                             border-top: 1px solid #fff;
                             border-bottom: 1px solid #fff;

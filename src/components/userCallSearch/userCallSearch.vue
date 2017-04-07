@@ -1,24 +1,24 @@
 <template>
-    <div class="userInfoManage">
+    <div class="userCallSearch">
         <div class="header">
           <div class="title">
             <i class="icon iconfont">&#xe612;</i>
-            <span>信息查询与修改</span>
+            <span>报警记录查询</span>
           </div>
           <searchBox text="查询"></searchBox>
         </div>
         <div class="content">
             <table border="1">
                 <tr>
+                    <th>报警时间</th>
                     <th>姓名</th>
                     <th>身份证号</th>
                     <th>手机号</th>
-                    <th>单位</th>
-                    <th>现居住地址</th>
-                    <th>定位物id</th>
+                    <th>发生地址</th>
+                    <th>地区编号</th>
+                    <th>定位物id号</th>
                     <th>定位物类型</th>
-                    <th>绑定时间</th>
-                    <th>相关操作</th>
+                    <th>报警状态</th>
                 </tr>
                 <tr>
                     <td>2314321</td>
@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-    .userInfoManage{
+    .userCallSearch{
         width: 100%;
         height: 95%;
         // padding-top: 22px;

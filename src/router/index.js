@@ -7,6 +7,7 @@ import mapsearch from '@/components/mapsearch/mapsearch'
 import stationmap from '@/components/stationmap/stationmap'
 import userInfoManage from '@/components/userInfoManage/userInfoManage'
 import userCallReg from '@/components/userCallReg/userCallReg'
+import userCallSearch from '@/components/userCallSearch/userCallSearch'
 
 Vue.use(Router)
 
@@ -36,6 +37,10 @@ export default new Router({
       path: '/userCallReg',
       name: 'userCallReg',
       component: userCallReg
+  },{
+      path: '/userCallSearch',
+      name: 'userCallSearch',
+      component: userCallSearch
   }
   ]
 })

@@ -7,6 +7,9 @@
           </div>
           <searchBox text="查询"></searchBox>
         </div>
+        <div class="content">
+
+        </div>
     </div>
 </template>
 
@@ -24,7 +27,7 @@ export default {
 .userCallReg{
     width: 100%;
     height: 95%;
-    padding-top: 22px;
+    // padding-top: 22px;
     position: relative;
     .header {
         height: 64px;
@@ -54,6 +57,14 @@ export default {
                 left: -8px;
             }
         }
+    }
+    .content{
+        margin-left: 22px;
+        margin-right: 22px;
+        padding-top: 10px;
+        background-color: #fff;
+        height: 85%;
+
     }
 }
 
