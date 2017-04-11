@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-header></v-header>
-    <breadcrumb></breadcrumb>
+    <!-- <breadcrumb></breadcrumb> -->
     <div class="sidebarWrapper" >
         <sidebar></sidebar>
     </div>
@@ -35,10 +35,10 @@ export default {
     .routerView{
         position: absolute;
         display: inline-block;
-        top: 110px;
+        top: 64px;
         left: 180px;
         background-color: #f2f2f2;
-        overflow-x:scroll;
+        // overflow-x:scroll;
 
     }
 }
