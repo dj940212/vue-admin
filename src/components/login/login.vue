@@ -26,7 +26,6 @@ export default {
 .login {
     width: 440px;
     height: 500px;
-    // background-color: red;
     position: absolute;
     margin: auto;
     top: 0;

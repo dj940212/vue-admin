@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
       <div class="avatar">
           <router-link to="/userinfo"><img src="./avatar.jpg" alt="" width="64" height="64"></router-link>
           <div class="text">

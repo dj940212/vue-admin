@@ -5,13 +5,30 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>行驶轨迹查询</span>
     </div>
-    <form class="" action="index.html" method="post">
-        <label for="">mac地址</label>
-        <input type="text" name="" value="">
-        <label for="">时间范围</label>
-        <input type="text" name="" value="">
-        <button type="button" name="button">搜索</button>
-    </form>
+    <div class="dataPicker">
+        <div class="mac">
+            <label for="">macID:</label>
+            <input type="text" name="" value="">
+        </div>
+        <div class="block">
+           <span class="demonstration">时间范围:</span>
+           <el-date-picker
+             v-model="value1"
+             type="datetime"
+             placeholder="选择起始时间">
+           </el-date-picker>
+        </div>
+        <span style="color:#888;">-</span>
+        <div class="block" style="display:inline-block">
+           <el-date-picker
+             v-model="value2"
+             type="datetime"
+             placeholder="选择结束时间">
+           </el-date-picker>
+        </div>
+        <button type="button" name="button">查询</button>
+    </div>
+
   </div>
   <div class="content">
     <div class="trackQuery-map" id="trackQuery-map">
@@ -160,6 +177,8 @@ export default {
       mac: "",
       apiUrl: "http://121.196.194.14/langyang/Home/Police/searchUserDeviceInfo",
       user: {},
+      value1: '',
+      value2: ''
     }
   }
 }
@@ -190,28 +209,42 @@ export default {
                 margin-left: 5px;
             }
         }
-        form{
+        .dataPicker{
             display: inline-block;
             float: right;
-            label{
-                font-size: 16px;
-                line-height: 64px;
-            }
-            input{
-                width: 30%;
-                height: 29px;
-                border-radius: 4px;
-                font-size: 16px;
-                &:focus{
-                    outline: none;
+            margin-right: 50px;
+            position: relative;
+            top: -4px;
+            .mac{
+                display: inline-block;
+                margin-right: 50px;
+                position: relative;
+                top: 3px;
+                label{
+                    font-size: 16px;
+                    font-size: #333;
+                }
+                input{
+                    width: 200px;
+                    height: 34px;
+                    border-radius: 4px;
+                    border: 1px solid #bfcbd9;
                 }
             }
             button{
-                height: 29px;
-                background-color: #03003a;
-                color: #fff;
+                height: 34px;
+                width: 100px;
+                background-color: #4e4c75;
+                margin-left: 50px;
                 border: 0;
-                border-radius: 5px;
+                border-radius: 2px;
+                color: #fff;
+            }
+            .block{
+                display: inline-block;
+                .demonstration{
+                    font-size: 16px;
+                }
             }
         }
     }

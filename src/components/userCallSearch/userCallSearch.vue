@@ -75,6 +75,9 @@ export default {
   name: 'userInfoManage',
   components:{
       searchBox
+  },
+  methods:{
+
   }
 }
 </script>
