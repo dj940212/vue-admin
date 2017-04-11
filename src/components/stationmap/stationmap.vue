@@ -234,7 +234,7 @@ export default {
 
 // ====================media==================
 @media only screen and (max-width:1350px){
-    .real-time-map{
+    .base-station-map{
         width: 98% !important;
     }
 }

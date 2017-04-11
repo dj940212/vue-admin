@@ -269,5 +269,15 @@ export default {
     .real-time-map{
         width: 98% !important;
     }
+    .info-box{
+        margin-top: 30px;
+        .module-ionfo{
+            display: inline-block;
+            vertical-align: top;
+        }
+        .user-info{
+            // display: inline-block;
+        }
+    }
 }
 </style>

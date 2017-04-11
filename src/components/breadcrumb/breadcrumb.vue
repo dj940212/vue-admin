@@ -24,7 +24,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
     .breadcrumb{
-        height: 50px;
+        height: 46px;
         background-color: #4e4c75;
         border-left: 1px solid #fff;
         margin-left: 180px;
@@ -33,8 +33,8 @@ export default {
         border-radius: 5px;
         .breadBox{
             color: #fff;
-            font-size: 16px;
-            line-height: 50px;
+            font-size: 14px;
+            line-height: 46px;
             margin-left: 20px;
             .icon{
                 font-size: 20px;

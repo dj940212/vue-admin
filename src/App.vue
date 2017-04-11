@@ -35,10 +35,10 @@ export default {
     .routerView{
         position: absolute;
         display: inline-block;
-        top: 114px;
+        top: 110px;
         left: 180px;
         background-color: #f2f2f2;
-        overflow-x:hidden;
+        overflow-x:scroll;
 
     }
 }

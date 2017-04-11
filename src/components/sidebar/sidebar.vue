@@ -8,7 +8,7 @@
           </div>
       </div>
       <div class="divider"></div>
-      <div class="tab" ref="tab">
+      <div class="tab" ref="tab" id="tab">
           <ul class="menu">
               <li class="menu-item">
                   <div class="menu-item-title" @click="toggleSidebar1" :class="{active:sidebarActive1}" >
@@ -16,7 +16,7 @@
                       <span>定位物管理</span>
                   </div>
                   <transition name="slide">
-                      <ul class="submenu" v-show="submenuActive1">
+                      <ul class="submenu">
                           <li class="submenu-item"><router-link to="/userinfo">用户与定位物登记</router-link></li>
                           <li class="submenu-item"><router-link to="/userInfoManage">信息查询与修改</router-link></li>
                           <li class="submenu-item"><router-link to="/mapsearch">实时地图查询</router-link></li>
@@ -29,7 +29,7 @@
                       <i class="icon iconfont">&#xe607;</i>
                       <span>报警管理</span>
                   </div>
-                  <ul class="submenu" v-show="submenuActive2">
+                  <ul class="submenu">
                       <li class="submenu-item"><router-link to="/userCallReg">用户报警登记</router-link></li>
                       <li class="submenu-item"><router-link to="/userCallSearch">报警记录查询</router-link></li>
                   </ul>
@@ -39,7 +39,7 @@
                       <i class="icon iconfont">&#xe6a3;</i>
                       <span>基站管理</span>
                   </div>
-                  <ul class="submenu" v-show="submenuActive3">
+                  <ul class="submenu">
                       <li class="submenu-item">基站数据</li>
                       <li class="submenu-item"><router-link to="/stationmap">基站状态查询</router-link></li>
                   </ul>
@@ -49,7 +49,7 @@
                       <i class="icon iconfont">&#xe612;</i>
                       <span>历史纪录查询</span>
                   </div>
-                  <ul class="submenu" v-show="submenuActive4">
+                  <ul class="submenu">
                       <li class="submenu-item">助动车行驶记录查询</li>
                       <li class="submenu-item">助动车行驶轨迹查询</li>
                       <li class="submenu-item">相关视频调用</li>
@@ -62,7 +62,7 @@
       <div class="copyright">
           <div class="messBox">
               <span class="mess">Copyright @2017</span>
-              <span class="mess">上周郎阳科技有限公司</span>
+              <span class="mess">杭州郎阳科技有限公司</span>
               <span class="mess">版权所有</span>
           </div>
       </div>
@@ -85,25 +85,52 @@ export default {
     }
   },
   methods: {
-      toggleSidebar1: function(){
+      toggleSidebar1: function(event){
           this.sidebarActive1 = !this.sidebarActive1;
           this.submenuActive1 = !this.submenuActive1;
+
+          if (!this.submenuActive1) {
+              event.currentTarget.nextSibling.nextSibling.style.height=0+"px";
+          }else {
+              event.currentTarget.nextSibling.nextSibling.style.height=146+"px";
+          }
+
       },
-      toggleSidebar2: function(){
+      toggleSidebar2: function(event){
           this.sidebarActive2 = !this.sidebarActive2;
           this.submenuActive2 = !this.submenuActive2;
+
+          if (!this.submenuActive2) {
+              event.currentTarget.nextSibling.nextSibling.style.height=0+"px";
+          }else {
+              event.currentTarget.nextSibling.nextSibling.style.height=74+"px";
+          }
       },
-      toggleSidebar3: function(){
+      toggleSidebar3: function(event){
           this.sidebarActive3 = !this.sidebarActive3;
           this.submenuActive3 = !this.submenuActive3;
+
+
+          if (!this.submenuActive3) {
+              event.currentTarget.nextSibling.nextSibling.style.height=0+"px";
+          }else {
+              event.currentTarget.nextSibling.nextSibling.style.height=74+"px";
+          }
       },
-      toggleSidebar4: function(){
+      toggleSidebar4: function(event){
           this.sidebarActive4 = !this.sidebarActive4;
           this.submenuActive4 = !this.submenuActive4;
+
+
+          if (!this.submenuActive4) {
+              event.currentTarget.nextSibling.nextSibling.style.height=0+"px";
+          }else {
+              event.currentTarget.nextSibling.nextSibling.style.height=183+"px";
+          }
       },
   },
   mounted:function(){
-      this.$refs.tab.style.height = (window.innerHeight-363)+"px";
+      this.$refs.tab.style.height = (window.innerHeight-290)+"px";
   }
 }
 </script>
@@ -113,6 +140,9 @@ export default {
 .sidebar{
     position: relative;
     padding-top: 64px;
+    width: 180px;
+    height: 100%;
+    background-color: #4e4c75;
     .avatar{
         position: relative;
         width: 180px;
@@ -145,6 +175,9 @@ export default {
 
     }
     .divider{
+        background-image: -webkit-linear-gradient(left, transparent, #fff, transparent);
+        background-image: -moz-linear-gradient(left, transparent, #fff, transparent);
+        background-image: -o-linear-gradient(left, transparent, #fff, transparent);
         background-image: linear-gradient(left, transparent, #fff, transparent);
         height: 2px;
         // margin: 3px 0;
@@ -154,21 +187,23 @@ export default {
     }
     .tab{
         width: 180px;
-        // height: 100%;
         background-color:#4e4c75;
         overflow-x: hidden;
         .menu{
-            margin-bottom: 140px;
+            // margin-bottom: 70px;
+            width: 180px;
             .menu-item{
                 display: block;
-                width: 240px;
+                width: 180px;
                 background-color:#4e4c75;
                 color: #fff;
-                line-height: 52px;
+                line-height: 45px;
+                margin-top: 15px;
                 .menu-item-title{
                     border-top:1px solid #4e4c75;
                     border-bottom: 1px solid #4e4c75;
                     font-size: 14px;
+                    cursor: pointer;
                     .iconfont{
                         margin-right: 10px;
                         margin-left: 20px;
@@ -179,12 +214,13 @@ export default {
                         border-bottom: 1px solid #e6e6eb;
                     }
                     &.active{
-                        // background-color: #03003a;
                     }
                 }
-
                 .submenu{
-                    background-color: #03003a;
+                    background-color: #000;
+                    height: 0;
+                    overflow: hidden;
+                    transition: height 0.4s;
                     &.active{
                         display: block;
                     }
@@ -194,15 +230,17 @@ export default {
                     }
                     .submenu-item{
                         width: 176px;
-                        height: 39px;
-                        line-height: 39px;
+                        height: 35px;
+                        line-height: 35px;
                         padding-left: 45px;
-                        border-top: 1px solid #03003a;
-                        border-bottom: 1px solid #03003a;
-                        font-size: 13px;
+                        border-top: 1px solid #000;
+                        border-bottom: 1px solid #000;
+                        font-size: 12px;
+                        cursor: pointer;
                         &:hover{
                             border-top: 1px solid #fff;
                             border-bottom: 1px solid #fff;
+                            border-left: 4px solid #fff;
                         }
                         a{
                             color: #fff;
@@ -218,17 +256,17 @@ export default {
     }
     .copyright{
         width: 180px;
-        height: 140px;
+        height: 70px;
         position: fixed;
         background-color: #3e465e;
         bottom: 0;
         .messBox{
-            margin-top: 42px;
+            margin-top: 15px;
             .mess{
                 display: block;
                 text-align: center;
                 margin-top: 8px;
-                font-size: 13px;
+                font-size: 10px;
                 color: #fff;
             }
         }

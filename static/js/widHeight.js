@@ -9,4 +9,6 @@ window.onresize=function() {
         document.getElementById('routerView').style.height = (window.innerHeight-116)+"px";
 
         document.getElementById('breadcrumb').style.width = (window.innerWidth-180)+"px";
+
+        document.getElementById('tab').style.width = (window.innerHeight-290)+"px";
 }

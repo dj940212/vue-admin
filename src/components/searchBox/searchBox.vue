@@ -16,8 +16,10 @@ export default {
 .search-box{
     display: inline-block;
     float: right;
+    input{
+        font-size: 16px;
+    }
     .button{
-        top: -3px;
         left: -8px;
     }
 }

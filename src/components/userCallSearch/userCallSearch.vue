@@ -83,6 +83,7 @@ export default {
     .userCallSearch{
         width: 100%;
         height: 95%;
+        min-width: 1000px;
         // padding-top: 22px;
         position: relative;
         .header {
@@ -93,6 +94,7 @@ export default {
             line-height: 64px;
             font-size: 24px;
             margin-top: 22px;
+
             .title {
                 margin-left: 15px;
                 display: inline-block;

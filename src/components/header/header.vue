@@ -31,7 +31,7 @@ export default {
 .header {
   height: 64px;
   width: 100%;
-  background-color: #03003a;
+  background-color: #000;
   position: fixed;
   z-index: 10;
   box-shadow: 0px 3px 10px #212037;
@@ -112,6 +112,7 @@ export default {
       display: block;
       height: 64px;
       top: -20px;
+      cursor: pointer;
       .icon{
         font-size: 26px;
         margin-left: 20px;
