@@ -3,12 +3,15 @@
   <div class="header">
     <div class="title">
       <i class="icon iconfont">&#xe612;</i>
-      <span>实时地图查询</span>
+      <span>行驶轨迹查询</span>
     </div>
-    <div class="search-box">
-      <input class="search-input" type="text" name="" v-model="mac">
-      <button class="search-button class-button" type="button" name="button" @click="submit">搜索</button>
-    </div>
+    <form class="" action="index.html" method="post">
+        <label for="">mac地址</label>
+        <input type="text" name="" value="">
+        <label for="">时间范围</label>
+        <input type="text" name="" value="">
+        <button type="button" name="button">搜索</button>
+    </form>
   </div>
   <div class="content">
     <div class="trackQuery-map" id="trackQuery-map">
@@ -148,7 +151,7 @@ export default {
       });
     },
     addMarker: function(data){
-        
+
     }
 
   },
@@ -187,12 +190,28 @@ export default {
                 margin-left: 5px;
             }
         }
-        .search-box {
-            // display: inline-block;
+        form{
+            display: inline-block;
             float: right;
-            .class-button {
-                top: -3px;
-                left: -8px;
+            label{
+                font-size: 16px;
+                line-height: 64px;
+            }
+            input{
+                width: 30%;
+                height: 29px;
+                border-radius: 4px;
+                font-size: 16px;
+                &:focus{
+                    outline: none;
+                }
+            }
+            button{
+                height: 29px;
+                background-color: #03003a;
+                color: #fff;
+                border: 0;
+                border-radius: 5px;
             }
         }
     }
@@ -201,10 +220,9 @@ export default {
         margin-right: 22px;
         padding-top: 10px;
         background-color: #fff;
-        height: 85%;
+        height: 89%;
         .trackQuery-map {
             width: 73%;
-            // width: 98%;
             height: 98%;
             margin-left: 10px;
             display: inline-block;
