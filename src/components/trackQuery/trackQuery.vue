@@ -8,12 +8,12 @@
     <div class="dataPicker">
         <div class="mac">
             <label for="">macID:</label>
-            <input type="text" name="" value="">
+            <input type="text" name="" value="" v-model="mac">
         </div>
         <div class="block">
            <span class="demonstration">时间范围:</span>
            <el-date-picker
-             v-model="value1"
+             v-model="dateValue1"
              type="datetime"
              placeholder="选择起始时间">
            </el-date-picker>
@@ -21,12 +21,12 @@
         <span style="color:#888;">-</span>
         <div class="block" style="display:inline-block">
            <el-date-picker
-             v-model="value2"
+             v-model="dateValue2"
              type="datetime"
              placeholder="选择结束时间">
            </el-date-picker>
         </div>
-        <button type="button" name="button">查询</button>
+        <button type="button" name="button" @click="submit">查询</button>
     </div>
 
   </div>
@@ -53,7 +53,7 @@
           </tr>
           <tr>
             <th>性别</th>
-            <td>{{(user.sex=1)?"女":"男"}}</td>
+            <td>{{(user.sex===1)?"女":"男"}}</td>
           </tr>
           <tr>
             <th>生日</th>
@@ -80,19 +80,23 @@
           </tr>
           <tr>
             <th>当前经度</th>
-            <td>120.0135407484</td>
+            <td>{{clickData.longitude}}</td>
           </tr>
           <tr>
             <th>当前纬度</th>
-            <td>120.0135407484</td>
+            <td>{{clickData.latitude}}</td>
           </tr>
           <tr>
             <th>地区编码</th>
-            <td>330110</td>
+            <td>{{clickData.adcode}}</td>
           </tr>
           <tr>
             <th>点击地址</th>
-            <td>浙江省杭州市余杭区五常街道浙江海外高层次人才创新园3幢浙江海外高层次人才创新园</td>
+            <td>{{clickData.addr}}</td>
+          </tr>
+          <tr>
+            <th>时间</th>
+            <td>{{clickData.time}}</td>
           </tr>
         </table>
       </div>
@@ -107,6 +111,8 @@ export default {
   mounted: function() {
     this.initMap();
   },
+  created:function(){
+  },
   methods: {
     //   初始化地图
     initMap: function() {
@@ -116,15 +122,53 @@ export default {
         resizeEnable: true
       }
 
-      var amap = new AMap.Map('trackQuery-map', mapOptions);
-      AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function() {
-        amap.addControl(new AMap.ToolBar());
-        amap.addControl(new AMap.Scale());
+      this.amap = new AMap.Map('trackQuery-map', mapOptions);
+      AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], () => {
+        this.amap.addControl(new AMap.ToolBar());
+        this.amap.addControl(new AMap.Scale());
       });
+    },
+    //格式化日期
+    formatDate:function(value){
+        if(value){
+            var year = value.getFullYear();
+            var month = value.getMonth() + 1;
+            var date = value.getDate();
+            if (month >=1 && month <= 9) {
+                month = "0"+month;
+            }
+            if (date >= 0 && date <= 9) {
+                date = "0"+date;
+            }
+            return year+"-"+month+"-"+date;
+        }
+        return
+    },
+    //获取轨迹信息
+    getTrack: function() {
+      this.$http.post(this.urlTrack, {
+        mac: this.mac,
+        startTime: this.formatDate(this.dateValue1),
+        endTime:this.formatDate(this.dateValue2)
+      }, {
+        emulateJSON: true
+      }).then((res) => {
+        console.log("getTrack",res.data)
+        if (res.data.data.msg == "success") {
+          this.track = res.data.data.list.location;
+          console.log("位置数据",this.track);
+          this.addMarker();
+
+        } else {
+          alert('getTrack找不到该设备，请重新输入！');
+        }
+      }, (res) => {
+        console.log(res.status)
+      })
     },
     //获取用户信息
     getUserInfo: function() {
-      this.$http.post(this.apiUrl, {
+      this.$http.post(this.urlUser, {
         mac: this.mac
       }, {
         emulateJSON: true
@@ -133,11 +177,11 @@ export default {
         if (res.data.lp == 0 && res.data.data.msg == "请求成功") {
           if (res.data.data.list) {
             this.user = res.data.data.list[0];
-            console.log(this.user)
+            console.log("userinfo",this.user)
           }
 
         } else {
-          alert('找不到该设备，请重新输入！');
+          alert('getUserInfo找不到该设备，请重新输入！');
         }
       }, (res) => {
         console.log(res.status)
@@ -146,39 +190,63 @@ export default {
     // 提交搜索
     submit: function() {
       console.log(this.mac);
+      this.getTrack();
       this.getUserInfo();
+      console.log(this.amap)
     },
     //位置转换
     lonlatToAddr: function(lonlat) {
-      AMap.service('AMap.Geocoder', function() { //回调函数
+      AMap.service('AMap.Geocoder', () => { //回调函数
         //实例化Geocoder
         var geocoder = new AMap.Geocoder();
-
-        geocoder.getAddress(lonlat, function(status, result) {
+        geocoder.getAddress(lonlat, (status, result) => {
           if (status === 'complete' && result.info === 'OK') {
             //TODO:获得了有效经纬度，可以做一些展示工作
-            console.log(result);
-            $scope.clickData.address = result.regeocode.formattedAddress;
-            $scope.clickData.adcode = result.regeocode.addressComponent.adcode
-            console.log($scope.clickData);
+            // console.log(result);
+            this.clickData.address = result.regeocode.formattedAddress;
+            this.clickData.adcode = result.regeocode.addressComponent.adcode
+            console.log(this.clickData);
           } else {
             //获取经纬度失败
           }
         });
       });
     },
-    addMarker: function(data){
+    //绘制轨迹
+    addMarker: function(){
+        // var amap = new AMap.Map('trackQuery-map');
+        this.amap.clearMap();
+        this.track.forEach((data,index) => {
+            //高德地址转换
+            var lnglat = new AMap.LngLat(data.longitude,data.latitude)
+            AMap.convertFrom(lnglat,"gps",(status,result) => {
+                //初始化marker
+                var marker = new AMap.Marker({
+                   title:index,
+                   position:result.locations[0],
+                   map:this.amap,
+                   animation:"AMAP_ANIMATION_DROP"
+                 });
+                 AMap.event.addListener(marker, 'click',() => {
+                     this.clickData = data;
+                     this.lonlatToAddr(lnglat);
+                 })
 
+            })
+        })
     }
-
   },
   data() {
     return {
-      mac: "",
-      apiUrl: "http://121.196.194.14/langyang/Home/Police/searchUserDeviceInfo",
+      mac: "3148369587325565",
+      urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
+      urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       user: {},
-      value1: '',
-      value2: ''
+      track:[],
+      amap: {},
+      clickData: {},
+      dateValue1: '',
+      dateValue2: '',
     }
   }
 }
@@ -226,9 +294,11 @@ export default {
                 }
                 input{
                     width: 200px;
-                    height: 34px;
+                    height: 28px;
                     border-radius: 4px;
                     border: 1px solid #bfcbd9;
+                    font-size: 14px;
+                    padding: 3px 10px;
                 }
             }
             button{

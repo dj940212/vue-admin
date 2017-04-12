@@ -87,7 +87,7 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    this.keepsocket();
+    // this.keepsocket();
   },
   methods: {
     //   初始化地图
@@ -99,6 +99,7 @@ export default {
       }
 
       var amap = new AMap.Map('real-time-map', mapOptions);
+      this.amap = amap;
       AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function() {
         amap.addControl(new AMap.ToolBar());
         amap.addControl(new AMap.Scale());
@@ -167,7 +168,7 @@ export default {
   data() {
     return {
       mac: "",
-      apiUrl: "http://121.196.194.14/langyang/Home/Police/searchUserDeviceInfo",
+      apiUrl: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       user: {},
     }
   }

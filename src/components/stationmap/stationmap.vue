@@ -65,6 +65,7 @@ export default {
         zoom: 16,
         center: [120.01335374840001, 30.2846277638], //定位到海创园
         resizeEnable: true
+
       }
 
       var amap = new AMap.Map('base-station-map', mapOptions);
@@ -73,42 +74,37 @@ export default {
         amap.addControl(new AMap.Scale());
       });
     },
-    //获取用户信息
-    getUserInfo: function() {
-      this.$http.post(this.apiUrl, {
+    //获取基站信息
+    getBaseStation: function() {
+      this.$http.post(this.urlStation, {
         mac: this.mac
       }, {
         emulateJSON: true
       }).then((res) => {
         console.log(res.data)
         if (res.data.lp == 0 && res.data.data.msg == "请求成功") {
-          if (res.data.data.list) {
-            this.user = res.data.data.list[0];
-            console.log(this.user)
-          }
+          this.newdata = res.data.data.list;
+          this.infostation = this.newdata[0];
 
         } else {
-          alert('找不到该设备，请重新输入！');
+          console.log('基站数据请求失败');
         }
       }, (res) => {
         console.log(res.status)
       })
     },
-    // 提交搜索
-    submit: function() {
-      console.log(this.mac);
-      this.getUserInfo();
-    },
     //建立websocket链接
     keepsocket: function() {
-      var socket = io('ws://127.0.0.1:3002'); //121.196.194.14:3002
-      socket.on('connect', function() {
-        console.log('连接成功！');
+        var socket = io('ws://127.0.0.1:3003');
 
-      });
-      socket.on('message', function(data) {
-        console.log("收到数据", data.devEUI);
-      });
+        socket.on('connect',function () {
+          console.log('正在打开！');
+        });
+        socket.on('message',function (data) {
+          console.log(socket);
+          console.log("基站数据",data);
+          $scope.base_Station(data);
+        });
     },
     //位置转换
     lonlatToAddr: function(lonlat) {
@@ -136,7 +132,7 @@ export default {
   data() {
     return {
       mac: "",
-      apiUrl: "http://121.196.194.14/langyang/Home/Police/searchUserDeviceInfo",
+      urlStation: this.global.port+"/langyang/Home/Police/getBaseStations",
       user: {},
     }
   }
