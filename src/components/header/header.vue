@@ -31,10 +31,11 @@ export default {
 .header {
   height: 64px;
   width: 100%;
-  background-color: #000;
+  background-color: #222222;
+  border: 1px solid #101010;
   position: fixed;
   z-index: 10;
-  box-shadow: 0px 3px 7px #212037;
+  // box-shadow: 0px 3px 7px #212037;
   .top-left {
     display: inline-block;
     width: 180px;

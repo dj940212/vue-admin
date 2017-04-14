@@ -27,13 +27,14 @@
            </el-date-picker>
         </div>
         <button type="button" name="button" @click="submit">查询</button>
+        <button type="button" name="button" @click="showTableData">详细记录</button>
+
     </div>
 
   </div>
   <div class="content">
-    <div class="trackQuery-map" id="trackQuery-map">
-    </div>
-    <div class="info-box">
+    <div class="trackQuery-map" id="trackQuery-map"></div>
+    <div class="info-box" style="display:none">
       <div class="user-info">
         <div class="title">
           <span>用户信息</span>
@@ -92,7 +93,7 @@
           </tr>
           <tr>
             <th>点击地址</th>
-            <td>{{clickData.addr}}</td>
+            <td>{{clickData.address}}</td>
           </tr>
           <tr>
             <th>时间</th>
@@ -101,6 +102,45 @@
         </table>
       </div>
     </div>
+  </div>
+  <div class="tableData" v-show="tableDataToggle">
+      <el-table
+          :data="tableData"
+          height="500"
+          border
+          style="width: 100%;"
+          :default-sort = "{prop: 'time', order: 'descending'}">
+          <el-table-column
+              prop="id"
+              label="id"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="latitude"
+              label="经度"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="longitude"
+              label="纬度"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="time"
+              label="时间"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="adcode"
+              label="地区编码"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="address"
+              label="地址"
+              width="180">
+          </el-table-column>
+      </el-table>
   </div>
 </div>
 </template>
@@ -156,9 +196,7 @@ export default {
         console.log("getTrack",res.data)
         if (res.data.data.msg == "success") {
           this.track = res.data.data.list.location;
-          console.log("位置数据",this.track);
           this.addMarker();
-
         } else {
           alert('getTrack找不到该设备，请重新输入！');
         }
@@ -189,23 +227,19 @@ export default {
     },
     // 提交搜索
     submit: function() {
-      console.log(this.mac);
       this.getTrack();
       this.getUserInfo();
-      console.log(this.amap)
     },
     //位置转换
-    lonlatToAddr: function(lonlat) {
+    lonlatToAddr: function(lonlat,data) {
       AMap.service('AMap.Geocoder', () => { //回调函数
         //实例化Geocoder
         var geocoder = new AMap.Geocoder();
         geocoder.getAddress(lonlat, (status, result) => {
           if (status === 'complete' && result.info === 'OK') {
             //TODO:获得了有效经纬度，可以做一些展示工作
-            // console.log(result);
-            this.clickData.address = result.regeocode.formattedAddress;
-            this.clickData.adcode = result.regeocode.addressComponent.adcode
-            console.log(this.clickData);
+            data.address = result.regeocode.formattedAddress;
+            data.adcode = result.regeocode.addressComponent.adcode;
           } else {
             //获取经纬度失败
           }
@@ -226,14 +260,88 @@ export default {
                    position:result.locations[0],
                    map:this.amap,
                    animation:"AMAP_ANIMATION_DROP"
-                 });
-                 AMap.event.addListener(marker, 'click',() => {
+                });
+                AMap.event.addListener(marker, 'click',() => {
                      this.clickData = data;
-                     this.lonlatToAddr(lnglat);
-                 })
+                     this.lonlatToAddr(result.locations[0],clickData);
+                     console.log("clickData",data);
+                     alert(this.clickData.address)
+                 });
+                AMap.event.addListener(marker,'mouseover',(e) => {
+                     this.mouseoverData = data;
+                     this.lonlatToAddr(result.locations[0],this.mouseoverData);
+                     setTimeout(() => {
+                         AMap.plugin('AMap.AdvancedInfoWindow',() => {
+                             //实例化信息窗体
+                            var title = '姓名：'+this.user.realname+'<span class="info-span" style="font-size:11px;">手机号:'+this.user.telephone+'</span>',
+                            content = [];
+                            content.push('<span class="info-span" style="font-weight:bold">定位物mac：</span>'+this.mac);
+                            content.push('<span class="info-span" style="font-weight:bold">当前位置：</span>'+this.mouseoverData.address)
+                            this.infoWindow = new AMap.InfoWindow({
+                                isCustom: true,  //使用自定义窗体
+                                content: this.createInfoWindow(title, content.join("<br/>")),
+                                offset: new AMap.Pixel(16, -45)
+                            });
+                            this.infoWindow.open(this.amap,e.target.getPosition())
+                        });
+                    },100);
 
+                 });
+                AMap.event.addListener(marker,'mouseout',()=>{
+                    this.amap.clearInfoWindow();
+                })
+
+                //表格数据
+                this.lonlatToAddr(result.locations[0],data)
+                // this.allData.push(data);
             })
         })
+        console.log(this.allData)
+        this.tableData = this.allData;
+    },
+    //构建自定义信息窗体
+    createInfoWindow: function(title,content){
+        var info = document.createElement("div");
+        info.className = "info-window";
+
+        //可以通过下面的方式修改自定义窗体的宽高
+        info.style.width = "270px";
+        // 定义顶部标题
+        var top = document.createElement("div");
+        var titleD = document.createElement("div");
+        // var closeX = document.createElement("img");
+        top.className = "info-window-top";
+        titleD.innerHTML = title;
+        // closeX.src = "http://webapi.amap.com/images/close2.gif";
+        // closeX.onclick = closeInfoWindow;
+
+        top.appendChild(titleD);
+        // top.appendChild(closeX);
+        info.appendChild(top);
+
+        // 定义中部内容
+        var middle = document.createElement("div");
+        middle.className = "info-window-middle";
+        middle.style.backgroundColor = 'white';
+        middle.innerHTML = content;
+        info.appendChild(middle);
+
+        // 定义底部内容
+        var bottom = document.createElement("div");
+        bottom.className = "info-window-bottom";
+        bottom.style.position = 'relative';
+        bottom.style.top = '0px';
+        bottom.style.margin = '0 auto';
+        var sharp = document.createElement("img");
+        sharp.src = "http://webapi.amap.com/images/sharp.png";
+        bottom.appendChild(sharp);
+        info.appendChild(bottom);
+        return info;
+    },
+    //显示关闭数据表格
+    showTableData: function(){
+        this.tableDataToggle = !this.tableDataToggle;
+        alert(this.allData);
     }
   },
   data() {
@@ -245,14 +353,19 @@ export default {
       track:[],
       amap: {},
       clickData: {},
+      mouseoverData: {},
+      allData:[],
       dateValue1: '',
       dateValue2: '',
+      tableData: [],
+      infoWindow:{},
+      tableDataToggle: false
     }
   }
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .trackQuery {
     width: 100%;
     height: 95%;
@@ -305,7 +418,6 @@ export default {
                 height: 34px;
                 width: 100px;
                 background-color: #4e4c75;
-                margin-left: 50px;
                 border: 0;
                 border-radius: 2px;
                 color: #fff;
@@ -325,9 +437,9 @@ export default {
         background-color: #fff;
         height: 89%;
         .trackQuery-map {
-            width: 73%;
+            width: 99%;
             height: 98%;
-            margin-left: 10px;
+            margin-left: 8px;
             display: inline-block;
         }
         .info-box {
@@ -371,6 +483,11 @@ export default {
             }
         }
     }
+    .tableData{
+        position: absolute;
+        top: 130px;
+        left: 300px;
+    }
 }
 
 // ====================media==================
@@ -389,4 +506,5 @@ export default {
         }
     }
 }
+
 </style>

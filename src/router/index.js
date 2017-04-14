@@ -14,6 +14,11 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
+      path: '/',
+      name:'trackQuery',
+      component: trackQuery
+    },
+    {
       path: '/login',
       name: 'login',
       component: login

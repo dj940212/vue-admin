@@ -99,7 +99,6 @@ export default {
       }
 
       var amap = new AMap.Map('real-time-map', mapOptions);
-      this.amap = amap;
       AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function() {
         amap.addControl(new AMap.ToolBar());
         amap.addControl(new AMap.Scale());

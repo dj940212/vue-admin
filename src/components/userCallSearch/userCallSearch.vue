@@ -8,63 +8,59 @@
           <searchBox text="查询"></searchBox>
         </div>
         <div class="content">
-            <table border="1">
-                <tr>
-                    <th>报警时间</th>
-                    <th>姓名</th>
-                    <th>身份证号</th>
-                    <th>手机号</th>
-                    <th>发生地址</th>
-                    <th>地区编号</th>
-                    <th>定位物id号</th>
-                    <th>定位物类型</th>
-                    <th>报警状态</th>
-                </tr>
-                <tr>
-                    <td>2314321</td>
-                    <td>124321</td>
-                    <td>23143</td>
-                    <td>1234321</td>
-                    <td>3214123</td>
-                    <td>3254325</td>
-                    <td>3215143212</td>
-                    <td>32142314</td>
-                    <td>234123412</td>
-                </tr>
-                <tr>
-                    <td>2314321</td>
-                    <td>124321</td>
-                    <td>23143</td>
-                    <td>1234321</td>
-                    <td>3214123</td>
-                    <td>3254325</td>
-                    <td>3215143212</td>
-                    <td>32142314</td>
-                    <td>234123412</td>
-                </tr>
-                <tr>
-                    <td>2314321</td>
-                    <td>124321</td>
-                    <td>23143</td>
-                    <td>1234321</td>
-                    <td>3214123</td>
-                    <td>3254325</td>
-                    <td>3215143212</td>
-                    <td>32142314</td>
-                    <td>234123412</td>
-                </tr>
-                <tr>
-                    <td>2314321</td>
-                    <td>124321</td>
-                    <td>23143</td>
-                    <td>1234321</td>
-                    <td>3214123</td>
-                    <td>3254325</td>
-                    <td>3215143212</td>
-                    <td>32142314</td>
-                    <td>234123412</td>
-                </tr>
-            </table>
+            <div class="table-data">
+                <el-table
+                    :data="tableData"
+                    border
+                    height="500"
+                    style="width: 100%">
+                    <el-table-column
+                      prop="realname"
+                      label="姓名">
+                      height
+                    </el-table-column>
+                    <el-table-column
+                      prop="idcard_number"
+                      label="身份证号">
+                    </el-table-column>
+                    <el-table-column
+                      prop="telephone"
+                      label="电话号码">
+                    </el-table-column>
+                    <el-table-column
+                      prop="address"
+                      label="发生地点">
+                    </el-table-column>
+                    <el-table-column
+                      prop="call_time"
+                      label="报警时间">
+                    </el-table-column>
+                    <el-table-column
+                      prop="heppen_time"
+                      label="地址">
+                    </el-table-column>
+                    <el-table-column
+                      prop="定位物mac"
+                      label="mac">
+                    </el-table-column>
+                    <el-table-column
+                      prop="device_type"
+                      label="定位物类型">
+                    </el-table-column>
+                    <el-table-column
+                      prop="call_type"
+                      label="报警方式">
+                    </el-table-column>
+                    <el-table-column
+                      prop="status"
+                      label="报警状态">
+                    </el-table-column>
+                    <el-table-column
+                      prop="message"
+                      label="报警备注">
+                    </el-table-column>
+                </el-table>
+            </div>
         </div>
     </div>
 </template>
@@ -73,11 +69,30 @@
 import searchBox from '@/components/searchBox/searchBox'
 export default {
   name: 'userInfoManage',
+  mounted:function(){
+      this.getAlarms();
+  },
   components:{
       searchBox
   },
   methods:{
-
+      getAlarms:function(){
+          this.$http.get(this.url,{
+            emulateJSON: true
+        }).then((res) => {
+            if(res.data.lp==0&&res.data.data.msg=="请求成功"){
+                this.tableData = res.data.data.list.alarmid;
+            }
+        }, (res) => {
+            console.log(res.status)
+        })
+      }
+  },
+  data:function() {
+      return {
+          url:this.global.port+"/langyang/Home/Police/getAlarms",
+          tableData:[]
+      }
   }
 }
 </script>
@@ -87,7 +102,6 @@ export default {
         width: 100%;
         height: 95%;
         min-width: 1000px;
-        // padding-top: 22px;
         position: relative;
         .header {
             height: 64px;
@@ -122,27 +136,14 @@ export default {
         .content{
             margin-left: 22px;
             margin-right: 22px;
-            padding-top: 10px;
+            padding-top: 30px;
+            padding-left: 20px;
+            padding-right: 15px;
             background-color: #fff;
             height: 85%;
-            table{
-                width: 96%;
-                margin-left: 22px;
-                margin-top: 30px;
-                th{
-                    border: 1px solid #cecece;
-                    font-size: 18px;
-                    line-height: 40px;
-                    padding: 0 10px;
-                    // font-weight: bold;
-                    background-color: #eee;
-                }
-                td{
-                    border: 1px solid #cecece;
-                    line-height: 40px;
-                    text-align: center;
-                    padding: 0 10px;
-                }
+            .table-data{
+                // height: 90%;
+                // overflow-y: scroll;
             }
         }
     }
