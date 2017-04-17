@@ -301,7 +301,7 @@ export default {
         margin-right: 22px;
         padding-top: 10px;
         background-color: #fff;
-        height: 85%;
+        height: 89%;
         .real-time-map {
             width: 73%;
             // width: 98%;

@@ -42,5 +42,8 @@ export default {
         overflow-y:scroll;
 
     }
+    .login{
+        
+    }
 }
 </style>

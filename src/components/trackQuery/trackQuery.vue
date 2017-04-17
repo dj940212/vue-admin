@@ -263,8 +263,8 @@ export default {
                 var marker = new AMap.Marker({
                    title:index,
                    position:result.locations[0],
-                   map:this.amap,
-                   animation:"AMAP_ANIMATION_DROP"
+                   map:this.amap
+                //    animation:"AMAP_ANIMATION_DROP"
                 });
                 AMap.event.addListener(marker, 'click',() => {
                      this.clickData = data;

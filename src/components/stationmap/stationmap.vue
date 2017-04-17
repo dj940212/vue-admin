@@ -6,8 +6,8 @@
       <span>基站状态查询</span>
     </div>
     <div class="search-box">
-      <input class="search-input" type="text" name="" v-model="mac">
-      <button class="search-button button" type="button" name="button" >搜索</button>
+      <input class="search-input" type="text" name="" v-model="mac" placeholder="请输入基站mac">
+      <button class="search-button button" type="button" name="button" @click="search">搜索</button>
     </div>
   </div>
   <div class="content">
@@ -135,19 +135,18 @@ export default {
             AMap.convertFrom(lnglat,"gps",(status,result)=>{
               //创建标记
               _this.marker = new AMap.Marker({
-                icon: "src/components/stationmap/station.png",
+                // icon: "station.png",
                 position: result.locations[0],
                 title: _this.stationsInfo[i].mac,
                 map: _this.amap
               });
 
+              _this.markers.push(_this.marker);
               //   console.log(i,"基站高德地址转换");
 
-              AMap.event.addListener(_this.marker, 'click',() => {
-                   this.clickData = data;
-                   this.lonlatToAddr(result.locations[0],clickData);
-                   console.log("clickData",data);
-                   alert(this.clickData.address)
+              AMap.event.addListener(_this.marker, 'click',(e) => {
+                  _this.amap.setCenter(e.target.getPosition());
+                  _this.amap.setZoom(16);
                });
               AMap.event.addListener(_this.marker,'mouseover',(e) => {
                    _this.lonlatToAddr(result.locations[0],_this.mouseoverData);
@@ -175,7 +174,7 @@ export default {
               })
             });
           }(i));
-          this.markers.push(_this.marker);
+
         }
 
         console.log(this.markers);
@@ -219,6 +218,16 @@ export default {
         info.appendChild(bottom);
         return info;
     },
+    //查询
+    search:function(){
+        this.stationsInfo.forEach((data,index) => {
+            if (data.mac === this.mac) {
+                this.amap.setCenter(this.markers[index].getPosition());
+                this.amap.setZoom(16);
+            }
+
+        })
+    }
 
   },
   data() {
@@ -268,6 +277,10 @@ export default {
                 top: -3px;
                 left: -8px;
             }
+            .input{
+                // line-height: 10px;
+                padding: 3px 5px;
+            }
         }
     }
     .content {
@@ -275,7 +288,7 @@ export default {
         margin-right: 22px;
         padding-top: 10px;
         background-color: #fff;
-        height: 85%;
+        height: 89%;
         .base-station-map {
             // width: 73%;
             width: 99%;
