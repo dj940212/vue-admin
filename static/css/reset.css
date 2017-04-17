@@ -15,7 +15,7 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video, input {
-    margin: 0;
+    /*margin: 0;*/
     padding: 0;
     border: 0;
     font-size: 100%;

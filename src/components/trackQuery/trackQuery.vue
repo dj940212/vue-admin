@@ -7,11 +7,11 @@
     </div>
     <div class="dataPicker">
         <div class="mac">
-            <label for="">macID:</label>
-            <input type="text" name="" value="" v-model="mac">
+            <!-- <label for="">macID:</label> -->
+            <input type="text" name="" value="" v-model="mac" placeholder="请输入mac查询">
         </div>
         <div class="block">
-           <span class="demonstration">时间范围:</span>
+           <!-- <span class="demonstration">时间范围:</span> -->
            <el-date-picker
              v-model="dateValue1"
              type="datetime"
@@ -27,7 +27,12 @@
            </el-date-picker>
         </div>
         <button type="button" name="button" @click="submit">查询</button>
-        <button type="button" name="button" @click="showTableData">详细记录</button>
+        <!-- <button type="button" name="button" @click="showTableData">详细记录</button> -->
+        <div class="dataOnOff">
+            <i class="icon iconfont" @click="showTableData">&#xe612;</i>
+            <!-- <span>数据</span> -->
+        </div>
+
 
     </div>
 
@@ -154,7 +159,7 @@ export default {
   created:function(){
   },
   methods: {
-    //   初始化地图
+    // 初始化地图
     initMap: function() {
       var mapOptions = {
         zoom: 16,
@@ -293,7 +298,7 @@ export default {
 
                 //表格数据
                 this.lonlatToAddr(result.locations[0],data)
-                // this.allData.push(data);
+                this.allData.push(data);
             })
         })
         console.log(this.allData)
@@ -341,7 +346,7 @@ export default {
     //显示关闭数据表格
     showTableData: function(){
         this.tableDataToggle = !this.tableDataToggle;
-        alert(this.allData);
+        // alert(this.allData);s
     }
   },
   data() {
@@ -393,21 +398,19 @@ export default {
         .dataPicker{
             display: inline-block;
             float: right;
-            margin-right: 50px;
             position: relative;
-            top: -4px;
             .mac{
                 display: inline-block;
                 margin-right: 50px;
                 position: relative;
-                top: 3px;
+                // top: 3px;
                 label{
                     font-size: 16px;
                     font-size: #333;
                 }
                 input{
                     width: 200px;
-                    height: 28px;
+                    height: 26px;
                     border-radius: 4px;
                     border: 1px solid #bfcbd9;
                     font-size: 14px;
@@ -422,8 +425,34 @@ export default {
                 border-radius: 2px;
                 color: #fff;
             }
+            .dataOnOff{
+                display: inline-block;
+                .icon{
+                    margin: 0 25px;
+                    font-size: 22px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+                span{
+                    font-size: 20px;
+                }
+            }
             .block{
                 display: inline-block;
+                .el-input__icon+.el-input__inner{
+                    // padding-right: 20px;
+                    width: 75%;
+                    padding-left: 5px;
+                    margin-right: 0 !important;
+                    padding-right: 5px;
+                    // padding-right: 5px;
+                }
+                .el-input__icon{
+                    display: none;
+                }
+                .el-date-editor.el-input{
+                    // width: 180px;
+                }
                 .demonstration{
                     font-size: 16px;
                 }
@@ -485,8 +514,11 @@ export default {
     }
     .tableData{
         position: absolute;
+        background-color: red;
+        // width: 100%;
+        // height: 600px;
         top: 130px;
-        left: 300px;
+        left: 100px;
     }
 }
 
