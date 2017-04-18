@@ -21,6 +21,7 @@ export default {
     }
     .button{
         left: -8px;
+        line-height: 34px;
     }
 }
 </style>

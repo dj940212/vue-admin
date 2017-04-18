@@ -5,10 +5,6 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>基站状态查询</span>
     </div>
-    <!-- <div class="search-box">
-      <input class="search-input" type="text" name="" v-model="mac" placeholder="请输入基站mac">
-      <button class="search-button button" type="button" name="button" @click="search">搜索</button>
-    </div> -->
     <button class="button-stationData" type="button" name="button" @click="searchData">基站数据</button>
   </div>
   <div class="content">
@@ -248,6 +244,10 @@ export default {
             border: 0;
             color: #fff;
             border-radius: 3px;
+            -moz-border-radius: 3px;
+            -o-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            line-height: 34px;
             width: 100px;
             float: right;
             margin-top: 15px;

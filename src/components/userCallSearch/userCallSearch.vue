@@ -6,7 +6,6 @@
             <span>报警记录查询</span>
           </div>
           <searchBox text="查询"></searchBox>
-          <button type="button" name="button" @click="button">弹出</button>
         </div>
         <div class="content">
             <div class="table-data">

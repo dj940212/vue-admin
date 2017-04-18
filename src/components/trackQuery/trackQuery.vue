@@ -5,13 +5,12 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>行驶轨迹查询</span>
     </div>
-    <div class="dataPicker">
+    <div class="dataPicker" >
         <div class="mac">
             <!-- <label for="">macID:</label> -->
             <input type="text" name="" value="" v-model="mac" placeholder="请输入mac查询">
         </div>
         <div class="block">
-           <!-- <span class="demonstration">时间范围:</span> -->
            <el-date-picker
              v-model="dateValue1"
              type="datetime"
@@ -32,13 +31,35 @@
             <i class="icon iconfont" @click="showTableData">&#xe612;</i>
             <!-- <span>数据</span> -->
         </div>
-
-
     </div>
 
   </div>
   <div class="content">
-    <div class="trackQuery-map" id="trackQuery-map"></div>
+    <div class="trackQuery-map" id="trackQuery-map">
+        <div class="element-input">
+            <el-input
+              placeholder="请输入基站mac"
+              icon="search"
+              class="el-input"
+              v-model="mac"
+              :on-icon-click="handleIconClick">
+            </el-input>
+        </div>
+        <div class="block">
+           <el-date-picker
+             v-model="dateValue1"
+             class="el-data"
+             type="datetime"
+             placeholder="选择起始时间">
+           </el-date-picker>
+           <el-date-picker
+             v-model="dateValue2"
+             class="el-date"
+             type="datetime"
+             placeholder="选择结束时间">
+           </el-date-picker>
+        </div>
+    </div>
     <div class="info-box" style="display:none">
       <div class="user-info">
         <div class="title">
@@ -276,6 +297,9 @@ export default {
     showTableData: function(){
         this.tableDataToggle = !this.tableDataToggle;
         // alert(this.allData);s
+    },
+    handleIconClick: function(){
+        alert("fdsafda");
     }
   },
   data() {
@@ -382,6 +406,26 @@ export default {
             height: 98%;
             margin-left: 8px;
             display: inline-block;
+            .element-input{
+                .el-input{
+                    z-index: 110;
+                    width: 200px;
+                    float:right;
+                    margin-right: 20px;
+                    margin-top: 10px;
+                    box-shadow: 3px 4px 3px 0px silver;
+                }
+            }
+            .block{
+                position: relative;
+                .el-input{
+                    position: absolute;
+                    right: 20px;
+                    top: 50px;
+                    z-index: 110;
+                    display: block;
+                }
+            }
         }
         .info-box {
             width: 24%;

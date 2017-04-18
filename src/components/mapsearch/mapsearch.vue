@@ -5,46 +5,30 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>实时地图查询</span>
     </div>
-    <div class="search-box">
+    <div class="search-box" v-show="false">
       <input class="search-input" type="text" name="" v-model="mac">
       <button class="search-button class-button" type="button" name="button" @click="submit">搜索</button>
     </div>
+    <div class="el-switch">
+        <el-switch
+          v-model="switchValue"
+          on-color="#4e4c75"
+          off-color="#222222"
+          on-text="位置"
+          off-text="轨迹">
+        </el-switch>
+    </div>
   </div>
   <div class="content">
-    <div class="table-data">
-          <el-table
-              :data="tableData"
-              border
-              height="600"
-              style="width: 100%">
-              <el-table-column
-                prop="mac"
-                label="基站mac">
-              </el-table-column>
-              <el-table-column
-                prop="altitude"
-                label="经度">
-              </el-table-column>
-              <el-table-column
-                prop="longitude"
-                label="纬度">
-              </el-table-column>
-              <el-table-column
-                prop="altitude"
-                label="海拔">
-              </el-table-column>
-              <el-table-column
-                prop="address"
-                label="地址">
-              </el-table-column>
-              <el-table-column
-                prop="type"
-                label="工作状态">
-              </el-table-column>
-          </el-table>
-      </div>
-    <div class="real-time-map" id="real-time-map">
 
+    <div class="real-time-map" id="real-time-map">
+        <el-input
+          placeholder="请输入mac查询"
+          icon="search"
+          class="el-input"
+          v-model="mac"
+          :on-icon-click="handleIconClick">
+        </el-input>
     </div>
     <div class="info-box">
       <div class="user-info">
@@ -226,6 +210,9 @@ export default {
         console.log(this.allData)
         this.tableData = this.allData;
     },
+    handleIconClick:function(){
+        alert('12342')
+    }
   },
   data() {
     return {
@@ -233,6 +220,7 @@ export default {
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
       user: {},
+      switchValue:true
     }
   }
 }
@@ -271,6 +259,14 @@ export default {
                 left: -8px;
             }
         }
+        .el-switch{
+            float: right;
+            top: 10px;
+            right: 20px;
+            .el-switch__core{
+                width: 70px;
+            }
+        }
     }
     .content {
         margin-left: 22px;
@@ -284,6 +280,15 @@ export default {
             height: 98%;
             margin-left: 10px;
             display: inline-block;
+            .el-input{
+                z-index: 110;
+                width: 200px;
+                float:right;
+                margin-right: 20px;
+                margin-top: 10px;
+                box-shadow: 3px 4px 3px 0px silver;
+            }
+
         }
         .info-box {
             width: 24%;
@@ -322,7 +327,6 @@ export default {
                         padding: 8px 10px;
                     }
                 }
-
             }
         }
     }
