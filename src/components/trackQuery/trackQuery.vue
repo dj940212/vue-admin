@@ -439,23 +439,6 @@ export default {
             }
             .block{
                 display: inline-block;
-                .el-input__icon+.el-input__inner{
-                    // padding-right: 20px;
-                    width: 75%;
-                    padding-left: 5px;
-                    margin-right: 0 !important;
-                    padding-right: 5px;
-                    // padding-right: 5px;
-                }
-                .el-input__icon{
-                    display: none;
-                }
-                .el-date-editor.el-input{
-                    // width: 180px;
-                }
-                .demonstration{
-                    font-size: 16px;
-                }
             }
         }
     }

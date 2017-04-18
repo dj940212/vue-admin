@@ -37,10 +37,10 @@
                     </el-table-column>
                     <el-table-column
                       prop="heppen_time"
-                      label="地址">
+                      label="发生时间">
                     </el-table-column>
                     <el-table-column
-                      prop="定位物mac"
+                      prop="mac"
                       label="mac">
                     </el-table-column>
                     <el-table-column
@@ -86,7 +86,10 @@ export default {
         }, (res) => {
             console.log(res.status)
         })
+      },
+      search:function(){
       }
+
   },
   data:function() {
       return {

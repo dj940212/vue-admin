@@ -278,8 +278,9 @@ export default {
                 left: -8px;
             }
             .input{
-                // line-height: 10px;
+                line-height: 10px;
                 padding: 3px 5px;
+                font-size: 16px;
             }
         }
     }

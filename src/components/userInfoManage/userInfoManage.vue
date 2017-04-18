@@ -8,63 +8,59 @@
           <searchBox text="查询"></searchBox>
         </div>
         <div class="content">
-            <table border="1">
-                <tr>
-                    <th>姓名</th>
-                    <th>身份证号</th>
-                    <th>手机号</th>
-                    <th>单位</th>
-                    <th>现居住地址</th>
-                    <th>定位物id</th>
-                    <th>定位物类型</th>
-                    <th>绑定时间</th>
-                    <th>相关操作</th>
-                </tr>
-                <tr>
-                    <td>2314321</td>
-                    <td>124321</td>
-                    <td>23143</td>
-                    <td>1234321</td>
-                    <td>3214123</td>
-                    <td>3254325</td>
-                    <td>3215143212</td>
-                    <td>32142314</td>
-                    <td>234123412</td>
-                </tr>
-                <tr>
-                    <td>2314321</td>
-                    <td>124321</td>
-                    <td>23143</td>
-                    <td>1234321</td>
-                    <td>3214123</td>
-                    <td>3254325</td>
-                    <td>3215143212</td>
-                    <td>32142314</td>
-                    <td>234123412</td>
-                </tr>
-                <tr>
-                    <td>2314321</td>
-                    <td>124321</td>
-                    <td>23143</td>
-                    <td>1234321</td>
-                    <td>3214123</td>
-                    <td>3254325</td>
-                    <td>3215143212</td>
-                    <td>32142314</td>
-                    <td>234123412</td>
-                </tr>
-                <tr>
-                    <td>2314321</td>
-                    <td>124321</td>
-                    <td>23143</td>
-                    <td>1234321</td>
-                    <td>3214123</td>
-                    <td>3254325</td>
-                    <td>3215143212</td>
-                    <td>32142314</td>
-                    <td>234123412</td>
-                </tr>
-            </table>
+            <div class="table-data">
+                <el-table
+                    :data="tableData"
+                    border
+                    height="600"
+                    style="width: 100%">
+                    <el-table-column
+                      prop="realname"
+                      label="姓名">
+                      height
+                    </el-table-column>
+                    <el-table-column
+                      prop="idcard_number"
+                      label="身份证号">
+                    </el-table-column>
+                    <el-table-column
+                      prop="telephone"
+                      label="电话号码">
+                    </el-table-column>
+                    <el-table-column
+                      prop="address"
+                      label="发生地点">
+                    </el-table-column>
+                    <el-table-column
+                      prop="call_time"
+                      label="报警时间">
+                    </el-table-column>
+                    <el-table-column
+                      prop="heppen_time"
+                      label="发生时间">
+                    </el-table-column>
+                    <el-table-column
+                      prop="mac"
+                      label="mac">
+                    </el-table-column>
+                    <el-table-column
+                      prop="device_type"
+                      label="定位物类型">
+                    </el-table-column>
+                    <el-table-column
+                      prop="call_type"
+                      label="报警方式">
+                    </el-table-column>
+                    <el-table-column
+                      prop="status"
+                      label="报警状态">
+                    </el-table-column>
+                    <el-table-column
+                      prop="message"
+                      label="报警备注">
+                    </el-table-column>
+                </el-table>
+            </div>
         </div>
     </div>
 </template>
@@ -75,6 +71,14 @@ export default {
   name: 'userInfoManage',
   components:{
       searchBox
+  },
+  data:function(){
+      return {
+          urlUserDeviceInfo:this.global.port + '/langyang/Home/Police/searchUserDeviceInfo',
+          urlModifyCar:this.global.port + '/langyang/Home/Police/modifyCar',
+          urlDeleteCar:this.global.port + '/langyang/Home/Police/deleteCar',
+          tableData:[],
+      }
   }
 }
 </script>
@@ -117,28 +121,9 @@ export default {
         .content{
             margin-left: 22px;
             margin-right: 22px;
-            padding-top: 10px;
+            padding-top: 1px;
             background-color: #fff;
-            height: 85%;
-            table{
-                width: 96%;
-                margin-left: 22px;
-                margin-top: 30px;
-                th{
-                    border: 1px solid #cecece;
-                    font-size: 18px;
-                    line-height: 40px;
-                    padding: 0 10px;
-                    // font-weight: bold;
-                    background-color: #eee;
-                }
-                td{
-                    border: 1px solid #cecece;
-                    line-height: 40px;
-                    text-align: center;
-                    padding: 0 10px;
-                }
-            }
+            height: 88%;
         }
     }
 </style>
