@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Resource from 'vue-resource'
-import { TimePicker, DatePicker, Table, TableColumn, Tooltip } from 'element-ui'
+import { TimePicker, DatePicker, Table, TableColumn, Tooltip, Input } from 'element-ui'
 import global_ from './common/vue/global.vue'
 
 Vue.prototype.global = global_
@@ -17,7 +17,7 @@ Vue.use(Table)
 Vue.use(Resource)
 Vue.use(TableColumn)
 Vue.use(Tooltip)
-// Vue.use(MessageBox)
+Vue.use(Input)
 
 /* eslint-disable no-new */
 new Vue({

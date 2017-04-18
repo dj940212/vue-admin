@@ -11,6 +11,38 @@
     </div>
   </div>
   <div class="content">
+    <div class="table-data">
+          <el-table
+              :data="tableData"
+              border
+              height="600"
+              style="width: 100%">
+              <el-table-column
+                prop="mac"
+                label="基站mac">
+              </el-table-column>
+              <el-table-column
+                prop="altitude"
+                label="经度">
+              </el-table-column>
+              <el-table-column
+                prop="longitude"
+                label="纬度">
+              </el-table-column>
+              <el-table-column
+                prop="altitude"
+                label="海拔">
+              </el-table-column>
+              <el-table-column
+                prop="address"
+                label="地址">
+              </el-table-column>
+              <el-table-column
+                prop="type"
+                label="工作状态">
+              </el-table-column>
+          </el-table>
+      </div>
     <div class="real-time-map" id="real-time-map">
 
     </div>

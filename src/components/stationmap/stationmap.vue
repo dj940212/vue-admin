@@ -5,47 +5,53 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>基站状态查询</span>
     </div>
-    <div class="search-box">
+    <!-- <div class="search-box">
       <input class="search-input" type="text" name="" v-model="mac" placeholder="请输入基站mac">
       <button class="search-button button" type="button" name="button" @click="search">搜索</button>
-    </div>
+    </div> -->
+    <button class="button-stationData" type="button" name="button" @click="searchData">基站数据</button>
   </div>
   <div class="content">
     <div class="base-station-map" id="base-station-map">
-
+        <el-input
+          placeholder="请输入基站mac"
+          icon="search"
+          class="el-input"
+          v-model="mac"
+          :on-icon-click="handleIconClick">
+        </el-input>
     </div>
-    <div class="info-box">
-      <div class="user-info">
-        <div class="title">
-          <span>基站信息</span>
-        </div>
-        <table>
-          <tr>
-            <th>基站mac</th>
-            <td>{{stationsInfo.mac}}</td>
-          </tr>
-          <tr>
-            <th>经度</th>
-            <td>{{stationsInfo.latitude}}</td>
-          </tr>
-          <tr>
-            <th>纬度</th>
-            <td>{{stationsInfo.longitude}}</td>
-          </tr>
-          <tr>
-            <th>海拔</th>
-            <td>{{stationsInfo.altitude}}</td>
-          </tr>
-          <tr>
-            <th>地址</th>
-            <td></td>
-          </tr>
-          <tr>
-            <th>工作状态</th>
-            <td></td>
-          </tr>
-        </table>
-      </div>
+    <div class="table-data" v-show="toggleValue">
+        <el-table
+            :data="tableData"
+            border
+            height="600"
+            style="width: 100%">
+            <el-table-column
+              prop="mac"
+              label="基站mac">
+            </el-table-column>
+            <el-table-column
+              prop="altitude"
+              label="经度">
+            </el-table-column>
+            <el-table-column
+              prop="longitude"
+              label="纬度">
+            </el-table-column>
+            <el-table-column
+              prop="altitude"
+              label="海拔">
+            </el-table-column>
+            <el-table-column
+              prop="address"
+              label="地址">
+            </el-table-column>
+            <el-table-column
+              prop="type"
+              label="工作状态">
+            </el-table-column>
+        </el-table>
     </div>
   </div>
 </div>
@@ -162,8 +168,14 @@ export default {
 
         console.log(this.markers);
     },
+    //基站数据搜索
+    searchData:function(){
+        this.getBaseStation();
+        this.tableData = this.stationsInfo;
+        this.toggleValue = !this.toggleValue;
+    },
     //查询定位
-    search:function(){
+    handleIconClick(ev) {
         this.stationsInfo.forEach((data,index) => {
             if (data.mac === this.mac) {
                 this.amap.setCenter(this.markers[index].getPosition());
@@ -172,6 +184,7 @@ export default {
 
         })
     }
+
 
   },
   data() {
@@ -184,11 +197,8 @@ export default {
       stationsInfo: [],
       urlStation: this.global.port+"/langyang/Home/Police/getBaseStations",
       user: {},
-      mapOptions:{
-          zoom: 13.4,
-          center: [119.937516, 30.2752000], //定位到海创园
-          resizeEnable: true
-      }
+      tableData:[],
+      toggleValue:false
     }
   }
 }
@@ -232,12 +242,24 @@ export default {
                 font-size: 16px;
             }
         }
+        .button-stationData{
+            height: 34px;
+            background-color: #4e4c75;
+            border: 0;
+            color: #fff;
+            border-radius: 3px;
+            width: 100px;
+            float: right;
+            margin-top: 15px;
+            margin-right: 20px;
+        }
     }
     .content {
         margin-left: 22px;
         margin-right: 22px;
         padding-top: 10px;
         background-color: #fff;
+        position: relative;
         height: 89%;
         .base-station-map {
             // width: 73%;
@@ -245,46 +267,21 @@ export default {
             height: 98%;
             margin-left: 10px;
             display: inline-block;
+            .el-input{
+                z-index: 110;
+                width: 15%;
+                float:right;
+                margin-right: 20px;
+                margin-top: 10px;
+                box-shadow: 3px 4px 3px 0px silver;
+            }
         }
-        .info-box {
-            display: none;
-            width: 24%;
-            height: 98%;
-            // display: inline-block;
-            vertical-align: top;
-            margin-left: 15px;
-            .module-ionfo {
-                margin-top: 20px;
-            }
-            .title {
-                span {
-                    width: 80px;
-                    display: block;
-                    font-size: 18px;
-                    border-bottom: 3px solid #03003a;
-                    line-height: 30px;
-                }
-            }
-            table {
-                background-color: #e6e6eb;
-                margin-top: 12px;
-                font-size: 13px;
-                width: 95%;
-                tr {
-                    th {
-                        border: 3px solid #fff;
-                        // border-radius: 8px;
-                        line-height: 30px;
-                        width: 100px;
-                    }
-                    td {
-                        border: 3px solid #fff;
-                        // border-radius: 2px;
-                        padding-left: 10px;
-                    }
-                }
-
-            }
+        .table-data{
+            position: absolute;
+            top: 3px;
+            width: 100%;
+            // height: 100%;
+            z-index: 1000;
         }
     }
 }
