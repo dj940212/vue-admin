@@ -173,28 +173,12 @@ export default {
         this.amap.addControl(new AMap.Scale());
       });
     },
-    //格式化日期
-    formatDate:function(value){
-        if(value){
-            var year = value.getFullYear();
-            var month = value.getMonth() + 1;
-            var date = value.getDate();
-            if (month >=1 && month <= 9) {
-                month = "0"+month;
-            }
-            if (date >= 0 && date <= 9) {
-                date = "0"+date;
-            }
-            return year+"-"+month+"-"+date;
-        }
-        return
-    },
     //获取轨迹信息
     getTrack: function() {
       this.$http.post(this.urlTrack, {
         mac: this.mac,
-        startTime: this.formatDate(this.dateValue1),
-        endTime:this.formatDate(this.dateValue2)
+        startTime: this.global.formatDate(this.dateValue1),
+        endTime:this.global.formatDate(this.dateValue2)
       }, {
         emulateJSON: true
       }).then((res) => {
@@ -235,22 +219,6 @@ export default {
       this.getTrack();
       this.getUserInfo();
     },
-    //位置转换
-    lonlatToAddr: function(lonlat,data) {
-      AMap.service('AMap.Geocoder', () => { //回调函数
-        //实例化Geocoder
-        var geocoder = new AMap.Geocoder();
-        geocoder.getAddress(lonlat, (status, result) => {
-          if (status === 'complete' && result.info === 'OK') {
-            //TODO:获得了有效经纬度，可以做一些展示工作
-            data.address = result.regeocode.formattedAddress;
-            data.adcode = result.regeocode.addressComponent.adcode;
-          } else {
-            //获取经纬度失败
-          }
-        });
-      });
-    },
     //绘制轨迹
     addMarker: function(){
         // var amap = new AMap.Map('trackQuery-map');
@@ -268,13 +236,13 @@ export default {
                 });
                 AMap.event.addListener(marker, 'click',() => {
                      this.clickData = data;
-                     this.lonlatToAddr(result.locations[0],clickData);
+                     this.global.lonlatToAddr(result.locations[0],clickData);
                      console.log("clickData",data);
                      alert(this.clickData.address)
                  });
                 AMap.event.addListener(marker,'mouseover',(e) => {
                      this.mouseoverData = data;
-                     this.lonlatToAddr(result.locations[0],this.mouseoverData);
+                     this.global.lonlatToAddr(result.locations[0],this.mouseoverData);
                      setTimeout(() => {
                          AMap.plugin('AMap.AdvancedInfoWindow',() => {
                              //实例化信息窗体
@@ -284,7 +252,7 @@ export default {
                             content.push('<span class="info-span" style="font-weight:bold">当前位置：</span>'+this.mouseoverData.address)
                             this.infoWindow = new AMap.InfoWindow({
                                 isCustom: true,  //使用自定义窗体
-                                content: this.createInfoWindow(title, content.join("<br/>")),
+                                content: this.global.createInfoWindow(title, content.join("<br/>")),
                                 offset: new AMap.Pixel(16, -45)
                             });
                             this.infoWindow.open(this.amap,e.target.getPosition())
@@ -297,51 +265,12 @@ export default {
                 })
 
                 //表格数据
-                this.lonlatToAddr(result.locations[0],data)
-                this.allData.push(data);
+                this.global.lonlatToAddr(result.locations[0],data)
+                // this.allData.push(data);
             })
         })
-        console.log(this.allData)
+        // console.log(this.allData)
         this.tableData = this.allData;
-    },
-    //构建自定义信息窗体
-    createInfoWindow: function(title,content){
-        var info = document.createElement("div");
-        info.className = "info-window";
-
-        //可以通过下面的方式修改自定义窗体的宽高
-        info.style.width = "270px";
-        // 定义顶部标题
-        var top = document.createElement("div");
-        var titleD = document.createElement("div");
-        // var closeX = document.createElement("img");
-        top.className = "info-window-top";
-        titleD.innerHTML = title;
-        // closeX.src = "http://webapi.amap.com/images/close2.gif";
-        // closeX.onclick = closeInfoWindow;
-
-        top.appendChild(titleD);
-        // top.appendChild(closeX);
-        info.appendChild(top);
-
-        // 定义中部内容
-        var middle = document.createElement("div");
-        middle.className = "info-window-middle";
-        middle.style.backgroundColor = 'white';
-        middle.innerHTML = content;
-        info.appendChild(middle);
-
-        // 定义底部内容
-        var bottom = document.createElement("div");
-        bottom.className = "info-window-bottom";
-        bottom.style.position = 'relative';
-        bottom.style.top = '0px';
-        bottom.style.margin = '0 auto';
-        var sharp = document.createElement("img");
-        sharp.src = "http://webapi.amap.com/images/sharp.png";
-        bottom.appendChild(sharp);
-        info.appendChild(bottom);
-        return info;
     },
     //显示关闭数据表格
     showTableData: function(){

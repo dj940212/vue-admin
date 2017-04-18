@@ -8,6 +8,7 @@ import userInfoManage from '@/components/userInfoManage/userInfoManage'
 import userCallReg from '@/components/userCallReg/userCallReg'
 import userCallSearch from '@/components/userCallSearch/userCallSearch'
 import trackQuery from '@/components/trackQuery/trackQuery'
+import stationData from '@/components/stationData/stationData'
 
 Vue.use(Router)
 
@@ -52,6 +53,10 @@ export default new Router({
       path: '/trackQuery',
       name:'trackQuery',
       component: trackQuery
+  },{
+      path: '/stationData',
+      name: 'stationData',
+      component:stationData
   }
   ]
 })

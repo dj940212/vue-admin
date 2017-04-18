@@ -40,7 +40,7 @@
                       <span>基站管理</span>
                   </div>
                   <ul class="submenu">
-                      <li class="submenu-item">基站数据</li>
+                      <li class="submenu-item"><router-link to="/stationData">基站数据</router-link></li>
                       <li class="submenu-item"><router-link to="/stationmap">基站状态查询</router-link></li>
                   </ul>
               </li>

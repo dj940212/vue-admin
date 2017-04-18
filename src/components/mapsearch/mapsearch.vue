@@ -98,10 +98,10 @@ export default {
         resizeEnable: true
       }
 
-      var amap = new AMap.Map('real-time-map', mapOptions);
+      this.amap = new AMap.Map('real-time-map', mapOptions);
       AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function() {
-        amap.addControl(new AMap.ToolBar());
-        amap.addControl(new AMap.Scale());
+        this.amap.addControl(new AMap.ToolBar());
+        this.amap.addControl(new AMap.Scale());
       });
     },
     //获取用户信息
@@ -139,22 +139,6 @@ export default {
       });
       socket.on('message', function(data) {
         console.log("收到数据", data.devEUI);
-      });
-    },
-    //位置转换
-    lonlatToAddr: function(lonlat,data) {
-      AMap.service('AMap.Geocoder', () => { //回调函数
-        //实例化Geocoder
-        var geocoder = new AMap.Geocoder();
-        geocoder.getAddress(lonlat, (status, result) => {
-          if (status === 'complete' && result.info === 'OK') {
-            //TODO:获得了有效经纬度，可以做一些展示工作
-            data.address = result.regeocode.formattedAddress;
-            data.adcode = result.regeocode.addressComponent.adcode;
-          } else {
-            //获取经纬度失败
-          }
-        });
       });
     },
     //添加标记
@@ -210,46 +194,6 @@ export default {
         console.log(this.allData)
         this.tableData = this.allData;
     },
-    //构建自定义信息窗体
-    createInfoWindow: function(title,content){
-        var info = document.createElement("div");
-        info.className = "info-window";
-
-        //可以通过下面的方式修改自定义窗体的宽高
-        info.style.width = "270px";
-        // 定义顶部标题
-        var top = document.createElement("div");
-        var titleD = document.createElement("div");
-        // var closeX = document.createElement("img");
-        top.className = "info-window-top";
-        titleD.innerHTML = title;
-        // closeX.src = "http://webapi.amap.com/images/close2.gif";
-        // closeX.onclick = closeInfoWindow;
-
-        top.appendChild(titleD);
-        // top.appendChild(closeX);
-        info.appendChild(top);
-
-        // 定义中部内容
-        var middle = document.createElement("div");
-        middle.className = "info-window-middle";
-        middle.style.backgroundColor = 'white';
-        middle.innerHTML = content;
-        info.appendChild(middle);
-
-        // 定义底部内容
-        var bottom = document.createElement("div");
-        bottom.className = "info-window-bottom";
-        bottom.style.position = 'relative';
-        bottom.style.top = '0px';
-        bottom.style.margin = '0 auto';
-        var sharp = document.createElement("img");
-        sharp.src = "http://webapi.amap.com/images/sharp.png";
-        bottom.appendChild(sharp);
-        info.appendChild(bottom);
-        return info;
-    },
-
   },
   data() {
     return {
