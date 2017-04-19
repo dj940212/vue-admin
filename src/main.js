@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Resource from 'vue-resource'
-import { TimePicker, DatePicker, Table, TableColumn, Tooltip, Input, Switch, Popover } from 'element-ui'
+import { TimePicker, DatePicker, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon } from 'element-ui'
 import global_ from './common/vue/global.vue'
 
 Vue.prototype.global = global_
@@ -20,6 +20,8 @@ Vue.use(Tooltip)
 Vue.use(Input)
 Vue.use(Switch)
 Vue.use(Popover)
+Vue.use(Button)
+Vue.use(Icon)
 
 /* eslint-disable no-new */
 new Vue({

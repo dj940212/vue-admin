@@ -204,12 +204,12 @@ export default {
 .stationmap {
     width: 100%;
     height: 95%;
-    padding-top: 22px;
+    padding-top: 15px;
     position: relative;
     .header {
         height: 64px;
-        margin-left: 22px;
-        margin-right: 22px;
+        margin-left: 15px;
+        margin-right: 15px;
         background-color: #e6e6eb;
         line-height: 64px;
         font-size: 24px;
@@ -223,19 +223,6 @@ export default {
             }
             span {
                 margin-left: 5px;
-            }
-        }
-        .search-box {
-            display: inline-block;
-            float: right;
-            .button {
-                top: -3px;
-                left: -8px;
-            }
-            .input{
-                line-height: 10px;
-                padding: 3px 5px;
-                font-size: 16px;
             }
         }
         .button-stationData{
@@ -255,15 +242,15 @@ export default {
         }
     }
     .content {
-        margin-left: 22px;
-        margin-right: 22px;
+        margin-left: 15px;
+        margin-right: 15px;
         padding-top: 10px;
+        padding-right: 18px;
         background-color: #fff;
         position: relative;
         height: 89%;
         .base-station-map {
-            // width: 73%;
-            width: 99%;
+            width: 100%;
             height: 98%;
             margin-left: 10px;
             display: inline-block;
@@ -280,7 +267,6 @@ export default {
             position: absolute;
             top: 3px;
             width: 100%;
-            // height: 100%;
             z-index: 1000;
         }
     }

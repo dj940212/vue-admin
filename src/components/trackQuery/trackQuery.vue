@@ -6,46 +6,57 @@
       <span>行驶轨迹查询</span>
     </div>
     <div class="dataPicker" >
-        <div class="mac">
-            <!-- <label for="">macID:</label> -->
-            <input type="text" name="" value="" v-model="mac" placeholder="请输入mac查询">
-        </div>
-        <div class="block">
+        <div class="block" v-show="false">
            <el-date-picker
              v-model="dateValue1"
              type="datetime"
              placeholder="选择起始时间">
            </el-date-picker>
         </div>
-        <span style="color:#888;">-</span>
-        <div class="block" style="display:inline-block">
+        <div class="block" style="display:inline-block" v-show="false">
            <el-date-picker
              v-model="dateValue2"
              type="datetime"
              placeholder="选择结束时间">
            </el-date-picker>
         </div>
-        <button type="button" name="button" @click="submit">查询</button>
-        <!-- <button type="button" name="button" @click="showTableData">详细记录</button> -->
+        <!-- <button type="button" name="button" @click="submit">查询</button> -->
         <div class="dataOnOff">
             <i class="icon iconfont" @click="showTableData">&#xe612;</i>
-            <!-- <span>数据</span> -->
         </div>
     </div>
-
   </div>
   <div class="content">
     <div class="trackQuery-map" id="trackQuery-map">
         <div class="element-input">
+            <el-popover
+              ref="popover1"
+              placement="bottom"
+              width="200"
+              trigger="click">
+              <el-date-picker
+                v-model="dateValue1"
+                class="el-data"
+                type="datetime"
+                placeholder="选择起始时间">
+              </el-date-picker>
+              <el-date-picker
+                v-model="dateValue2"
+                class="el-date"
+                type="datetime"
+                placeholder="选择结束时间">
+              </el-date-picker>
+            </el-popover>
             <el-input
               placeholder="请输入基站mac"
               icon="search"
               class="el-input"
               v-model="mac"
+              v-popover:popover1
               :on-icon-click="handleIconClick">
             </el-input>
         </div>
-        <div class="block">
+        <div class="block" v-show="false">
            <el-date-picker
              v-model="dateValue1"
              class="el-data"
@@ -299,7 +310,7 @@ export default {
         // alert(this.allData);s
     },
     handleIconClick: function(){
-        alert("fdsafda");
+        this.submit();
     }
   },
   data() {
@@ -327,12 +338,12 @@ export default {
 .trackQuery {
     width: 100%;
     height: 95%;
-    padding-top: 22px;
+    padding-top: 15px;
     position: relative;
     .header {
         height: 64px;
-        margin-left: 22px;
-        margin-right: 22px;
+        margin-left: 15px;
+        margin-right: 15px;
         background-color: #e6e6eb;
         line-height: 64px;
         font-size: 24px;
@@ -396,14 +407,15 @@ export default {
         }
     }
     .content {
-        margin-left: 22px;
-        margin-right: 22px;
-        padding-top: 10px;
+        margin-left: 15px;
+        margin-right: 15px;
+        padding-top: 9px;
+        padding-right: 2px;
         background-color: #fff;
-        height: 89%;
+        height: 91%;
         .trackQuery-map {
             width: 99%;
-            height: 98%;
+            height: 99%;
             margin-left: 8px;
             display: inline-block;
             .element-input{
@@ -420,79 +432,19 @@ export default {
                 position: relative;
                 .el-input{
                     position: absolute;
-                    right: 20px;
+                    right: 10px;
                     top: 50px;
                     z-index: 110;
                     display: block;
                 }
             }
         }
-        .info-box {
-            width: 24%;
-            height: 98%;
-            display: inline-block;
-            vertical-align: top;
-            margin-left: 15px;
-            .module-ionfo {
-                margin-top: 20px;
-            }
-            .title {
-                span {
-                    width: 80px;
-                    display: block;
-                    font-size: 18px;
-                    border-bottom: 3px solid #03003a;
-                    line-height: 30px;
-                }
-            }
-            table {
-                background-color: #e6e6eb;
-                margin-top: 12px;
-                font-size: 13px;
-                width: 95%;
-                tr {
-                    th {
-                        border: 3px solid #fff;
-                        // border-radius: 8px;
-                        // line-height: 30px;
-                        padding: 8px 10px;
-                        width: 100px;
-                    }
-                    td {
-                        border: 3px solid #fff;
-                        // border-radius: 2px;
-                        padding: 8px 10px;
-                    }
-                }
-
-            }
-        }
     }
     .tableData{
         position: absolute;
         background-color: red;
-        // width: 100%;
-        // height: 600px;
         top: 130px;
         left: 100px;
     }
 }
-
-// ====================media==================
-@media only screen and (max-width:1350px){
-    .trackQuery-map{
-        width: 98% !important;
-    }
-    .info-box{
-        margin-top: 30px;
-        .module-ionfo{
-            display: inline-block;
-            vertical-align: top;
-        }
-        .user-info{
-            // display: inline-block;
-        }
-    }
-}
-
 </style>

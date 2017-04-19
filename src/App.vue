@@ -8,7 +8,7 @@
     <div class="routerView" id="routerView">
         <router-view></router-view>
     </div>
-    <router-view class="login" name="login"></router-view>
+    <router-view class="mylogin" name="mylogin"></router-view>
   </div>
 </template>
 

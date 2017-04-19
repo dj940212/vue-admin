@@ -1,6 +1,6 @@
 <template>
     <div class="login-wrapper">
-        <img class="blur" src="./map.jpg" alt="">
+        <!-- <img class="blur" src="./map.jpg" alt=""> -->
         <div class="login">
             <div class="title">
                 <span>登录</span>
@@ -57,7 +57,7 @@ export default {
         margin: auto;
         top: 0;
         left: 0;
-        bottom: 800px;
+        bottom: 0;
         right: 0;
         border-radius: 5px;
         box-shadow:0px 1px 10px 0px #888;

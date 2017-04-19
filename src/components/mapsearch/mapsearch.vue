@@ -20,8 +20,7 @@
     </div>
   </div>
   <div class="content">
-
-    <div class="real-time-map" id="real-time-map">
+    <div class="real-time-map" id="real-time-map" ref="realtimeMap">
         <el-input
           placeholder="请输入mac查询"
           icon="search"
@@ -29,8 +28,9 @@
           v-model="mac"
           :on-icon-click="handleIconClick">
         </el-input>
+        <i class="el-icon-d-arrow-left" @click="toggleInfoBox" ref="elIcon"></i>
     </div>
-    <div class="info-box">
+    <div class="info-box" v-show="toggleInfoBoxValue">
       <div class="user-info">
         <div class="title">
           <span>用户信息</span>
@@ -212,6 +212,18 @@ export default {
     },
     handleIconClick:function(){
         alert('12342')
+    },
+    toggleInfoBox:function(){
+        this.toggleInfoBoxValue = !this.toggleInfoBoxValue;
+        console.log(this.toggleInfoBoxValue);
+        if (this.toggleInfoBoxValue) {
+            this.$refs.realtimeMap.style.width = "73%";
+            this.$refs.elIcon.className = "el-icon-d-arrow-right";
+        }else {
+            this.$refs.realtimeMap.style.width = "98%";
+            this.$refs.elIcon.className = "el-icon-d-arrow-left";
+            console.log(this.$refs.realtimeMap)
+        }
     }
   },
   data() {
@@ -220,7 +232,8 @@ export default {
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
       user: {},
-      switchValue:true
+      switchValue:true,
+      toggleInfoBoxValue:false
     }
   }
 }
@@ -275,19 +288,36 @@ export default {
         background-color: #fff;
         height: 89%;
         .real-time-map {
-            width: 73%;
-            // width: 98%;
+            // width: 73%;
+            width: 98%;
             height: 98%;
             margin-left: 10px;
             display: inline-block;
+            transition: width .4s;
+            .el-icon-d-arrow-right,.el-icon-d-arrow-left{
+                z-index: 120;
+                color: #4d4d4d;
+                font-size: 20px;
+                font-weight: bold;
+                position: absolute;
+                right: 20px;
+                top: 10px;
+                background-color: #fff;
+                padding: 6px;
+                box-shadow: 3px 4px 3px 0px silver;
+                border-radius: 4px;
+                cursor: pointer;
+                // transition: all 1s;
+            }
             .el-input{
                 z-index: 110;
                 width: 200px;
-                float:right;
-                margin-right: 20px;
+                float:left;
+                margin-left: 20px;
                 margin-top: 10px;
                 box-shadow: 3px 4px 3px 0px silver;
             }
+
 
         }
         .info-box {

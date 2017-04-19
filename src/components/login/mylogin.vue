@@ -1,4 +1,7 @@
 <template>
+    <div class="mylogin">
+        mylogin
+    </div>
 </template>
 
 <script>
