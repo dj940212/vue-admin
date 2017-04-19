@@ -67,7 +67,7 @@ export default {
       var mapOptions = {
         zoom: 13.4,
         center: [119.937516, 30.2752000], //定位到海创园
-        resizeEnable: true
+        resizeEnable: true,
       }
 
       this.amap = new AMap.Map('base-station-map', mapOptions);
@@ -108,6 +108,13 @@ export default {
           $scope.base_Station(data);
         });
     },
+    //高德坐标转换
+    gpsToGaode: function(lon,lat){
+        var lnglat = new AMap.LngLat(lon,lat);
+        Amap.convertFrom(lnglat,"gps",(status,result)=>{
+            this.gaodeLocations = result.locations[0]
+        })
+    },
     //编辑地图
     addMarker: function () {
 
@@ -120,15 +127,13 @@ export default {
             AMap.convertFrom(lnglat,"gps",(status,result)=>{
               //创建标记
               _this.marker = new AMap.Marker({
-                // icon: "station.png",
+                // icon: "/src/components/stationmap/station_off.png",
                 position: result.locations[0],
                 title: _this.stationsInfo[i].mac,
                 map: _this.amap
               });
 
               _this.markers.push(_this.marker);
-              //   console.log(i,"基站高德地址转换");
-
               AMap.event.addListener(_this.marker, 'click',(e) => {
                   _this.amap.setCenter(e.target.getPosition());
                   _this.amap.setZoom(16);
@@ -194,7 +199,8 @@ export default {
       urlStation: this.global.port+"/langyang/Home/Police/getBaseStations",
       user: {},
       tableData:[],
-      toggleValue:false
+      toggleValue:false,
+      resultLocations:{}
     }
   }
 }
@@ -244,19 +250,20 @@ export default {
     .content {
         margin-left: 15px;
         margin-right: 15px;
-        padding-top: 10px;
-        padding-right: 18px;
+        padding-top: 5px;
+        padding-right: 10px;
+        padding-bottom: 5px;
         background-color: #fff;
         position: relative;
-        height: 89%;
+        height: 91%;
         .base-station-map {
             width: 100%;
-            height: 98%;
-            margin-left: 10px;
+            height: 100%;
+            margin-left: 5px;
             display: inline-block;
             .el-input{
                 z-index: 110;
-                width: 15%;
+                width: 200px;
                 float:right;
                 margin-right: 20px;
                 margin-top: 10px;
@@ -271,11 +278,10 @@ export default {
         }
     }
 }
-
 // ====================media==================
 @media only screen and (max-width:1350px){
     .base-station-map{
-        width: 98% !important;
+        width: 100% !important;
     }
 }
 </style>

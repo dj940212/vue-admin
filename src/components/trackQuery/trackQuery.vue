@@ -5,26 +5,7 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>行驶轨迹查询</span>
     </div>
-    <div class="dataPicker" >
-        <div class="block" v-show="false">
-           <el-date-picker
-             v-model="dateValue1"
-             type="datetime"
-             placeholder="选择起始时间">
-           </el-date-picker>
-        </div>
-        <div class="block" style="display:inline-block" v-show="false">
-           <el-date-picker
-             v-model="dateValue2"
-             type="datetime"
-             placeholder="选择结束时间">
-           </el-date-picker>
-        </div>
-        <!-- <button type="button" name="button" @click="submit">查询</button> -->
-        <div class="dataOnOff">
-            <i class="icon iconfont" @click="showTableData">&#xe612;</i>
-        </div>
-    </div>
+    <span class="tableDataOnOff" @click="showTableData"><i class="icon iconfont" >&#xe742;</i>全部数据</span>
   </div>
   <div class="content">
     <div class="trackQuery-map" id="trackQuery-map">
@@ -71,81 +52,13 @@
            </el-date-picker>
         </div>
     </div>
-    <div class="info-box" style="display:none">
-      <div class="user-info">
-        <div class="title">
-          <span>用户信息</span>
-        </div>
-        <table>
-          <tr>
-            <th>姓名</th>
-            <td>{{user.realname}}</td>
-          </tr>
-          <tr>
-            <th>手机号</th>
-            <td>{{user.telephone}}</td>
-          </tr>
-          <tr>
-            <th>身份证号</th>
-            <td>{{user.idcardnumber}}</td>
-          </tr>
-          <tr>
-            <th>性别</th>
-            <td>{{(user.sex===1)?"女":"男"}}</td>
-          </tr>
-          <tr>
-            <th>生日</th>
-            <td>{{user.birthday}}</td>
-          </tr>
-          <tr>
-            <th>地址</th>
-            <td>{{user.address}}</td>
-          </tr>
-        </table>
-      </div>
-      <div class="module-ionfo">
-        <div class="title">
-          <span>模块信息</span>
-        </div>
-        <table border="1">
-          <tr>
-            <th>定位物mac</th>
-            <td>{{user.mac}}</td>
-          </tr>
-          <tr>
-            <th>定位物类型</th>
-            <td>{{(user.device_type==1)?'助动车':(user.device_type==2)?'老人':(user.device_type==3)?'小孩':(user.device_type==4)?'宠物':""}}</td>
-          </tr>
-          <tr>
-            <th>当前经度</th>
-            <td>{{clickData.longitude}}</td>
-          </tr>
-          <tr>
-            <th>当前纬度</th>
-            <td>{{clickData.latitude}}</td>
-          </tr>
-          <tr>
-            <th>地区编码</th>
-            <td>{{clickData.adcode}}</td>
-          </tr>
-          <tr>
-            <th>点击地址</th>
-            <td>{{clickData.address}}</td>
-          </tr>
-          <tr>
-            <th>时间</th>
-            <td>{{clickData.time}}</td>
-          </tr>
-        </table>
-      </div>
-    </div>
   </div>
   <div class="tableData" v-show="tableDataToggle">
       <el-table
           :data="tableData"
           height="500"
-          border
           style="width: 100%;"
+          empty-text="请先输入mac查询"
           :default-sort = "{prop: 'time', order: 'descending'}">
           <el-table-column
               prop="id"
@@ -359,64 +272,33 @@ export default {
                 margin-left: 5px;
             }
         }
-        .dataPicker{
-            display: inline-block;
+        .tableDataOnOff{
             float: right;
-            position: relative;
-            .mac{
-                display: inline-block;
-                margin-right: 50px;
-                position: relative;
-                // top: 3px;
-                label{
-                    font-size: 16px;
-                    font-size: #333;
-                }
-                input{
-                    width: 200px;
-                    height: 26px;
-                    border-radius: 4px;
-                    border: 1px solid #bfcbd9;
-                    font-size: 14px;
-                    padding: 3px 10px;
-                }
+            margin-right: 20px;
+            font-size: 17px;
+            cursor: pointer;
+            color: #4e4c75;
+            &:hover{
+                color: #red;
             }
-            button{
-                height: 34px;
-                width: 100px;
-                background-color: #4e4c75;
-                border: 0;
-                border-radius: 2px;
-                color: #fff;
-            }
-            .dataOnOff{
-                display: inline-block;
-                .icon{
-                    margin: 0 25px;
-                    font-size: 22px;
-                    font-weight: bold;
-                    cursor: pointer;
-                }
-                span{
-                    font-size: 20px;
-                }
-            }
-            .block{
-                display: inline-block;
+            .icon{
+                font-size: 22px;
+                // float: right;
+                margin-right: 5px;
             }
         }
     }
     .content {
         margin-left: 15px;
         margin-right: 15px;
-        padding-top: 9px;
-        padding-right: 2px;
+        padding: 5px;
+        padding-right: 5px;
         background-color: #fff;
         height: 91%;
         .trackQuery-map {
-            width: 99%;
-            height: 99%;
-            margin-left: 8px;
+            width: 100%;
+            height: 100%;
+            // margin-right: 8px;
             display: inline-block;
             .element-input{
                 .el-input{
@@ -443,8 +325,9 @@ export default {
     .tableData{
         position: absolute;
         background-color: red;
-        top: 130px;
-        left: 100px;
+        top: 140px;
+        left: 120px;
+        z-index: 200;
     }
 }
 </style>

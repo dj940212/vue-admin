@@ -50,7 +50,7 @@
           </tr>
           <tr>
             <th>性别</th>
-            <td>{{(user.sex=1)?"女":"男"}}</td>
+            <td>{{(user.sex===1)?"女":"男"}}</td>
           </tr>
           <tr>
             <th>生日</th>
@@ -122,7 +122,7 @@ export default {
     },
     //获取用户信息
     getUserInfo: function() {
-      this.$http.post(this.apiUrl, {
+      this.$http.post(this.urlUser, {
         mac: this.mac
       }, {
         emulateJSON: true
@@ -211,7 +211,7 @@ export default {
         this.tableData = this.allData;
     },
     handleIconClick:function(){
-        alert('12342')
+        this.getUserInfo();
     },
     toggleInfoBox:function(){
         this.toggleInfoBoxValue = !this.toggleInfoBoxValue;
@@ -220,7 +220,7 @@ export default {
             this.$refs.realtimeMap.style.width = "73%";
             this.$refs.elIcon.className = "el-icon-d-arrow-right";
         }else {
-            this.$refs.realtimeMap.style.width = "98%";
+            this.$refs.realtimeMap.style.width = "100%";
             this.$refs.elIcon.className = "el-icon-d-arrow-left";
             console.log(this.$refs.realtimeMap)
         }
@@ -242,13 +242,13 @@ export default {
 <style lang="less" scoped>
 .mapsearch {
     width: 100%;
-    height: 95%;
-    padding-top: 22px;
+    height: 97%;
+    padding-top: 15px;
     position: relative;
     .header {
         height: 64px;
-        margin-left: 22px;
-        margin-right: 22px;
+        margin-left: 15px;
+        margin-right: 15px;
         background-color: #e6e6eb;
         line-height: 64px;
         font-size: 24px;
@@ -264,14 +264,6 @@ export default {
                 margin-left: 5px;
             }
         }
-        .search-box {
-            // display: inline-block;
-            float: right;
-            .class-button {
-                top: -3px;
-                left: -8px;
-            }
-        }
         .el-switch{
             float: right;
             top: 10px;
@@ -282,16 +274,18 @@ export default {
         }
     }
     .content {
-        margin-left: 22px;
-        margin-right: 22px;
-        padding-top: 10px;
+        margin-left: 15px;
+        margin-right: 15px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-right: 9px;
         background-color: #fff;
         height: 89%;
         .real-time-map {
             // width: 73%;
-            width: 98%;
-            height: 98%;
-            margin-left: 10px;
+            width: 100%;
+            height: 100%;
+            margin-left: 5px;
             display: inline-block;
             transition: width .4s;
             .el-icon-d-arrow-right,.el-icon-d-arrow-left{
@@ -365,7 +359,7 @@ export default {
 // ====================media==================
 @media only screen and (max-width:1350px){
     .real-time-map{
-        width: 98% !important;
+        width: 100% !important;
     }
     .info-box{
         margin-top: 30px;

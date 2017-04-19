@@ -91,12 +91,12 @@ export default {
         position: relative;
         .header {
             height: 64px;
-            margin-left: 22px;
-            margin-right: 22px;
+            margin-left: 15px;
+            margin-right: 15px;
             background-color: #e6e6eb;
             line-height: 64px;
             font-size: 24px;
-            margin-top: 22px;
+            margin-top: 15px;
             .title {
                 margin-left: 15px;
                 display: inline-block;
@@ -119,11 +119,11 @@ export default {
             }
         }
         .content{
-            margin-left: 22px;
-            margin-right: 22px;
-            padding-top: 1px;
+            margin-left: 15px;
+            margin-right: 15px;
+            padding: 5px;
             background-color: #fff;
-            height: 88%;
+            height: 90%;
         }
     }
 </style>

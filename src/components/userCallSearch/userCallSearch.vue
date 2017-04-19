@@ -12,7 +12,7 @@
                 <el-table
                     :data="tableData"
                     border
-                    height="500"
+                    height="600"
                     style="width: 100%">
                     <el-table-column
                       prop="realname"
@@ -111,8 +111,8 @@ export default {
         position: relative;
         .header {
             height: 64px;
-            margin-left: 22px;
-            margin-right: 22px;
+            margin-left: 15px;
+            margin-right: 15px;
             background-color: #e6e6eb;
             line-height: 64px;
             font-size: 24px;
@@ -140,17 +140,13 @@ export default {
             }
         }
         .content{
-            margin-left: 22px;
-            margin-right: 22px;
-            padding-top: 30px;
-            padding-left: 20px;
-            padding-right: 15px;
+            margin-left: 15px;
+            margin-right: 15px;
+            padding-top: 5px;
+            padding-left: 5px;
+            padding-right: 5px;
             background-color: #fff;
-            height: 85%;
-            .table-data{
-                // height: 90%;
-                // overflow-y: scroll;
-            }
+            height: 91%;
         }
     }
 </style>
