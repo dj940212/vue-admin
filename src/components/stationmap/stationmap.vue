@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import imgOffUrl from "@/components/stationmap/station_off.png"
+import imgOnUrl from "@/components/stationmap/station.png"
 export default {
   name: 'stationmap',
   mounted: function() {
@@ -65,8 +67,8 @@ export default {
     //   初始化地图
     initMap: function() {
       var mapOptions = {
-        zoom: 13.4,
-        center: [119.937516, 30.2752000], //定位到海创园
+        zoom: 14,
+        center: [119.937516, 30.272658], //定位到海创园
         resizeEnable: true,
       }
 
@@ -127,7 +129,7 @@ export default {
             AMap.convertFrom(lnglat,"gps",(status,result)=>{
               //创建标记
               _this.marker = new AMap.Marker({
-                // icon: "/src/components/stationmap/station_off.png",
+                icon: imgOffUrl,
                 position: result.locations[0],
                 title: _this.stationsInfo[i].mac,
                 map: _this.amap
