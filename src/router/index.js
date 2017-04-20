@@ -17,8 +17,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name:'trackQuery',
-      component: trackQuery
+      name:'mapsearch',
+      component: mapsearch
     },
     {
       path: '/mylogin',

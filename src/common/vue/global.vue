@@ -4,6 +4,34 @@ const port = "http://121.196.194.14";
 
 const message=function () {
     alert("1243241");
+
+}
+const getCookie=function(name) {
+  var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+  if (arr = document.cookie.match(reg))
+    return (arr[2]);
+  else
+    return null;
+}
+const delCookie=function(name){
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval = getCookie(name);
+    if (cval != null)
+      document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+}
+const checkLogin=function(){
+  //检查是否存在session
+  if(!this.getCookie('session')){
+    this.$router.push('/login');
+  }else{
+    this.$router.push('/mapsearch');
+  }
+}
+const setCookie=function(c_name, value, expiredays){
+  var exdate = new Date();　　　　
+  exdate.setDate(exdate.getDate() + expiredays);　　　　
+  document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
 }
 //初始化地图
 const initMap=function(mapOptions){
@@ -94,7 +122,7 @@ export default{
     initMap,
     lonlatToAddr,
     createInfoWindow,
-    formatDate
-
+    formatDate,
+    setCookie
 }
 </script>

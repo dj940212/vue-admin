@@ -100,6 +100,7 @@ export default {
   name: 'trackQuery',
   mounted: function() {
     this.initMap();
+
   },
   created:function(){
   },
@@ -117,23 +118,29 @@ export default {
         this.amap.addControl(new AMap.ToolBar());
         this.amap.addControl(new AMap.Scale());
       });
+
     },
     //获取轨迹信息
     getTrack: function() {
       this.$http.post(this.urlTrack, {
         mac: this.mac,
-        startTime: this.global.formatDate(this.dateValue1),
-        endTime:this.global.formatDate(this.dateValue2)
+        startTime:this.dateValue1,   //this.global.formatDate(this.dateValue1),
+        endTime:this.dateValue2     //this.global.formatDate(this.dateValue2)
       }, {
         emulateJSON: true
       }).then((res) => {
-        console.log("getTrack",res.data)
-        if (res.data.data.msg == "success") {
-          this.track = res.data.data.list.location;
-          this.addMarker();
-        } else {
-          alert('getTrack找不到该设备，请重新输入！');
-        }
+          if (this.dateValue1==="" || this.dateValue2==="") {
+              alert("请选择时间范围")
+          }else {
+              console.log("getTrack",res.data)
+              if (res.data.data.msg == "success") {
+                  this.track = res.data.data.list.location;
+                  this.tableData = res.data.data.list.location;
+                  this.addMarker();
+              } else {
+                  alert('找不到该设备，请重新输入！');
+              }
+          }
       }, (res) => {
         console.log(res.status)
       })
@@ -194,6 +201,7 @@ export default {
                             var title = '姓名：'+this.user.realname+'<span class="info-span" style="font-size:11px;">手机号:'+this.user.telephone+'</span>',
                             content = [];
                             content.push('<span class="info-span" style="font-weight:bold">定位物mac：</span>'+this.mac);
+                            content.push('<span class="info-span" style="font-weight:bold">经纬度：</span>'+result.locations[0]);
                             content.push('<span class="info-span" style="font-weight:bold">当前位置：</span>'+this.mouseoverData.address)
                             this.infoWindow = new AMap.InfoWindow({
                                 isCustom: true,  //使用自定义窗体
@@ -215,15 +223,28 @@ export default {
             })
         })
         // console.log(this.allData)
-        this.tableData = this.allData;
+        // this.tableData = this.allData;
     },
     //显示关闭数据表格
     showTableData: function(){
         this.tableDataToggle = !this.tableDataToggle;
-        // alert(this.allData);s
+        this.mydriving();
     },
     handleIconClick: function(){
         this.submit();
+    },
+    mydriving:function(){
+        //步行导航
+       AMap.service(["AMap.Walking"], () => {
+           var MWalk = new AMap.Walking({
+               map: this.amap,
+            //    panel: "panel"
+           }); //构造路线导航类
+           //根据起终点坐标规划步行路线
+           MWalk.search([120.016775,30.279706], [120.017487,30.279934], function(status, result){
+
+           });
+       })
     }
   },
   data() {
@@ -237,11 +258,11 @@ export default {
       clickData: {},
       mouseoverData: {},
       allData:[],
-      dateValue1: '',
-      dateValue2: '',
+      dateValue1: '2017-04-01',
+      dateValue2: '2017-04-01',
       tableData: [],
       infoWindow:{},
-      tableDataToggle: false
+      tableDataToggle: false,
     }
   }
 }

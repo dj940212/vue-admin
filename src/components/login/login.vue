@@ -30,10 +30,15 @@ export default {
         },{
           emulateJSON: true
         }).then((res)=>{
-            this.isLoging = true;
-            this.$router.push('mapsearch');
-            console.log(this.$router)
-            console.log("登录成功")
+            if (res.data.lp===0 && res.data.data.msg==="请求成功") {
+                this.$router.push('mapsearch');
+                console.log("登录成功");
+                console.log(res.status);
+            }else{
+                alert("密码或账号错误");
+            }
+        },(res)=>{
+            console.log(res.status);
         })
     },
     submit:function(){

@@ -18,7 +18,7 @@ import breadcrumb from './components/breadcrumb/breadcrumb'
 export default {
   name: 'app',
   created: function(){
-      this.checkLogin();
+    //   this.checkLogin();
   },
   watch:{
     //   '$route':'checkLogin'
@@ -39,7 +39,7 @@ export default {
         if (arr = document.cookie.match(reg))
           return (arr[2]);
         else
-          return null;
+          return false;
       },
       delCookie:function(name){
           var exp = new Date();
@@ -50,10 +50,13 @@ export default {
       },
       checkLogin:function(){
         //检查是否存在session
+        console.log(this.getCookie('session'))
         if(!this.getCookie('session')){
           this.$router.push('/login');
+          console.log("-> login")
         }else{
           this.$router.push('/mapsearch');
+          console.log("-> mapsearch")
         }
       }
   }
