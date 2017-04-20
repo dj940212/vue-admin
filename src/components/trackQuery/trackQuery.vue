@@ -173,9 +173,8 @@ export default {
     },
     //绘制轨迹
     addMarker: function(){
-        // var amap = new AMap.Map('trackQuery-map');
         this.amap.clearMap();
-        this.track.forEach((data,index) => {
+        this.testData.forEach((data,index) => {
             //高德地址转换
             var lnglat = new AMap.LngLat(data.longitude,data.latitude)
             AMap.convertFrom(lnglat,"gps",(status,result) => {
@@ -186,12 +185,12 @@ export default {
                    map:this.amap
                 //    animation:"AMAP_ANIMATION_DROP"
                 });
-                AMap.event.addListener(marker, 'click',() => {
-                     this.clickData = data;
-                     this.global.lonlatToAddr(result.locations[0],clickData);
-                     console.log("clickData",data);
-                     alert(this.clickData.address)
-                 });
+                // AMap.event.addListener(marker, 'click',() => {
+                //      this.clickData = data;
+                //      this.global.lonlatToAddr(result.locations[0],clickData);
+                //      console.log("clickData",data);
+                //      alert(this.clickData.address)
+                //  });
                 AMap.event.addListener(marker,'mouseover',(e) => {
                      this.mouseoverData = data;
                      this.global.lonlatToAddr(result.locations[0],this.mouseoverData);
@@ -227,24 +226,22 @@ export default {
     },
     //显示关闭数据表格
     showTableData: function(){
-        this.tableDataToggle = !this.tableDataToggle;
+        // this.tableDataToggle = !this.tableDataToggle;
+        this.addMarker();
         this.mydriving();
+        console.log(this.testData)
     },
     handleIconClick: function(){
         this.submit();
     },
     mydriving:function(){
         //步行导航
-       AMap.service(["AMap.Walking"], () => {
-           var MWalk = new AMap.Walking({
-               map: this.amap,
-            //    panel: "panel"
-           }); //构造路线导航类
-           //根据起终点坐标规划步行路线
-           MWalk.search([120.016775,30.279706], [120.017487,30.279934], function(status, result){
+        AMap.service(["AMap.Walking"], () => {
+            for (var i = 0; i < this.routeData.length; i++) {
+                new AMap.Walking({map:this.amap}).search(this.routeData[i],this.routeData[i+1])
+            }
+        })
 
-           });
-       })
     }
   },
   data() {
@@ -263,6 +260,24 @@ export default {
       tableData: [],
       infoWindow:{},
       tableDataToggle: false,
+      testData:[
+          {"longitude":120.016444,"latitude":30.279617},
+          {"longitude":120.017597,"latitude":30.279954},
+          {"longitude":120.018322,"latitude":30.280239},
+          {"longitude":120.018171,"latitude":30.281146},
+          {"longitude":120.017827,"latitude":30.28271},
+          {"longitude":120.01775,"latitude":30.283475},
+          {"longitude":120.019013,"latitude":30.283011},
+      ],
+      routeData:[
+          [120.016444,30.279617],
+          [120.017597,30.279954],
+          [120.018322,30.280239],
+          [120.018171,30.281146],
+          [120.017827,30.28271],
+          [120.01775,30.283475],
+          [120.019013,30.283011]
+      ]
     }
   }
 }
