@@ -7,12 +7,12 @@
             </div>
             <div class="login-box">
                 <label for="">账号</label>
-                <input type="text" name="" value="" placeholder="请输入账号"><br>
+                <input type="text" name="" value="" placeholder="请输入账号" v-model="telephone"><br>
                 <label for="">密码</label>
-                <input type="text" name="" value="" placeholder="请输入密码"><br>
+                <input type="text" name="" value="" placeholder="请输入密码" v-model="pwd"><br>
             </div>
             <div class="button-box">
-                <button type="button" name="button">确定</button>
+                <button type="button" name="button" @click="submit">确定</button>
                 <!-- <button type="button" name="button"></button> -->
             </div>
         </div>
@@ -21,7 +21,36 @@
 
 <script>
 export default {
-  name: 'login'
+  name: 'login',
+  methods:{
+    login:function(){
+        this.$http.post(this.loginUrl,{
+            "telephone":this.telephone,
+            "pwd":this.pwd
+        },{
+          emulateJSON: true
+        }).then((res)=>{
+            this.isLoging = true;
+            this.$router.push('mapsearch');
+            console.log(this.$router)
+            console.log("登录成功")
+        })
+    },
+    submit:function(){
+        // console.log(this.$route);
+        if (this.telephone!=="" && this.pwd!=="") {
+            this.login()
+        }
+    },
+  },
+  data:function(){
+      return{
+        telephone:"",
+        pwd:"",
+        isLoging:false,
+        loginUrl:this.global.port+"/langyang/Home/Police/login"
+      }
+  }
 }
 </script>
 

@@ -296,7 +296,7 @@ export default {
                 position: absolute;
                 right: 20px;
                 top: 10px;
-                background-color: #fff;
+                background-color: rgba(255, 255, 255, 0.42);
                 padding: 6px;
                 box-shadow: 3px 4px 3px 0px silver;
                 border-radius: 4px;

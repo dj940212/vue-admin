@@ -52,6 +52,9 @@
                   <ul class="submenu">
                       <li class="submenu-item">助动车行驶记录查询</li>
                       <li class="submenu-item"><router-link to="/trackQuery">助动车行驶轨迹查询</router-link></li>
+                      <li class="submenu-item">相关视频调用</li>
+                      <li class="submenu-item">低电量电子车牌查询</li>
+                      <li class="submenu-item">操作日志查询</li>
                   </ul>
               </li>
           </ul>
@@ -187,7 +190,6 @@ export default {
         background-color:#4e4c75;
         overflow-x: hidden;
         .menu{
-            // margin-bottom: 70px;
             width: 180px;
             .menu-item{
                 display: block;
