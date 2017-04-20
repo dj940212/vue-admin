@@ -174,7 +174,7 @@ export default {
     //绘制轨迹
     addMarker: function(){
         this.amap.clearMap();
-        this.testData.forEach((data,index) => {
+        this.track.forEach((data,index) => {
             //高德地址转换
             var lnglat = new AMap.LngLat(data.longitude,data.latitude)
             AMap.convertFrom(lnglat,"gps",(status,result) => {
@@ -185,6 +185,12 @@ export default {
                    map:this.amap
                 //    animation:"AMAP_ANIMATION_DROP"
                 });
+                console.log(result.locations[0].getLng());
+                // var arr = [],
+                // arr[0] = result.locations[0].getLng();
+                // arr[1] = result.locations[0].getLng()
+                this.routeData.push([result.locations[0].getLng(),result.locations[0].getLat()])
+
                 // AMap.event.addListener(marker, 'click',() => {
                 //      this.clickData = data;
                 //      this.global.lonlatToAddr(result.locations[0],clickData);
@@ -227,9 +233,10 @@ export default {
     //显示关闭数据表格
     showTableData: function(){
         // this.tableDataToggle = !this.tableDataToggle;
-        this.addMarker();
+        // this.addMarker();
         this.mydriving();
-        console.log(this.testData)
+        console.log(this.testData);
+        console.log("routeData",this.routeData)
     },
     handleIconClick: function(){
         this.submit();
@@ -237,8 +244,8 @@ export default {
     mydriving:function(){
         //步行导航
         AMap.service(["AMap.Walking"], () => {
-            for (var i = 0; i < this.routeData.length; i++) {
-                new AMap.Walking({map:this.amap}).search(this.routeData[i],this.routeData[i+1])
+            for (var i = 0; i < this.testRouteData.length; i++) {
+                new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.testRouteData[i],this.testRouteData[i+1])
             }
         })
 
@@ -260,16 +267,7 @@ export default {
       tableData: [],
       infoWindow:{},
       tableDataToggle: false,
-      testData:[
-          {"longitude":120.016444,"latitude":30.279617},
-          {"longitude":120.017597,"latitude":30.279954},
-          {"longitude":120.018322,"latitude":30.280239},
-          {"longitude":120.018171,"latitude":30.281146},
-          {"longitude":120.017827,"latitude":30.28271},
-          {"longitude":120.01775,"latitude":30.283475},
-          {"longitude":120.019013,"latitude":30.283011},
-      ],
-      routeData:[
+      testRouteData:[
           [120.016444,30.279617],
           [120.017597,30.279954],
           [120.018322,30.280239],
@@ -277,7 +275,8 @@ export default {
           [120.017827,30.28271],
           [120.01775,30.283475],
           [120.019013,30.283011]
-      ]
+      ],
+      routeData:[]
     }
   }
 }
