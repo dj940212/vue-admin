@@ -219,6 +219,7 @@ export default {
         })
         // console.log(this.allData)
         // this.tableData = this.allData;
+
     },
     //显示关闭数据表格
     showTableData: function(){
@@ -226,21 +227,25 @@ export default {
         // this.addMarker();
         this.amap.clearMap();
         this.mydriving();
-        console.log(this.testData);
-        console.log("routeData",this.routeData);
+        console.log("routeData",this.routeData.length);
+        console.log("track",this.track.length);
     },
     handleIconClick: function(){
         this.submit();
-        this.mydriving();
+        // setTimeout(()=>{
+        //     this.mydriving();
+        // },20000)
     },
     mydriving:function(){
         //步行导航
         this.amap.clearMap();
         AMap.service(["AMap.Walking"], () => {
-            for (var i = 0; i < this.routeData.length; i++) {
+
+            for (var i = 0; i < this.routeData.length-1; i++) {
                 new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.routeData[i],this.routeData[i+1])
             }
         })
+        console.log("线路规划");
 
     }
   },
