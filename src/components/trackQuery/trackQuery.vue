@@ -185,18 +185,8 @@ export default {
                    map:this.amap
                 //    animation:"AMAP_ANIMATION_DROP"
                 });
-                console.log(result.locations[0].getLng());
-                // var arr = [],
-                // arr[0] = result.locations[0].getLng();
-                // arr[1] = result.locations[0].getLng()
                 this.routeData.push([result.locations[0].getLng(),result.locations[0].getLat()])
 
-                // AMap.event.addListener(marker, 'click',() => {
-                //      this.clickData = data;
-                //      this.global.lonlatToAddr(result.locations[0],clickData);
-                //      console.log("clickData",data);
-                //      alert(this.clickData.address)
-                //  });
                 AMap.event.addListener(marker,'mouseover',(e) => {
                      this.mouseoverData = data;
                      this.global.lonlatToAddr(result.locations[0],this.mouseoverData);
@@ -234,18 +224,21 @@ export default {
     showTableData: function(){
         // this.tableDataToggle = !this.tableDataToggle;
         // this.addMarker();
+        this.amap.clearMap();
         this.mydriving();
         console.log(this.testData);
-        console.log("routeData",this.routeData)
+        console.log("routeData",this.routeData);
     },
     handleIconClick: function(){
         this.submit();
+        this.mydriving();
     },
     mydriving:function(){
         //步行导航
+        this.amap.clearMap();
         AMap.service(["AMap.Walking"], () => {
-            for (var i = 0; i < this.testRouteData.length; i++) {
-                new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.testRouteData[i],this.testRouteData[i+1])
+            for (var i = 0; i < this.routeData.length; i++) {
+                new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.routeData[i],this.routeData[i+1])
             }
         })
 
