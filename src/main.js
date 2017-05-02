@@ -6,6 +6,7 @@ import router from './router'
 import Resource from 'vue-resource'
 import { TimePicker, DatePicker, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon } from 'element-ui'
 import global_ from './common/vue/global.vue'
+import Mock from 'mockjs'
 
 Vue.prototype.global = global_
 

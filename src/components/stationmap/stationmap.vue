@@ -61,7 +61,7 @@ export default {
   mounted: function() {
     this.initMap();
     this.getBaseStation();
-    // this.keepsocket();
+    this.keepsocket();
   },
   methods: {
     //   初始化地图
@@ -88,7 +88,11 @@ export default {
         console.log(res.data)
         if (res.data.lp == 0 && res.data.data.msg == "请求成功") {
           this.stationsInfo = res.data.data.list;
-          this.addMarker();
+        //   this.addMarker();
+          this.stationsInfo.forEach((item,index) => {
+              this.addNewMarker(item,index);
+              this.stationMac.push(item.mac);
+          })
 
         } else {
           console.log('基站数据请求失败');
@@ -104,10 +108,17 @@ export default {
         socket.on('connect',function () {
           console.log('正在打开！');
         });
-        socket.on('message',function (data) {
+        socket.on('message',(data) => {
           console.log(socket);
           console.log("基站数据",data);
-          $scope.base_Station(data);
+          if (this.stationMac.indexOf(data.mac) === -1) {
+              this.stationMac.push(data.mac);
+              var i = this.markers.length;
+              this.addNewMarker(data,i)
+          }else{
+              this.markers[this.stationMac.indexOf(data.mac)].setIcon(imgOnUrl)
+          }
+          console.log(this.stationMac)
         });
     },
     //高德坐标转换
@@ -171,6 +182,57 @@ export default {
 
         console.log(this.markers);
     },
+    addNewMarker:function(data,index){
+        var lnglat = new AMap.LngLat(data.longitude,data.latitude);
+        var _this = this;
+        //闭包
+        (function(){
+          AMap.convertFrom(lnglat,"gps",(status,result)=>{
+            //创建标记
+            _this.marker = new AMap.Marker({
+              icon: imgOffUrl,
+              position: result.locations[0],
+              title: data.mac,
+              map: _this.amap
+            });
+            _this.markers[index] = _this.marker;
+            //点击事件
+            AMap.event.addListener(_this.marker, 'click',(e) => {
+                _this.amap.setCenter(e.target.getPosition());
+                _this.amap.setZoom(16);
+             });
+             //划过事件
+            AMap.event.addListener(_this.marker,'mouseover',(e) => {
+                  _this.global.lonlatToAddr(result.locations[0],_this.mouseoverData);
+                 setTimeout(() => {
+                     AMap.plugin('AMap.AdvancedInfoWindow',() => {
+                         //实例化信息窗体
+                        var title = '基站mac : '+data.mac,
+                        content = [];
+                        content.push('<span class="info-span" style="font-weight:bold">海拔：</span>'+data.altitude);
+                        content.push('<span class="info-span" style="font-weight:bold">经度：</span>'+data.latitude);
+                        content.push('<span class="info-span" style="font-weight:bold">纬度：</span>'+data.longitude);
+                        content.push('<span class="info-span" style="font-weight:bold">位置：</span>'+_this.mouseoverData.address)
+                        var infoWindow = new AMap.InfoWindow({
+                            isCustom: true,  //使用自定义窗体
+                            content: _this.global.createInfoWindow(title, content.join("<br/>")),
+                            offset: new AMap.Pixel(16, -45)
+                        });
+                        infoWindow.open(_this.amap,e.target.getPosition())
+                    });
+                },200);
+
+             });
+             //划出事件
+            AMap.event.addListener(_this.marker,'mouseout',()=>{
+                _this.amap.clearInfoWindow();
+            })
+          });
+        }());
+    },
+    stationUpdate: function(data){
+        this.addNewMarker(data)
+    },
     //基站数据搜索
     searchData:function(){
         this.getBaseStation();
@@ -179,13 +241,10 @@ export default {
     },
     //查询定位
     handleIconClick(ev) {
-        this.stationsInfo.forEach((data,index) => {
-            if (data.mac === this.mac) {
-                this.amap.setCenter(this.markers[index].getPosition());
-                this.amap.setZoom(16);
-            }
-
-        })
+        if (this.stationMac.indexOf(this.mac) !== -1) {
+            this.amap.setCenter(this.markers[this.stationMac.indexOf(this.mac)].getPosition());
+            this.amap.setZoom(16);
+        }
     }
 
 
@@ -198,6 +257,7 @@ export default {
       markers:[],
       marker:{},
       stationsInfo: [],
+      stationMac:[],
       urlStation: this.global.port+"/langyang/Home/Police/getBaseStations",
       user: {},
       tableData:[],

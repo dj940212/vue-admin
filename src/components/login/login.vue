@@ -32,6 +32,7 @@ export default {
         }).then((res)=>{
             if (res.data.lp===0 && res.data.data.msg==="请求成功") {
                 this.$router.push('mapsearch');
+                this.username = this.telephone;
                 console.log("登录成功");
                 console.log(res.status);
             }else{
@@ -51,6 +52,7 @@ export default {
   data:function(){
       return{
         telephone:"",
+        username:"",
         pwd:"",
         isLoging:false,
         loginUrl:this.global.port+"/langyang/Home/Police/login"

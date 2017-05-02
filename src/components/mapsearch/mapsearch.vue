@@ -103,7 +103,9 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    // this.keepsocket();
+    this.keepsocket();
+    this.getData();
+    this.getInfo();
   },
   methods: {
     //   初始化地图
@@ -115,10 +117,6 @@ export default {
       }
 
       this.amap = new AMap.Map('real-time-map', mapOptions);
-      AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function() {
-        this.amap.addControl(new AMap.ToolBar());
-        this.amap.addControl(new AMap.Scale());
-      });
     },
     //获取用户信息
     getUserInfo: function() {
@@ -141,6 +139,27 @@ export default {
         console.log(res.status)
       })
     },
+    //获取用户信息
+    getInfo: function() {
+      this.$http.post('http://localhost:8080/mock', {
+        mac: this.mac
+      }, {
+        emulateJSON: true
+      }).then((res) => {
+        console.log(res.data)
+
+      }, (res) => {
+        console.log(res.status)
+      })
+    },
+    //mock
+    getData:function(){
+        this.$http.get('http://localhost:8080/mock').then((res) => {
+            console.log(res.data)
+        },(res) => {
+
+        })
+    },
     // 提交搜索
     submit: function() {
       console.log(this.mac);
@@ -158,60 +177,57 @@ export default {
       });
     },
     //添加标记
-    addMarker: function(){
-        // var amap = new AMap.Map('trackQuery-map');
-        this.amap.clearMap();
-        this.track.forEach((data,index) => {
-            //高德地址转换
-            var lnglat = new AMap.LngLat(data.longitude,data.latitude)
-            AMap.convertFrom(lnglat,"gps",(status,result) => {
-                //初始化marker
-                var marker = new AMap.Marker({
-                   title:index,
-                   position:result.locations[0],
-                   map:this.amap,
-                   animation:"AMAP_ANIMATION_DROP"
-                });
-                AMap.event.addListener(marker, 'click',() => {
-                     this.clickData = data;
-                     this.lonlatToAddr(result.locations[0],clickData);
-                     console.log("clickData",data);
-                     alert(this.clickData.address)
-                 });
-                AMap.event.addListener(marker,'mouseover',(e) => {
-                     this.mouseoverData = data;
-                     this.lonlatToAddr(result.locations[0],this.mouseoverData);
-                     setTimeout(() => {
-                         AMap.plugin('AMap.AdvancedInfoWindow',() => {
-                             //实例化信息窗体
-                            var title = '姓名：'+this.user.realname+'<span class="info-span" style="font-size:11px;">手机号:'+this.user.telephone+'</span>',
-                            content = [];
-                            content.push('<span class="info-span" style="font-weight:bold">定位物mac：</span>'+this.mac);
-                            content.push('<span class="info-span" style="font-weight:bold">当前位置：</span>'+this.mouseoverData.address)
-                            this.infoWindow = new AMap.InfoWindow({
-                                isCustom: true,  //使用自定义窗体
-                                content: this.createInfoWindow(title, content.join("<br/>")),
-                                offset: new AMap.Pixel(16, -45)
-                            });
-                            this.infoWindow.open(this.amap,e.target.getPosition())
+    addNewMarker:function(data){
+        var lnglat = new AMap.LngLat(data.longitude,data.latitude);
+        var _this = this;
+        //闭包
+        (function(){
+          AMap.convertFrom(lnglat,"gps",(status,result)=>{
+            //创建标记
+            _this.marker = new AMap.Marker({
+              icon: imgOffUrl,
+              position: result.locations[0],
+              title: data.mac,
+              map: _this.amap
+            });
+            _this.markers.push(_this.marker);
+            //点击事件
+            AMap.event.addListener(_this.marker, 'click',(e) => {
+                _this.amap.setCenter(e.target.getPosition());
+                _this.amap.setZoom(16);
+             });
+             //划过事件
+            AMap.event.addListener(_this.marker,'mouseover',(e) => {
+                  _this.global.lonlatToAddr(result.locations[0],_this.mouseoverData);
+                 setTimeout(() => {
+                     AMap.plugin('AMap.AdvancedInfoWindow',() => {
+                         //实例化信息窗体
+                        var title = '基站mac : '+data.mac,
+                        content = [];
+                        content.push('<span class="info-span" style="font-weight:bold">海拔：</span>'+data.altitude);
+                        content.push('<span class="info-span" style="font-weight:bold">经度：</span>'+data.latitude);
+                        content.push('<span class="info-span" style="font-weight:bold">纬度：</span>'+data.longitude);
+                        content.push('<span class="info-span" style="font-weight:bold">位置：</span>'+data.address)
+                        var infoWindow = new AMap.InfoWindow({
+                            isCustom: true,  //使用自定义窗体
+                            content: _this.global.createInfoWindow(title, content.join("<br/>")),
+                            offset: new AMap.Pixel(16, -45)
                         });
-                    },100);
+                        infoWindow.open(_this.amap,e.target.getPosition())
+                    });
+                },200);
 
-                 });
-                AMap.event.addListener(marker,'mouseout',()=>{
-                    this.amap.clearInfoWindow();
-                })
-
-                //表格数据
-                this.lonlatToAddr(result.locations[0],data)
-                // this.allData.push(data);
+             });
+             //划出事件
+            AMap.event.addListener(_this.marker,'mouseout',()=>{
+                _this.amap.clearInfoWindow();
             })
-        })
-        console.log(this.allData)
-        this.tableData = this.allData;
+          });
+        }());
     },
     handleIconClick:function(){
         this.getUserInfo();
+
     },
     toggleInfoBox:function(){
         this.toggleInfoBoxValue = !this.toggleInfoBoxValue;
@@ -233,7 +249,8 @@ export default {
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
       user: {},
       switchValue:true,
-      toggleInfoBoxValue:false
+      toggleInfoBoxValue:false,
+      amap:{}
     }
   }
 }
