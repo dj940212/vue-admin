@@ -8,6 +8,14 @@ import { TimePicker, DatePicker, Table, TableColumn, Tooltip, Input, Switch, Pop
 import global_ from './common/vue/global.vue'
 import Mock from 'mockjs'
 
+console.log("mock==>",Mock)
+Mock.mock(/\.json/, {
+    'list|1-10': [{
+        'id|+1': 1,
+        'email': '@EMAIL'
+    }]
+});
+
 Vue.prototype.global = global_
 
 Vue.config.productionTip = false

@@ -103,9 +103,8 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    this.keepsocket();
     this.getData();
-    this.getInfo();
+    // this.keepsocket();
   },
   methods: {
     //   初始化地图
@@ -139,22 +138,9 @@ export default {
         console.log(res.status)
       })
     },
-    //获取用户信息
-    getInfo: function() {
-      this.$http.post('http://localhost:8080/mock', {
-        mac: this.mac
-      }, {
-        emulateJSON: true
-      }).then((res) => {
-        console.log(res.data)
-
-      }, (res) => {
-        console.log(res.status)
-      })
-    },
     //mock
     getData:function(){
-        this.$http.get('http://localhost:8080/mock').then((res) => {
+        this.$http.get('data.json').then((res) => {
             console.log(res.data)
         },(res) => {
 
