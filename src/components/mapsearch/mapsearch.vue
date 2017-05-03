@@ -146,6 +146,31 @@ export default {
 
         })
     },
+    //获取轨迹信息
+    getTrack: function() {
+      this.$http.post(this.urlTrack, {
+        mac: this.mac,
+        startTime:this.dateValue1,   //this.global.formatDate(this.dateValue1),
+        endTime:this.dateValue2     //this.global.formatDate(this.dateValue2)
+      }, {
+        emulateJSON: true
+      }).then((res) => {
+          if (this.dateValue1==="" || this.dateValue2==="") {
+              alert("请选择时间范围")
+          }else {
+              console.log("getTrack",res.data)
+              if (res.data.data.msg == "success") {
+                  this.track = res.data.data.list.location;
+                  this.tableData = res.data.data.list.location;
+                  this.addMarker();
+              } else {
+                  alert('找不到该设备，请重新输入！');
+              }
+          }
+      }, (res) => {
+        console.log(res.status)
+      })
+    },
     // 提交搜索
     submit: function() {
       console.log(this.mac);
@@ -213,7 +238,6 @@ export default {
     },
     handleIconClick:function(){
         this.getUserInfo();
-
     },
     toggleInfoBox:function(){
         this.toggleInfoBoxValue = !this.toggleInfoBoxValue;
@@ -226,11 +250,16 @@ export default {
             this.$refs.elIcon.className = "el-icon-d-arrow-left";
             console.log(this.$refs.realtimeMap)
         }
+    },
+    updateMarker:function(){
+
     }
   },
   data() {
     return {
-      mac: "",
+      mac: "3148369587325565",
+      dateValue1:"2017-04-01",
+      dateValue2:"2017-04-01",
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
       user: {},

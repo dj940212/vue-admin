@@ -17,11 +17,12 @@ var options = {
 }
 
 
-var client = mqtt.connect(host, options);
 
 io.on('connection', function(client1) {
 	console.log('与浏览器websocket连接');
-	
+
+	var client = mqtt.connect(host, options);
+
 	client.on('error', function(err) {
 		console.log(err);
 		client.end();
@@ -29,7 +30,7 @@ io.on('connection', function(client1) {
 	client.on('connect', function() {
 		console.log('连接服务器120.27.230.136');
 	});
-	
+
 	client.subscribe('gateway/+/stats', {
 		qos: 2
 	});

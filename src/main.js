@@ -6,15 +6,15 @@ import router from './router'
 import Resource from 'vue-resource'
 import { TimePicker, DatePicker, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon } from 'element-ui'
 import global_ from './common/vue/global.vue'
-import Mock from 'mockjs'
-
-console.log("mock==>",Mock)
-Mock.mock(/\.json/, {
-    'list|1-10': [{
-        'id|+1': 1,
-        'email': '@EMAIL'
-    }]
-});
+// import Mock from 'mockjs'
+//
+// console.log("mock==>",Mock)
+// Mock.mock(/\.json/, {
+//     'list|1-10': [{
+//         'id|+1': 1,
+//         'email': '@EMAIL'
+//     }]
+// });
 
 Vue.prototype.global = global_
 
