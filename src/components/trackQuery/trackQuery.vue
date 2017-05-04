@@ -52,46 +52,40 @@
            </el-date-picker>
         </div>
     </div>
+    <div class="tableData" v-show="tableDataToggle">
+        <el-table
+            :data="tableData"
+            height="500"
+            empty-text="请先输入mac查询"
+            :default-sort = "{prop: 'time', order: 'descending'}">
+            <el-table-column
+                prop="id"
+                label="id">
+            </el-table-column>
+            <el-table-column
+                prop="latitude"
+                label="经度">
+            </el-table-column>
+            <el-table-column
+                prop="longitude"
+                label="纬度">
+            </el-table-column>
+            <el-table-column
+                prop="time"
+                label="时间">
+            </el-table-column>
+            <el-table-column
+                prop="adcode"
+                label="地区编码">
+            </el-table-column>
+            <el-table-column
+                prop="address"
+                label="地址">
+            </el-table-column>
+        </el-table>
+    </div>
   </div>
-  <div class="tableData" v-show="tableDataToggle">
-      <el-table
-          :data="tableData"
-          height="500"
-          style="width: 100%;"
-          empty-text="请先输入mac查询"
-          :default-sort = "{prop: 'time', order: 'descending'}">
-          <el-table-column
-              prop="id"
-              label="id"
-              width="180">
-          </el-table-column>
-          <el-table-column
-              prop="latitude"
-              label="经度"
-              width="180">
-          </el-table-column>
-          <el-table-column
-              prop="longitude"
-              label="纬度"
-              width="180">
-          </el-table-column>
-          <el-table-column
-              prop="time"
-              label="时间"
-              width="180">
-          </el-table-column>
-          <el-table-column
-              prop="adcode"
-              label="地区编码"
-              width="180">
-          </el-table-column>
-          <el-table-column
-              prop="address"
-              label="地址"
-              width="180">
-          </el-table-column>
-      </el-table>
-  </div>
+
 </div>
 </template>
 
@@ -136,8 +130,10 @@ export default {
               if (res.data.data.msg == "success") {
                   this.track = res.data.data.list.location;
                   this.tableData = res.data.data.list.location;
-                  this.posToGaode(this.track);
+                //   this.posToGaode(this.track);
                     // this.addMarker();
+                    this.drawRoute(this.track);
+
                   console.log("初始地址",this.track)
               } else {
                   alert('找不到该设备，请重新输入！');
@@ -253,14 +249,41 @@ export default {
         // this.tableData = this.allData;
 
     },
+    //绘制轨迹
+    drawRoute:function(data){
+        AMap.service(["AMap.Walking"],() => {
+            var i = 0;
+            var timer = setInterval(() => {
+                if (i >= 100) {
+                    clearInterval(timer);
+                }else {
+                    var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
+                    console.log("======1111=======",i);
+                    // console.log("data1-data2",data[i],data[i+1])
+                    AMap.convertFrom(lnglat1,"gps",(status,result) => {
+                        this.newRouteData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
+                        var lnglat2 = new AMap.LngLat(data[i+1].longitude,data[i+1].latitude);
+                        console.log("======2222=======",i+1);
+                        AMap.convertFrom(lnglat2,"gps",(status,result) => {
+                            this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
+                            console.log(this.newRouteData1,this.newRouteData2);
+                            new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.newRouteData1,this.newRouteData2)
+                            i++;
+                        })
+                    })
+
+                }
+            },100)
+        })
+    },
     //显示关闭数据表格
     showTableData: function(){
-        // this.tableDataToggle = !this.tableDataToggle;
+        this.tableDataToggle = !this.tableDataToggle;
         // this.addMarker();
-        this.amap.clearMap();
-        this.mydriving();
-        console.log("routeData",this.routeData.length);
-        console.log("track",this.track.length);
+        // this.amap.clearMap();
+        // this.mydriving();
+        // console.log("routeData",this.routeData.length);
+        // console.log("track",this.track.length);
     },
     handleIconClick: function(){
         this.submit();
@@ -279,7 +302,6 @@ export default {
         console.log("线路规划");
 
     },
-
   },
   data() {
     return {
@@ -388,13 +410,15 @@ export default {
                 }
             }
         }
+        .tableData{
+            position: absolute;
+            background-color: red;
+            top: 130px;
+            left: 40px;
+            width: 94%;
+            z-index: 200;
+        }
     }
-    .tableData{
-        position: absolute;
-        background-color: red;
-        top: 140px;
-        left: 120px;
-        z-index: 200;
-    }
+
 }
 </style>
