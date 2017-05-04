@@ -12,52 +12,47 @@
                 <el-table
                     :data="tableData"
                     border
-                    height="600"
+                    height="540"
                     style="width: 100%">
                     <el-table-column
                       prop="realname"
                       label="姓名">
-                      height
                     </el-table-column>
                     <el-table-column
                       prop="idcard_number"
-                      label="身份证号">
+                      label="手机号">
                     </el-table-column>
                     <el-table-column
                       prop="telephone"
-                      label="电话号码">
+                      label="身份证号">
                     </el-table-column>
                     <el-table-column
                       prop="address"
-                      label="发生地点">
+                      label="身份证照片">
                     </el-table-column>
                     <el-table-column
                       prop="call_time"
-                      label="报警时间">
+                      label="出生年月">
                     </el-table-column>
                     <el-table-column
                       prop="heppen_time"
-                      label="发生时间">
+                      label="性别">
                     </el-table-column>
                     <el-table-column
                       prop="mac"
-                      label="mac">
+                      label="地址">
                     </el-table-column>
                     <el-table-column
                       prop="device_type"
-                      label="定位物类型">
+                      label="定位物物理地址">
                     </el-table-column>
                     <el-table-column
                       prop="call_type"
-                      label="报警方式">
+                      label="定位物类型">
                     </el-table-column>
                     <el-table-column
                       prop="status"
-                      label="报警状态">
-                    </el-table-column>
-                    <el-table-column
-                      prop="message"
-                      label="报警备注">
+                      label="编辑">
                     </el-table-column>
                 </el-table>
             </div>

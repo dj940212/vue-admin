@@ -103,7 +103,7 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    this.getData();
+    // this.getData();
     // this.keepsocket();
   },
   methods: {
@@ -138,39 +138,6 @@ export default {
         console.log(res.status)
       })
     },
-    //mock
-    getData:function(){
-        this.$http.get('data.json').then((res) => {
-            console.log(res.data)
-        },(res) => {
-
-        })
-    },
-    //获取轨迹信息
-    getTrack: function() {
-      this.$http.post(this.urlTrack, {
-        mac: this.mac,
-        startTime:this.dateValue1,   //this.global.formatDate(this.dateValue1),
-        endTime:this.dateValue2     //this.global.formatDate(this.dateValue2)
-      }, {
-        emulateJSON: true
-      }).then((res) => {
-          if (this.dateValue1==="" || this.dateValue2==="") {
-              alert("请选择时间范围")
-          }else {
-              console.log("getTrack",res.data)
-              if (res.data.data.msg == "success") {
-                  this.track = res.data.data.list.location;
-                  this.tableData = res.data.data.list.location;
-                  this.addMarker();
-              } else {
-                  alert('找不到该设备，请重新输入！');
-              }
-          }
-      }, (res) => {
-        console.log(res.status)
-      })
-    },
     // 提交搜索
     submit: function() {
       console.log(this.mac);
@@ -187,7 +154,22 @@ export default {
         console.log("收到数据", data.devEUI);
       });
     },
-    //添加标记
+    //绘制轨迹
+    drawRoute:function(data){
+        AMap.service(["AMap.Walking"],() => {
+            var lnglat = new AMap.LngLat(data.longitude,data.latitude);
+            AMap.convertFrom(lnglat,"gps",(status,result) => {
+                if (this.routeData1.length === 0) {
+                    this.routeData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
+                }
+                this.routeData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
+                new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.newRouteData1,this.newRouteData2)
+                this.routeData1 = this.routeData2;
+            })
+
+        })
+    },
+    //添加新标记
     addNewMarker:function(data){
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
         var _this = this;
@@ -251,21 +233,57 @@ export default {
             console.log(this.$refs.realtimeMap)
         }
     },
-    updateMarker:function(){
-
+    //添加标记
+    addMarker:function(data){
+        //添加覆盖物
+       if($scope.contains(this.devEUIs,data.devEUI)===true){
+           this.devEUIs.forEach((item,index) => {
+              if(item ===data.devEUI){
+                this.update(data,index);
+              }
+           })
+       }else {
+         this.addNewMarker(data);
+         this.devEUIs.push(data.devEUI);
+         console.log("this.devEUIs",this.devEUIs)
+       }
+    },
+    //更新地图覆盖物的位置
+    update : function (data,i) {
+        var lnglat = new AMap.LngLat(data.longitude,data.latitude);
+        AMap.convertFrom(lnglat,"gps",function(status,result){
+          console.log(i,"markers");
+          $scope.markers[i].setPosition(result.locations[0]);
+          $scope.markers[i].setTitle(data.devEUI);
+          $scope.markers[i].setMap($scope.map);
+          console.log("更新位置完成")
+        });
+    },
+    contains: function (arr,dev) {
+        if (arr.length > 0) {
+          for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === dev) {
+              return true;
+            }
+          }
+          return false;
+        }
+        return false
     }
   },
   data() {
     return {
       mac: "3148369587325565",
-      dateValue1:"2017-04-01",
-      dateValue2:"2017-04-01",
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
       user: {},
       switchValue:true,
       toggleInfoBoxValue:false,
-      amap:{}
+      amap:{},
+      markers:[],
+      routeData1:[],
+      routeData2:[],
+      devEUIs:[]
     }
   }
 }

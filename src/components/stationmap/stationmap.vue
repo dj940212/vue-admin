@@ -21,7 +21,7 @@
         <el-table
             :data="tableData"
             border
-            height="600"
+            height="550"
             style="width: 100%">
             <el-table-column
               prop="mac"
@@ -89,10 +89,10 @@ export default {
         if (res.data.lp == 0 && res.data.data.msg == "请求成功") {
           this.stationsInfo = res.data.data.list;
         //   this.addMarker();
-          this.stationsInfo.forEach((item,index) => {
-              this.addNewMarker(item,index);
-              this.stationMac.push(item.mac);
-          })
+        //   this.stationsInfo.forEach((item,index) => {
+        //     //   this.addNewMarker(item,index);
+        //     //   this.stationMac.push(item.mac);
+        //   })
 
         } else {
           console.log('基站数据请求失败');
@@ -190,7 +190,7 @@ export default {
           AMap.convertFrom(lnglat,"gps",(status,result)=>{
             //创建标记
             _this.marker = new AMap.Marker({
-              icon: imgOffUrl,
+              icon: imgOnUrl,
               position: result.locations[0],
               title: data.mac,
               map: _this.amap

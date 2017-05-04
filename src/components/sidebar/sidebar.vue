@@ -20,7 +20,6 @@
                           <li class="submenu-item"><router-link to="/userinfo">用户与定位物登记</router-link></li>
                           <li class="submenu-item"><router-link to="/userInfoManage">信息查询与修改</router-link></li>
                           <li class="submenu-item"><router-link to="/mapsearch">实时地图查询</router-link></li>
-                          <li class="submenu-item">实时轨迹查询</li>
                       </ul>
                   </transition>
               </li>
@@ -92,7 +91,7 @@ export default {
           if (!this.submenuActive1) {
               event.currentTarget.nextSibling.nextSibling.style.height=0+"px";
           }else {
-              event.currentTarget.nextSibling.nextSibling.style.height=146+"px";
+              event.currentTarget.nextSibling.nextSibling.style.height=111+"px";
           }
 
       },

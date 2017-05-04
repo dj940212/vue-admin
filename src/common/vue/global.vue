@@ -65,13 +65,25 @@ const formatDate=function(value){
         var year = value.getFullYear();
         var month = value.getMonth() + 1;
         var date = value.getDate();
+        var hours = value.getHours();
+        var minutes = value.getMinutes();
+        var seconds = value.getSeconds()
         if (month >=1 && month <= 9) {
             month = "0"+month;
         }
         if (date >= 0 && date <= 9) {
             date = "0"+date;
         }
-        return year+"-"+month+"-"+date;
+        if (hours >=1 && hours <= 9) {
+            hours = "0"+hours;
+        }
+        if (minutes >= 1 && minutes <= 9) {
+            minutes = "0"+minutes;
+        }
+        if (seconds >= 1 && seconds <= 9) {
+            seconds = "0"+ seconds;
+        }
+        return year+"-"+month+"-"+date+" "+hours+":"+minutes+":"+seconds;
     }
     return
 }

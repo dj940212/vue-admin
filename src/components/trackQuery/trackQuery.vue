@@ -118,8 +118,8 @@ export default {
     getTrack: function() {
       this.$http.post(this.urlTrack, {
         mac: this.mac,
-        startTime:this.dateValue1,   //this.global.formatDate(this.dateValue1),
-        endTime:this.dateValue2     //this.global.formatDate(this.dateValue2)
+        startTime: this.dateValue1, //this.global.formatDate(this.dateValue1),
+        endTime: this.dateValue2 //this.global.formatDate(this.dateValue2)
       }, {
         emulateJSON: true
       }).then((res) => {
@@ -254,7 +254,7 @@ export default {
         AMap.service(["AMap.Walking"],() => {
             var i = 0;
             var timer = setInterval(() => {
-                if (i >= 100) {
+                if (i >= data.length-1) {
                     clearInterval(timer);
                 }else {
                     var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
@@ -267,13 +267,16 @@ export default {
                         AMap.convertFrom(lnglat2,"gps",(status,result) => {
                             this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
                             console.log(this.newRouteData1,this.newRouteData2);
-                            new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.newRouteData1,this.newRouteData2)
-                            i++;
+                            new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
+                                if (status === "complete") {
+                                    i++;
+                                }
+                            })
                         })
                     })
 
                 }
-            },100)
+            },700)
         })
     },
     //显示关闭数据表格
@@ -306,7 +309,7 @@ export default {
   data() {
     return {
       mac: "3148369587325565",
-      urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
+      urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac2",
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       user: {},
       track:[],
@@ -314,8 +317,8 @@ export default {
       clickData: {},
       mouseoverData: {},
       allData:[],
-      dateValue1: '2017-04-01',
-      dateValue2: '2017-04-01',
+      dateValue1: '2017-04-01 19:01:53',
+      dateValue2: '2017-04-01 19:04:11',
       tableData: [],
       infoWindow:{},
       tableDataToggle: false,

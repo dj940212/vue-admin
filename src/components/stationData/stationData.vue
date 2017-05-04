@@ -5,14 +5,14 @@
             <i class="icon iconfont">&#xe612;</i>
             <span>基站数据</span>
           </div>
-          <searchBox text="查询"></searchBox>
+          <searchBox text="查询" @click="search"></searchBox>
         </div>
         <div class="content">
             <div class="table-data">
                 <el-table
                     :data="tableData"
                     border
-                    height="600"
+                    height="530"
                     style="width: 100%">
                     <el-table-column
                       prop="mac"
@@ -48,16 +48,40 @@
 import searchBox from '@/components/searchBox/searchBox'
 export default {
   name: 'userInfoManage',
+  mounted:function(){
+     this.getBaseStation()
+  },
   components:{
       searchBox
   },
   data:function(){
       return {
-          urlUserDeviceInfo:this.global.port + '/langyang/Home/Police/searchUserDeviceInfo',
-          urlModifyCar:this.global.port + '/langyang/Home/Police/modifyCar',
-          urlDeleteCar:this.global.port + '/langyang/Home/Police/deleteCar',
+          urlStation:this.global.port+"/langyang/Home/Police/getBaseStations",
           tableData:[],
       }
+  },
+  methods:{
+      //获取基站信息
+      getBaseStation: function() {
+        this.$http.post(this.urlStation, {
+          id: 1
+        }, {
+          emulateJSON: true
+        }).then((res) => {
+          console.log(res.data)
+          if (res.data.lp == 0 && res.data.data.msg == "请求成功") {
+            this.tableData = res.data.data.list;
+          } else {
+            console.log('基站数据请求失败');
+          }
+        }, (res) => {
+          console.log(res.status)
+        })
+     },
+     search:function(){
+         getBaseStation();
+     }
+
   }
 }
 </script>

@@ -12,7 +12,7 @@
                 <el-table
                     :data="tableData"
                     border
-                    height="600"
+                    height="530"
                     style="width: 100%">
                     <el-table-column
                       prop="realname"
