@@ -15,7 +15,8 @@
           on-color="#4e4c75"
           off-color="#222222"
           on-text="位置"
-          off-text="轨迹">
+          off-text="轨迹"
+          :change="switchChange()">
         </el-switch>
     </div>
   </div>
@@ -104,7 +105,7 @@ export default {
   mounted: function() {
     this.initMap();
     // this.getData();
-    // this.keepsocket();
+    this.keepsocket();
   },
   methods: {
     //   初始化地图
@@ -148,10 +149,14 @@ export default {
       var socket = io('ws://127.0.0.1:3002'); //121.196.194.14:3002
       socket.on('connect', function() {
         console.log('连接成功！');
-
       });
       socket.on('message', function(data) {
         console.log("收到数据", data.devEUI);
+        if (switchValue) {
+            console.log("添加标记")
+        }else{
+            console.log()
+        }
       });
     },
     //绘制轨迹
@@ -163,7 +168,7 @@ export default {
                     this.routeData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
                 }
                 this.routeData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.newRouteData1,this.newRouteData2)
+                new AMap.Walking({map:this.amap,hideMarkers:false,outlineColor:"red"}).search(this.newRouteData1,this.newRouteData2)
                 this.routeData1 = this.routeData2;
             })
 
@@ -218,8 +223,17 @@ export default {
           });
         }());
     },
+    //输入框搜索
     handleIconClick:function(){
         this.getUserInfo();
+    },
+    switchChange:function() {
+        if (this.switchValue) {
+            console.log("位置")
+            // this.amap.clear();
+        }else{
+            console.log("轨迹")
+        }
     },
     toggleInfoBox:function(){
         this.toggleInfoBoxValue = !this.toggleInfoBoxValue;
@@ -330,7 +344,7 @@ export default {
         padding-bottom: 5px;
         padding-right: 9px;
         background-color: #fff;
-        height: 89%;
+        height: 88%;
         .real-time-map {
             // width: 73%;
             width: 100%;

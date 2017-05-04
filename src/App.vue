@@ -74,7 +74,7 @@ export default {
         top: 64px;
         left: 180px;
         background-color: #f2f2f2;
-        overflow-y:scroll;
+        overflow:auto;
     }
     .myloginView{
 

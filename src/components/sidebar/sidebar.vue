@@ -17,7 +17,7 @@
                   </div>
                   <transition name="slide">
                       <ul class="submenu">
-                          <li class="submenu-item"><router-link to="/userinfo">用户与定位物登记</router-link></li>
+                          <li class="submenu-item"><router-link to="/userLocatorReg">用户与定位物登记</router-link></li>
                           <li class="submenu-item"><router-link to="/userInfoManage">信息查询与修改</router-link></li>
                           <li class="submenu-item"><router-link to="/mapsearch">实时地图查询</router-link></li>
                       </ul>
@@ -49,7 +49,6 @@
                       <span>历史纪录查询</span>
                   </div>
                   <ul class="submenu">
-                      <li class="submenu-item">助动车行驶记录查询</li>
                       <li class="submenu-item"><router-link to="/trackQuery">助动车行驶轨迹查询</router-link></li>
                       <li class="submenu-item">相关视频调用</li>
                       <li class="submenu-item">低电量电子车牌查询</li>
@@ -124,7 +123,7 @@ export default {
           if (!this.submenuActive4) {
               event.currentTarget.nextSibling.nextSibling.style.height=0+"px";
           }else {
-              event.currentTarget.nextSibling.nextSibling.style.height=183+"px";
+              event.currentTarget.nextSibling.nextSibling.style.height=146+"px";
           }
       },
   },
@@ -139,7 +138,7 @@ export default {
 .sidebar{
     position: relative;
     padding-top: 64px;
-    width: 180px;
+    width: 181px;
     height: 100%;
     background-color: #4e4c75;
     .avatar{

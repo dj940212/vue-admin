@@ -10,6 +10,7 @@ import userCallReg from '@/components/userCallReg/userCallReg'
 import userCallSearch from '@/components/userCallSearch/userCallSearch'
 import trackQuery from '@/components/trackQuery/trackQuery'
 import stationData from '@/components/stationData/stationData'
+import userLocatorReg from '@/components/userLocatorReg/userLocatorReg'
 
 Vue.use(Router)
 
@@ -62,6 +63,10 @@ export default new Router({
       path: '/stationData',
       name: 'stationData',
       component:stationData
+  },{
+      path: '/userLocatorReg',
+      name:'userLocatorReg',
+      component:userLocatorReg
   }
   ]
 })

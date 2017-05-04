@@ -252,6 +252,7 @@ export default {
     //绘制轨迹
     drawRoute:function(data){
         AMap.service(["AMap.Walking"],() => {
+            this.amap.clearMap();
             var i = 0;
             var timer = setInterval(() => {
                 if (i >= data.length-1) {
@@ -259,7 +260,6 @@ export default {
                 }else {
                     var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
                     console.log("======1111=======",i);
-                    // console.log("data1-data2",data[i],data[i+1])
                     AMap.convertFrom(lnglat1,"gps",(status,result) => {
                         this.newRouteData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
                         var lnglat2 = new AMap.LngLat(data[i+1].longitude,data[i+1].latitude);
