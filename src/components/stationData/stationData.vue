@@ -58,6 +58,11 @@ export default {
       return {
           urlStation:this.global.port+"/langyang/Home/Police/getBaseStations",
           tableData:[],
+          id:"",
+          longitude:"",
+          latitude:"",
+          altitude:"",
+          mac:""
       }
   },
   methods:{

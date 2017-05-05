@@ -109,6 +109,7 @@ export default {
         this.addNewMarker(item,this.markers.length);
       })
     },
+    //获取本地数据
     getLocalStation:function(){
       var arrData = JSON.parse(localStorage.getItem("stationDatas"));
       for(var i = 0; i < arrData.length; i++){
@@ -125,7 +126,7 @@ export default {
           console.log('正在打开！');
         });
         socket.on('message',(data) => {
-          console.log(socket);
+          console.log("建立链接：===> stationmap");
           console.log(data.mac,data.longitude,data.latitude);
           if (this.stationMac.indexOf(data.mac) === -1) {
               this.stationMac.push(data.mac);

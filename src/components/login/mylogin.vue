@@ -26,6 +26,7 @@
 export default {
   name: 'mylogin',
   mounted: function(){
+    this.stationSocket();
     this.getLocalStation();
   },
   methods:{
@@ -54,14 +55,6 @@ export default {
             this.login()
         }
     },
-    getLocalStation:function(){
-      var arrData = JSON.parse(localStorage.getItem("stationDatas"));
-      for(var i = 0; i < arrData.length; i++){
-        arrData[i] = JSON.parse(arrData[i]);
-      }
-      console.log(arrData);
-      this.stationSocket();
-    },
     stationSocket:function(){
       var socket = io('ws://127.0.0.1:3003');
 
@@ -69,8 +62,9 @@ export default {
         console.log('正在打开！');
       });
       socket.on('message',(data) => {
+        console.log("建立连接:station====>mylogin");
         var strData = JSON.stringify(data)
-        console.log(strData)
+        // console.log(strData)
         console.log(data.mac,data.longitude,data.latitude);
         localStorage.setItem("stationDatas", JSON.stringify(this.stationDatas));
         var index = this.stationDatas.indexOf(strData)
