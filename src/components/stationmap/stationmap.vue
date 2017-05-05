@@ -60,15 +60,17 @@ export default {
   name: 'stationmap',
   mounted: function() {
     this.initMap();
-    this.getBaseStation();
+    // this.getBaseStation();
     this.keepsocket();
+    this.drawLocalStorage();
+    // console.log(this.getLocalStation())
   },
   methods: {
     //   初始化地图
     initMap: function() {
       var mapOptions = {
-        zoom: 14,
-        center: [119.937516, 30.272658], //定位到海创园
+        zoom: 15,
+        center: [120.01332, 30.285], //定位到海创园
         resizeEnable: true,
       }
 
@@ -101,6 +103,20 @@ export default {
         console.log(res.status)
       })
     },
+    //localStorage
+    drawLocalStorage:function(){
+      this.getLocalStation().forEach((item,index) => {
+        this.addNewMarker(item,this.markers.length);
+      })
+    },
+    getLocalStation:function(){
+      var arrData = JSON.parse(localStorage.getItem("stationDatas"));
+      for(var i = 0; i < arrData.length; i++){
+        arrData[i] = JSON.parse(arrData[i]);
+      }
+      console.log(arrData);
+      return arrData;
+    },
     //建立websocket链接
     keepsocket: function() {
         var socket = io('ws://127.0.0.1:3003');
@@ -110,7 +126,7 @@ export default {
         });
         socket.on('message',(data) => {
           console.log(socket);
-          console.log("基站数据",data);
+          console.log(data.mac,data.longitude,data.latitude);
           if (this.stationMac.indexOf(data.mac) === -1) {
               this.stationMac.push(data.mac);
               var i = this.markers.length;
