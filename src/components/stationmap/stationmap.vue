@@ -317,7 +317,7 @@ export default {
         padding-bottom: 5px;
         background-color: #fff;
         position: relative;
-        height: 91%;
+        height: 90%;
         .base-station-map {
             width: 100%;
             height: 100%;
