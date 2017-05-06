@@ -5,7 +5,7 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>行驶轨迹查询</span>
     </div>
-    <span class="tableDataOnOff" @click="showTableData"><i class="icon iconfont" >&#xe742;</i>全部数据</span>
+    <span class="tableDataOnOff" @click="showTableData"><i class="icon iconfont" >&#xe742;</i>查看数据</span>
   </div>
   <div class="content">
     <div class="trackQuery-map" id="trackQuery-map">
@@ -118,8 +118,8 @@ export default {
     getTrack: function() {
       this.$http.post(this.urlTrack, {
         mac: this.mac,
-        startTime: this.dateValue1, //this.global.formatDate(this.dateValue1),
-        endTime: this.dateValue2 //this.global.formatDate(this.dateValue2)
+        startTime:this.global.formatDate(this.dateValue1),
+        endTime:this.global.formatDate(this.dateValue2)
       }, {
         emulateJSON: true
       }).then((res) => {
@@ -130,9 +130,14 @@ export default {
               if (res.data.data.msg == "success") {
                   this.track = res.data.data.list.location;
                   this.tableData = res.data.data.list.location;
-                //   this.posToGaode(this.track);
                     // this.addMarker();
-                    this.drawRoute(this.track);
+                  this.drawRoute(this.track);
+                  this.track.forEach((item,index)=>{
+                    //高德地址转换
+                    var lnglat = new AMap.LngLat(item.longitude,item.latitude);
+                    this.global.lonlatToAddr(lnglat,item);
+                    // console.log(item)
+                  })
 
                   console.log("初始地址",this.track)
               } else {
@@ -168,36 +173,6 @@ export default {
     submit: function() {
       this.getTrack();
       this.getUserInfo();
-    },
-    //转换高德地址画出轨迹
-    posToGaode:function(data){
-        AMap.service(["AMap.Walking"],() => {
-            console.log("afdsafdsa",data.length)
-            var _this = this;
-            for (var i = 0; i < data.length-1; i++) {
-                // console.log("12432134213",data)
-                (function(i){
-                    var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
-                    AMap.convertFrom(lnglat1,"gps",(status,result) => {
-                        setTimeout(function(){
-                            console.log("======1111=======",i);
-                            _this.newRouteData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                            (function(i){
-                                var lnglat2 = new AMap.LngLat(data[i+1].longitude,data[i+1].latitude);
-                                AMap.convertFrom(lnglat2,"gps",(status,result) => {
-                                    console.log("======2222=======",i);
-                                    _this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                                    console.log(_this.newRouteData1,_this.newRouteData2);
-                                    new AMap.Walking({map:_this.amap,hideMarkers:false}).search(_this.newRouteData1,_this.newRouteData2)
-                                })
-                            }(i))
-                        },2000)
-
-                    })
-                }(i))
-            }
-        })
-
     },
     //绘制轨迹
     addMarker: function(){
@@ -257,6 +232,11 @@ export default {
             var timer = setInterval(() => {
                 if (i >= data.length-1) {
                     clearInterval(timer);
+                    console.log(document.querySelectorAll(".amap-lib-marker-to"));
+                    var endMarkers = document.querySelectorAll(".amap-lib-marker-to");
+                    var startMarkers = document.querySelectorAll(".amap-lib-marker-from")
+                    endMarkers[endMarkers.length-1].style.display = "block";
+                    startMarkers[0].style.display="block";
                 }else {
                     var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
                     console.log("======1111=======",i);
@@ -267,14 +247,13 @@ export default {
                         AMap.convertFrom(lnglat2,"gps",(status,result) => {
                             this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
                             console.log(this.newRouteData1,this.newRouteData2);
-                            new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
-                                if (status === "complete") {
-                                    i++;
-                                }
-                            })
+                              new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
+                                  if (status === "complete") {
+                                      i++;
+                                  }
+                              })
                         })
                     })
-
                 }
             },700)
         })
@@ -308,7 +287,7 @@ export default {
   },
   data() {
     return {
-      mac: "3148369587325565",
+      mac: "",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac2",
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       user: {},
@@ -317,8 +296,8 @@ export default {
       clickData: {},
       mouseoverData: {},
       allData:[],
-      dateValue1: '2017-04-01 19:01:53',
-      dateValue2: '2017-04-01 19:04:11',
+      dateValue1: '',
+      dateValue2: '',
       tableData: [],
       infoWindow:{},
       tableDataToggle: false,

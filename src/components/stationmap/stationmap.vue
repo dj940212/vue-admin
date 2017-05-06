@@ -60,9 +60,9 @@ export default {
   name: 'stationmap',
   mounted: function() {
     this.initMap();
-    // this.getBaseStation();
+    this.getBaseStation();
     this.keepsocket();
-    this.drawLocalStorage();
+    // this.drawLocalStorage();
     // console.log(this.getLocalStation())
   },
   methods: {
@@ -123,11 +123,11 @@ export default {
         var socket = io('ws://127.0.0.1:3003');
 
         socket.on('connect',function () {
-          console.log('正在打开！');
+          console.log('建立链接');
         });
         socket.on('message',(data) => {
-          console.log("建立链接：===> stationmap");
-          console.log(data.mac,data.longitude,data.latitude);
+          // console.log("建立链接：===> stationmap");
+          console.log("基站====>",data.mac.slice(12),data);
           if (this.stationMac.indexOf(data.mac) === -1) {
               this.stationMac.push(data.mac);
               var i = this.markers.length;
@@ -147,7 +147,6 @@ export default {
     },
     //编辑地图
     addMarker: function () {
-
         this.amap.clearMap();
         for (var i = 0; i < this.stationsInfo.length; i++) {
           var lnglat = new AMap.LngLat(this.stationsInfo[i].longitude,this.stationsInfo[i].latitude);
@@ -243,7 +242,7 @@ export default {
              //划出事件
             AMap.event.addListener(_this.marker,'mouseout',()=>{
                 _this.amap.clearInfoWindow();
-            })
+            });
           });
         }());
     },
@@ -256,12 +255,25 @@ export default {
         this.tableData = this.stationsInfo;
         this.toggleValue = !this.toggleValue;
     },
-    //查询定位
+    //输入框搜索
     handleIconClick(ev) {
-        if (this.stationMac.indexOf(this.mac) !== -1) {
-            this.amap.setCenter(this.markers[this.stationMac.indexOf(this.mac)].getPosition());
-            this.amap.setZoom(16);
+        var sliceMacs = [];
+        this.stationMac.forEach(function(item,index){
+          sliceMacs.push(item.slice(12));
+        })
+        console.log(sliceMacs)
+        if (sliceMacs.indexOf(this.mac) !== -1) {
+          this.amap.setCenter(this.markers[sliceMacs.indexOf(this.mac)].getPosition());
+          this.amap.setZoom(16);
+        }else {
+          if (this.stationMac.indexOf(this.mac) !== -1 ) {
+              this.amap.setCenter(this.markers[this.stationMac.indexOf(this.mac)].getPosition());
+              this.amap.setZoom(16);
+          }else {
+            alert("找不到基站")
+          }
         }
+
     }
 
 

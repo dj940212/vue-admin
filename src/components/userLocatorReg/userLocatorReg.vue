@@ -140,7 +140,7 @@ export default {
     .content {
         margin-left: 22px;
         margin-right: 22px;
-        padding-top: 1px;
+        padding-top: 15px;
         background-color: #fff;
         height: 88%;
         .el-form {

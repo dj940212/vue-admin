@@ -17,12 +17,10 @@ var options = {
 }
 
 
+var client = mqtt.connect(host, options);
 
 io.on('connection', function(client1) {
 	console.log('与浏览器websocket连接');
-
-	var client = mqtt.connect(host, options);
-
 	client.on('error', function(err) {
 		console.log(err);
 		client.end();
@@ -34,8 +32,6 @@ io.on('connection', function(client1) {
 	client.subscribe('gateway/+/stats', {
 		qos: 2
 	});
-	/*client.publish('topic','wss secure connect demohhhhhhh...!',{qos:1,retained:false});*/
-
 	client.on('close', function() {
 		console.log('断开与服务器的连接');
 	});
@@ -43,7 +39,6 @@ io.on('connection', function(client1) {
 	client.on('message', function(topic, message, packcet) {
 		var data = JSON.parse(message);
 		// console.log(data);
-		// var wgs84togcj02 = coordtransform.wgs84togcj02(data.longitude, data.latitude);
 		var date = new Date();
 		var newdata = {
 			/*date:date,*/
@@ -54,10 +49,9 @@ io.on('connection', function(client1) {
 			altitude: data.altitude,
 			online:'正常'
 		}
-		// console.log(newdata);
 		client1.emit('message', newdata);
 	});
-	client1.on('disconnect', function() {
+	client1.on('close', function() {
 		console.log('关闭');
 		client.end();
 	});

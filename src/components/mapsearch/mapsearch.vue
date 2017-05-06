@@ -344,7 +344,7 @@ export default {
         padding-bottom: 5px;
         padding-right: 9px;
         background-color: #fff;
-        height: 88%;
+        height: 90%;
         .real-time-map {
             // width: 73%;
             width: 100%;

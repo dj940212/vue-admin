@@ -18,8 +18,10 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name:'mapsearch',
-      component: mapsearch
+      name:'mylogin',
+      components:{
+          mylogin:mylogin
+      }
     },
     {
       path: '/mylogin',

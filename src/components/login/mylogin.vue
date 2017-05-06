@@ -9,7 +9,7 @@
                 <label for="">账号</label>
                 <input type="text" name="" value="" placeholder="请输入账号" v-model="telephone"><br>
                 <label for="">密码</label>
-                <input type="text" name="" value="" placeholder="请输入密码" v-model="pwd"><br>
+                <input type="password" name="" value="" placeholder="请输入密码" v-model="pwd"><br>
             </div>
             <div class="button-box">
                 <button type="button" name="button" @click="submit">确定</button>
@@ -27,7 +27,7 @@ export default {
   name: 'mylogin',
   mounted: function(){
     this.stationSocket();
-    this.getLocalStation();
+    // this.getLocalStation();
   },
   methods:{
     login:function(){
@@ -64,9 +64,11 @@ export default {
       socket.on('message',(data) => {
         console.log("建立连接:station====>mylogin");
         var strData = JSON.stringify(data)
-        // console.log(strData)
-        console.log(data.mac,data.longitude,data.latitude);
+        console.log("strData",strData)
+        console.log("this.stationDatas",this.stationDatas)
+        console.log("基站====>",data.mac.slice(12),data);
         localStorage.setItem("stationDatas", JSON.stringify(this.stationDatas));
+        console.log()
         var index = this.stationDatas.indexOf(strData)
         if (index === -1) {
             this.stationDatas.push(strData);

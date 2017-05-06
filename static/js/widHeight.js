@@ -4,6 +4,7 @@ window.onload = function(){
 
   document.getElementById('app').style.height = window.innerHeight + "px";
   document.getElementById('app').style.height = window.innerWidth + "px";
+
 }
 window.onresize=function() {
         document.getElementById('routerView').style.width = (window.innerWidth-180)+"px";

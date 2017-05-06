@@ -12,7 +12,6 @@
                 <el-table
                     :data="tableData"
                     border
-                    height="530"
                     style="width: 100%">
                     <el-table-column
                       prop="mac"
@@ -35,7 +34,7 @@
                       label="地址">
                     </el-table-column>
                     <el-table-column
-                      prop="type"
+                      prop="adcode"
                       label="工作状态">
                     </el-table-column>
                 </el-table>
@@ -75,14 +74,20 @@ export default {
         }).then((res) => {
           console.log(res.data)
           if (res.data.lp == 0 && res.data.data.msg == "请求成功") {
-            this.tableData = res.data.data.list;
+            var newTableData = res.data.data.list;
+            newTableData.forEach((item,index) => {
+              var lnglat = new AMap.LngLat(item.longitude,item.latitude);
+              this.global.lonlatToAddr(lnglat,item);
+              this.tableData = newTableData;
+              console.log(this.tableData)
+            })
           } else {
             console.log('基站数据请求失败');
           }
         }, (res) => {
           console.log(res.status)
         })
-     },
+      },
      search:function(){
          getBaseStation();
      }
