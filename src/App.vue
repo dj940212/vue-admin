@@ -17,11 +17,13 @@ import sidebar from './components/sidebar/sidebar'
 import breadcrumb from './components/breadcrumb/breadcrumb'
 export default {
   name: 'app',
+  //进入页面时
   created: function(){
-    //   this.checkLogin();
+      this.checkLogin();
   },
+  //监听路由变化
   watch:{
-    //   '$route':'checkLogin'
+      '$route':'checkLogin'
   },
   components:{
       "vHeader":header,
@@ -52,7 +54,7 @@ export default {
         //检查是否存在session
         console.log(this.getCookie('session'))
         if(!this.getCookie('session')){
-          this.$router.push('/login');
+          this.$router.push('/mylogin');
           console.log("-> login")
         }else{
           this.$router.push('/mapsearch');

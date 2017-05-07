@@ -31,6 +31,7 @@ export default {
   },
   methods:{
     login:function(){
+
         this.$http.post(this.loginUrl,{
             "telephone":this.telephone,
             "pwd":this.pwd
@@ -38,8 +39,13 @@ export default {
           emulateJSON: true
         }).then((res)=>{
             if (res.data.lp===0 && res.data.data.msg==="请求成功") {
+                //如果登录成功则保存登录状态并设置有效期
+                let expireDays = 1000 * 60 * 60 * 24 * 15;
+                this.setCookie('session', "dingjian", expireDays);
+                //跳转
                 this.$router.push('mapsearch');
                 this.username = this.telephone;
+                this.isLoging = true;
                 console.log("登录成功");
                 console.log(res.status);
             }else{
@@ -76,6 +82,11 @@ export default {
             this.stationDatas[index] = strData;
         }
       });
+    },
+    setCookie: function(c_name, value, expiredays){
+      var exdate = new Date();　　　　
+      exdate.setDate(exdate.getDate() + expiredays);　　　　
+      document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
     }
   },
   data:function(){
@@ -96,38 +107,21 @@ export default {
     width: 100%;
     height: 100%;
     position: absolute;
-    left: 0;
     top: 0;
-    .blur{
-        position: absolute;
-        display: none;
-        top: 0;
-        left: 0;
-        z-index: 100;
-        width: 100%;
-        height: 100%;
-        // filter: url(blur.svg#blur);
-
-        -webkit-filter: blur(10px);
-           -moz-filter: blur(10px);
-            -ms-filter: blur(10px);
-                filter: blur(10px);
-
-        filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false);
-    }
+    z-index: 200;
+    // background-color: red;
+    // position: relative;
     .mylogin {
         width: 440px;
         height: 500px;
         position: absolute;
-        // background-color: #fff;
-        margin: auto;
-        top: -50%;
-        left: 0;
-        bottom: 0;
-        right: 0;
+        left: 50%;
+        top: 50%;
+        margin-left: -220px;
+        margin-top: -250px;
         border-radius: 5px;
         box-shadow:0px 1px 10px 0px #888;
-        z-index: 101;
+        z-index: 401;
         .title{
             text-align: center;
             margin-top: 32px;
