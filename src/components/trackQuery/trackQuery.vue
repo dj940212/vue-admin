@@ -29,12 +29,13 @@
               </el-date-picker>
             </el-popover>
             <el-input
-              placeholder="请输入基站mac"
+              placeholder="请输入姓名或手机号查询"
               icon="search"
               class="el-input"
               v-model="mac"
               v-popover:popover1
-              :on-icon-click="handleIconClick">
+              :on-icon-click="handleIconClick"
+              :fetch-suggestions="getMac">
             </el-input>
         </div>
         <div class="block" v-show="false">
@@ -169,6 +170,10 @@ export default {
         console.log(res.status)
       })
     },
+    //获取mac来查询
+    getMac:function(){
+
+    },
     // 提交搜索
     submit: function() {
       this.getTrack();
@@ -290,6 +295,7 @@ export default {
       mac: "",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac2",
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
+      urlGetMac: this.global.port+"/langyang/Home/Police/searchDeviceByNameOrTele",
       user: {},
       track:[],
       amap: {},

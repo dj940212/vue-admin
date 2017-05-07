@@ -59,8 +59,21 @@
                       prop="message"
                       label="报警备注">
                     </el-table-column>
+                    <el-table-column
+                      fixed="right"
+                      label="查看"
+                      >
+                      <template scope="scope">
+                        <el-button
+                          type="text"
+                          size="small" @click="showMap(scope.$index)">
+                          显示
+                        </el-button>
+                      </template>
+                    </el-table-column>
                 </el-table>
             </div>
+            <!-- <div class="table-map" id="table-map"></div> -->
         </div>
     </div>
 </template>
@@ -88,6 +101,13 @@ export default {
         })
       },
       search:function(){
+      },
+      showMap:function(index){
+        var location = {};
+        location.latitude = this.tableData[index].latitude;
+        location.longitude = this.tableData[index].longitude;
+        this.global.bus.$emit("arrIndex",index)
+        this.$router.push('mapsearch')
       },
       button:function(){
           this.global.message();
@@ -147,6 +167,14 @@ export default {
             padding-right: 5px;
             background-color: #fff;
             height: 91%;
+            position: relative;
+            .table-map{
+              width: 100px;
+              height: 100px;
+              background-color: red;
+              top: 0;
+              position: absolute;
+            }
         }
     }
 </style>

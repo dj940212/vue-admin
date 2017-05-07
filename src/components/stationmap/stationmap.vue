@@ -66,7 +66,7 @@ export default {
     // console.log(this.getLocalStation())
   },
   methods: {
-    //   初始化地图
+    //初始化地图
     initMap: function() {
       var mapOptions = {
         zoom: 15,
@@ -120,7 +120,7 @@ export default {
     },
     //建立websocket链接
     keepsocket: function() {
-        var socket = io('ws://127.0.0.1:3003');
+        var socket = io('ws://121.196.194.14:3003');
 
         socket.on('connect',function () {
           console.log('建立链接');
@@ -137,66 +137,6 @@ export default {
           }
           console.log(this.stationMac)
         });
-    },
-    //高德坐标转换
-    gpsToGaode: function(lon,lat){
-        var lnglat = new AMap.LngLat(lon,lat);
-        Amap.convertFrom(lnglat,"gps",(status,result)=>{
-            this.gaodeLocations = result.locations[0]
-        })
-    },
-    //编辑地图
-    addMarker: function () {
-        this.amap.clearMap();
-        for (var i = 0; i < this.stationsInfo.length; i++) {
-          var lnglat = new AMap.LngLat(this.stationsInfo[i].longitude,this.stationsInfo[i].latitude);
-          var _this = this;
-          //闭包
-          (function(i){
-            AMap.convertFrom(lnglat,"gps",(status,result)=>{
-              //创建标记
-              _this.marker = new AMap.Marker({
-                icon: imgOffUrl,
-                position: result.locations[0],
-                title: _this.stationsInfo[i].mac,
-                map: _this.amap
-              });
-
-              _this.markers.push(_this.marker);
-              AMap.event.addListener(_this.marker, 'click',(e) => {
-                  _this.amap.setCenter(e.target.getPosition());
-                  _this.amap.setZoom(16);
-               });
-              AMap.event.addListener(_this.marker,'mouseover',(e) => {
-                    _this.global.lonlatToAddr(result.locations[0],_this.mouseoverData);
-                   setTimeout(() => {
-                       AMap.plugin('AMap.AdvancedInfoWindow',() => {
-                           //实例化信息窗体
-                          var title = '基站mac : '+_this.stationsInfo[i].mac,
-                          content = [];
-                          content.push('<span class="info-span" style="font-weight:bold">海拔：</span>'+_this.stationsInfo[i].altitude);
-                          content.push('<span class="info-span" style="font-weight:bold">经度：</span>'+_this.stationsInfo[i].latitude);
-                          content.push('<span class="info-span" style="font-weight:bold">纬度：</span>'+_this.stationsInfo[i].longitude);
-                          content.push('<span class="info-span" style="font-weight:bold">位置：</span>'+_this.mouseoverData.address)
-                          var infoWindow = new AMap.InfoWindow({
-                              isCustom: true,  //使用自定义窗体
-                              content: _this.global.createInfoWindow(title, content.join("<br/>")),
-                              offset: new AMap.Pixel(16, -45)
-                          });
-                          infoWindow.open(_this.amap,e.target.getPosition())
-                      });
-                  },200);
-
-               });
-              AMap.event.addListener(_this.marker,'mouseout',()=>{
-                  _this.amap.clearInfoWindow();
-              })
-            });
-          }(i));
-
-        }
-
-        console.log(this.markers);
     },
     addNewMarker:function(data,index){
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
@@ -275,8 +215,6 @@ export default {
         }
 
     }
-
-
   },
   data() {
     return {

@@ -1,5 +1,6 @@
 <!-- 全局常量 -->
 <script>
+import Vue from 'vue';
 const port = "http://121.196.194.14";
 
 const message=function () {
@@ -127,6 +128,7 @@ const createInfoWindow = function(title,content){
     info.appendChild(bottom);
     return info;
 }
+const bus = new Vue();
 
 export default{
     port,
@@ -135,6 +137,7 @@ export default{
     lonlatToAddr,
     createInfoWindow,
     formatDate,
-    setCookie
+    setCookie,
+    bus
 }
 </script>

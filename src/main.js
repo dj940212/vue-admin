@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Resource from 'vue-resource'
-import { TimePicker, DatePicker, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon, Form, FormItem, Upload, Row, Col} from 'element-ui'
+import { TimePicker, DatePicker, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon, Form, FormItem, Upload, Row, Col, Autocomplete} from 'element-ui'
 import global_ from './common/vue/global.vue'
 // import Mock from 'mockjs'
 //
@@ -35,6 +35,7 @@ Vue.use(FormItem)
 Vue.use(Upload)
 Vue.use(Col)
 Vue.use(Row)
+Vue.use(Autocomplete)
 
 /* eslint-disable no-new */
 new Vue({

@@ -26,7 +26,7 @@
 export default {
   name: 'mylogin',
   mounted: function(){
-    this.stationSocket();
+    // this.stationSocket();
     // this.getLocalStation();
   },
   methods:{

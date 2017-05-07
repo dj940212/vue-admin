@@ -5,10 +5,6 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>实时地图查询</span>
     </div>
-    <div class="search-box" v-show="false">
-      <input class="search-input" type="text" name="" v-model="mac">
-      <button class="search-button class-button" type="button" name="button" @click="submit">搜索</button>
-    </div>
     <div class="el-switch">
         <el-switch
           v-model="switchValue"
@@ -104,8 +100,12 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    // this.getData();
     this.keepsocket();
+    this.getAlarms();
+    this.global.bus.$on("arrIndex",(index) => {
+        this.mac = this.tableData[index].mac;
+        console.log(this.tableData[index].mac);
+    })
   },
   methods: {
     //   初始化地图
@@ -119,9 +119,9 @@ export default {
       this.amap = new AMap.Map('real-time-map', mapOptions);
     },
     //获取用户信息
-    getUserInfo: function() {
+    getUserInfo: function(userMac) {
       this.$http.post(this.urlUser, {
-        mac: this.mac
+        mac: userMac
       }, {
         emulateJSON: true
       }).then((res) => {
@@ -139,10 +139,17 @@ export default {
         console.log(res.status)
       })
     },
-    // 提交搜索
-    submit: function() {
-      console.log(this.mac);
-      this.getUserInfo();
+    //获取tableDate
+    getAlarms:function(){
+        this.$http.get(this.urlGetAlarms,{
+          emulateJSON: true
+      }).then((res) => {
+          if(res.data.lp==0&&res.data.data.msg=="请求成功"){
+              this.tableData = res.data.data.list.alarmid;
+          }
+      }, (res) => {
+          console.log(res.status)
+      })
     },
     //建立websocket链接
     keepsocket: function() {
@@ -150,17 +157,22 @@ export default {
       socket.on('connect', function() {
         console.log('连接成功！');
       });
-      socket.on('message', function(data) {
-        console.log("收到数据", data.devEUI);
-        if (switchValue) {
+      socket.on('message', (data) => {
+        console.log("收到数据", data);
+        if (this.switchValue) {
             console.log("添加标记")
+            this.addMarker(data);
         }else{
-            console.log()
+            console.log("绘制轨迹")
+            this.drawRoute(this.mac,data);
         }
+
+
       });
     },
     //绘制轨迹
-    drawRoute:function(data){
+    drawRoute:function(mac,data){
+      if (data.devEUI === mac) {
         AMap.service(["AMap.Walking"],() => {
             var lnglat = new AMap.LngLat(data.longitude,data.latitude);
             AMap.convertFrom(lnglat,"gps",(status,result) => {
@@ -173,6 +185,9 @@ export default {
             })
 
         })
+      }else {
+        console.log("mac不匹配")
+      }
     },
     //添加新标记
     addNewMarker:function(data){
@@ -183,7 +198,6 @@ export default {
           AMap.convertFrom(lnglat,"gps",(status,result)=>{
             //创建标记
             _this.marker = new AMap.Marker({
-              icon: imgOffUrl,
               position: result.locations[0],
               title: data.mac,
               map: _this.amap
@@ -193,19 +207,21 @@ export default {
             AMap.event.addListener(_this.marker, 'click',(e) => {
                 _this.amap.setCenter(e.target.getPosition());
                 _this.amap.setZoom(16);
+                _this.getUserInfo(data.devEUI);
              });
              //划过事件
             AMap.event.addListener(_this.marker,'mouseover',(e) => {
                   _this.global.lonlatToAddr(result.locations[0],_this.mouseoverData);
+                  _this.getUserInfo(data.devEUI);
                  setTimeout(() => {
                      AMap.plugin('AMap.AdvancedInfoWindow',() => {
                          //实例化信息窗体
-                        var title = '基站mac : '+data.mac,
+                        var title = 'mac : '+data.devEUI,
                         content = [];
                         content.push('<span class="info-span" style="font-weight:bold">海拔：</span>'+data.altitude);
                         content.push('<span class="info-span" style="font-weight:bold">经度：</span>'+data.latitude);
                         content.push('<span class="info-span" style="font-weight:bold">纬度：</span>'+data.longitude);
-                        content.push('<span class="info-span" style="font-weight:bold">位置：</span>'+data.address)
+                        content.push('<span class="info-span" style="font-weight:bold">位置：</span>'+_this.mouseoverData.address)
                         var infoWindow = new AMap.InfoWindow({
                             isCustom: true,  //使用自定义窗体
                             content: _this.global.createInfoWindow(title, content.join("<br/>")),
@@ -225,7 +241,7 @@ export default {
     },
     //输入框搜索
     handleIconClick:function(){
-        this.getUserInfo();
+          this.getUserInfo(this.mac);
     },
     switchChange:function() {
         if (this.switchValue) {
@@ -250,12 +266,9 @@ export default {
     //添加标记
     addMarker:function(data){
         //添加覆盖物
-       if($scope.contains(this.devEUIs,data.devEUI)===true){
-           this.devEUIs.forEach((item,index) => {
-              if(item ===data.devEUI){
-                this.update(data,index);
-              }
-           })
+        var arrIndex = this.devEUIs.indexOf(data.devEUI);
+       if(arrIndex !== -1){
+            this.update(data,arrIndex);
        }else {
          this.addNewMarker(data);
          this.devEUIs.push(data.devEUI);
@@ -265,31 +278,21 @@ export default {
     //更新地图覆盖物的位置
     update : function (data,i) {
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
-        AMap.convertFrom(lnglat,"gps",function(status,result){
+        AMap.convertFrom(lnglat,"gps",(status,result) => {
           console.log(i,"markers");
-          $scope.markers[i].setPosition(result.locations[0]);
-          $scope.markers[i].setTitle(data.devEUI);
-          $scope.markers[i].setMap($scope.map);
+          this.markers[i].setPosition(result.locations[0]);
+          this.markers[i].setTitle(data.devEUI);
+          this.markers[i].setMap(this.amap);
           console.log("更新位置完成")
         });
-    },
-    contains: function (arr,dev) {
-        if (arr.length > 0) {
-          for (var i = 0; i < arr.length; i++) {
-            if (arr[i] === dev) {
-              return true;
-            }
-          }
-          return false;
-        }
-        return false
     }
   },
   data() {
     return {
-      mac: "3148369587325565",
+      mac: "",
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
+      urlGetAlarms:this.global.port+"/langyang/Home/Police/getAlarms",
       user: {},
       switchValue:true,
       toggleInfoBoxValue:false,
@@ -297,7 +300,10 @@ export default {
       markers:[],
       routeData1:[],
       routeData2:[],
-      devEUIs:[]
+      devEUIs:[],
+      mouseoverData:[],
+      userCallMac:"",
+      tableData:[]
     }
   }
 }
@@ -422,9 +428,9 @@ export default {
 
 // ====================media==================
 @media only screen and (max-width:1350px){
-    .real-time-map{
-        width: 100% !important;
-    }
+    // .real-time-map{
+    //     width: 100% !important;
+    // }
     .info-box{
         margin-top: 30px;
         .module-ionfo{
