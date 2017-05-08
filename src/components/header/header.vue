@@ -10,10 +10,19 @@
       <span class="toggle"><i class="icon iconfont" v-show="false">&#xe606;</i></span>
       <div class="top-right">
           <div class="rightIcon">
-            <div class="button"><span class="text update"><i class="icon iconfont">&#xe642;</i></span></div>
-            <div class="button"><span class="text message"><i class="icon iconfont">&#xe619;</i></span></div>
+            <el-popover
+              ref="popover2"
+              placement="bottom"
+              title="标题"
+              width="200"
+              trigger="hover"
+              content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            </el-popover>
+            <!-- <el-button v-popover:popover2>click 激活</el-button> -->
+            <div class="button" @click="reload"><span class="text update"><i class="icon iconfont">&#xe642;</i></span></div>
+            <div class="button" v-popover:popover2><span class="text message"><i class="icon iconfont">&#xe619;</i></span></div>
             <div class="button"><span class="text setting"><i class="icon iconfont">&#xe605;</i></span></div>
-            <div class="button"><span class="text out"><i class="icon iconfont">&#xe643;</i></span></div>
+            <div class="button" @click="logout"><span class="text out"><i class="icon iconfont">&#xe643;</i></span></div>
           </div>
       </div>
   </div>
@@ -21,7 +30,38 @@
 
 <script>
 export default {
-  name: 'header'
+  name: 'header',
+  methods: {
+    reload:function(){
+      location.reload(true)
+    },
+    logout(){
+      //删除cookie并跳到登录页
+      // this.isLogouting = true;
+      //请求后端，比如logout.php
+      // this.$http.post('eaxmple.com/logout.php')...
+      //成功后删除cookie
+      this.delCookie('session');
+      //重置loding状态
+      // this.isLogouting = false;
+      //跳转到登录页
+      this.$router.push('/login');
+    },
+    delCookie:function(name){
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval = this.getCookie(name);
+        if (cval != null)
+          document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+    },
+    getCookie:function(name) {
+      var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+      if (arr = document.cookie.match(reg))
+        return (arr[2]);
+      else
+        return false;
+    }
+  }
 }
 </script>
 
@@ -37,7 +77,8 @@ export default {
   .top-left {
     display: inline-block;
     width: 180px;
-    height:81px;
+    // width: 50px;
+    height:50px;
     color: #fff;
     border-right: 1px solid #fff;
     .text{
@@ -65,6 +106,20 @@ export default {
         top: 50%;
         margin-top: -26px;
         margin-left: 10px;
+      }
+    }
+  }
+  .min-top-left {
+    width: 50px;
+    .text{
+      .title{
+        display: none;
+      }
+      .company{
+        display: none;
+      }
+      .brand{
+        margin-left: 5px;
       }
     }
   }

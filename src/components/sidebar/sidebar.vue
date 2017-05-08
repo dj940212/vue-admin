@@ -4,7 +4,7 @@
           <router-link to="/userinfo"><img src="./avatar.jpg" alt="" width="64" height="64"></router-link>
           <div class="text">
               <span class="police">警员：</span>
-              <span class="name">张某某</span>
+              <input class="name" v-model="username"></input>
           </div>
       </div>
       <div class="divider"></div>
@@ -70,6 +70,9 @@
 <script>
 export default {
   name: 'sidebar',
+  created:function(){
+
+  },
   data () {
     return {
       sidebarActive1: false,
@@ -80,6 +83,7 @@ export default {
       submenuActive3: false,
       sidebarActive4: false,
       submenuActive4: false,
+      username:"police"
     }
   },
   methods: {
@@ -126,9 +130,21 @@ export default {
               event.currentTarget.nextSibling.nextSibling.style.height=146+"px";
           }
       },
+      // name:function(){
+      //   this.global.bus.$on("username",function(id){
+      //     this.username = id;
+      //     console.log(id)
+      //   });
+      //   // console.log(this.username);
+      // }
   },
   mounted:function(){
       this.$refs.tab.style.height = (window.innerHeight-290)+"px";
+
+      this.global.bus.$on("username",function(id){
+        this.username = id;
+        console.log(id)
+      });
   }
 }
 </script>
@@ -167,7 +183,11 @@ export default {
             margin-left: -46px;
             color: #fff;
             font-size: 14px;
-            .police{
+            .name{
+              display: inline-block;
+              width: 50px;
+              background-color: #4e4c75;
+              color: #fff;
             }
         }
 
@@ -268,6 +288,37 @@ export default {
             }
         }
 
+    }
+}
+.min-sidebar{
+    width: 50px;
+    .avatar{
+      width: 50px;
+      img{
+        width: 45px;
+        height: 45px;
+        margin-left: -25px;
+      }
+      .text{
+        display: none;
+      }
+    }
+    .divider{
+      width: 50px;
+    }
+    .tab{
+      width: 50px;
+      .menu{
+        .iconfont{
+          margin-left: 10px !important;
+        }
+      }
+    }
+    .copyright{
+      width: 50px;
+      .messBox{
+        display: none;
+      }
     }
 }
 

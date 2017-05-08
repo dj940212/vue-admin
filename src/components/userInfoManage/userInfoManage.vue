@@ -67,6 +67,17 @@ export default {
   components:{
       searchBox
   },
+  methods:{
+    userDeviceInfo:function(){
+      this.$http.post(this.urlUserDeviceInfo,{
+
+      }).then((res)=>{
+
+      },(res)=>{
+
+      })
+    }
+  },
   data:function(){
       return {
           urlUserDeviceInfo:this.global.port + '/langyang/Home/Police/searchUserDeviceInfo',

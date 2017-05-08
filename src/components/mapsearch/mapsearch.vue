@@ -106,6 +106,7 @@ export default {
         this.mac = this.tableData[index].mac;
         console.log(this.tableData[index].mac);
     })
+    this.eleFence();
   },
   methods: {
     //   初始化地图
@@ -243,6 +244,23 @@ export default {
     handleIconClick:function(){
           this.getUserInfo(this.mac);
     },
+    //电子围栏
+    eleFence:function(){
+      this.$http.post(this.urlEleFence, {
+        userid: 48
+      },{
+        emulateJSON: true
+      }).then((res) => {
+        console.log(res.data)
+        if (res.data.lp == 0 && res.data.data.msg == "请求成功") {
+
+        } else {
+          console.log('数据请求失败');
+        }
+      }, (res) => {
+        console.log(res.status)
+      })
+    },
     switchChange:function() {
         if (this.switchValue) {
             console.log("位置")
@@ -251,6 +269,7 @@ export default {
             console.log("轨迹")
         }
     },
+    //信息表格
     toggleInfoBox:function(){
         this.toggleInfoBoxValue = !this.toggleInfoBoxValue;
         console.log(this.toggleInfoBoxValue);
@@ -293,6 +312,7 @@ export default {
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
       urlGetAlarms:this.global.port+"/langyang/Home/Police/getAlarms",
+      urlEleFence:this.global.port+"/langyang/Home/Police/watchElectronicFences",
       user: {},
       switchValue:true,
       toggleInfoBoxValue:false,

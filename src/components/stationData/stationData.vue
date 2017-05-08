@@ -115,7 +115,6 @@ export default {
             newTableData.forEach((item,index) => {
               var lnglat = new AMap.LngLat(item.longitude,item.latitude);
               this.global.lonlatToAddr(lnglat,item);
-              console.log(this.tableData)
               setTimeout(()=>{
                 this.tableData.push(item);
               },50)
@@ -192,12 +191,14 @@ export default {
         .addForm{
           position: absolute;
           width: 400px;
-          height: 260px;
-          margin: auto;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          top: 0;
+          height: 220px;
+          top: 70px;
+          right: 20px;
+          // margin: auto;
+          // bottom: 0;
+          // left: 0;
+          // right: 0;
+          // top: 0;
           background: #eee;
           padding: 20px;
           border-radius: 3px;
