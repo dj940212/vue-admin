@@ -5,7 +5,10 @@
             <i class="icon iconfont">&#xe612;</i>
             <span>基站数据</span>
           </div>
-          <searchBox text="查询" @click="search"></searchBox>
+          <searchBox text="查询" @click="search" v-show="false"></searchBox>
+          <div class="addStation" >
+            <i class="el-icon-plus" @click="addValue=!addValue"></i>
+          </div>
         </div>
         <div class="content">
             <div class="table-data">
@@ -19,15 +22,15 @@
                     </el-table-column>
                     <el-table-column
                       prop="altitude"
-                      label="经度">
+                      label="海拔">
                     </el-table-column>
                     <el-table-column
                       prop="longitude"
                       label="纬度">
                     </el-table-column>
                     <el-table-column
-                      prop="altitude"
-                      label="海拔">
+                      prop="latitude"
+                      label="纬度">
                     </el-table-column>
                     <el-table-column
                       prop="address"
@@ -39,6 +42,29 @@
                     </el-table-column>
                 </el-table>
             </div>
+        </div>
+        <div class="addForm" v-show="addValue">
+            <el-form ref="form" :model="form" label-width="80px">
+              <el-form-item label="基站mac">
+                <el-input v-model="form.name"></el-input>
+              </el-form-item>
+              <el-form-item label="经度">
+                <el-input v-model="form.name"></el-input>
+              </el-form-item>
+              <el-form-item label="纬度">
+                <el-input v-model="form.name"></el-input>
+              </el-form-item>
+            </el-form>
+          </el-col>
+            <el-form ref="form" :model="form" label-width="80px">
+              <el-form-item label="海拔">
+                <el-input v-model="form.name"></el-input>
+              </el-form-item>
+              <el-form-item label="">
+                <el-button v-model="form.name">添加基站</el-button>
+              </el-form-item>
+            </el-form>
+          </el-col>
         </div>
     </div>
 </template>
@@ -61,7 +87,18 @@ export default {
           longitude:"",
           latitude:"",
           altitude:"",
-          mac:""
+          mac:"",
+          addValue:false,
+          form: {
+            name: '',
+            region: '',
+            date1: '',
+            date2: '',
+            delivery: false,
+            type: [],
+            resource: '',
+            desc: '',
+          },
       }
   },
   methods:{
@@ -78,9 +115,15 @@ export default {
             newTableData.forEach((item,index) => {
               var lnglat = new AMap.LngLat(item.longitude,item.latitude);
               this.global.lonlatToAddr(lnglat,item);
-              this.tableData = newTableData;
               console.log(this.tableData)
+              setTimeout(()=>{
+                this.tableData.push(item);
+              },50)
+
             })
+            // setTimeout(()=>{
+            //   this.tableData = newTableData;
+            // },5000)
           } else {
             console.log('基站数据请求失败');
           }
@@ -88,10 +131,9 @@ export default {
           console.log(res.status)
         })
       },
-     search:function(){
+      search:function(){
          getBaseStation();
-     }
-
+      }
   }
 }
 </script>
@@ -130,6 +172,15 @@ export default {
                     left: -8px;
                 }
             }
+            .addStation{
+              float: right;
+              margin-right: 20px;
+              font-size: 20px;
+              cursor: pointer;
+              &:hover{
+                color: green;
+              }
+            }
         }
         .content{
             margin-left: 22px;
@@ -137,6 +188,24 @@ export default {
             padding-top: 1px;
             background-color: #fff;
             height: 88%;
+        }
+        .addForm{
+          position: absolute;
+          width: 400px;
+          height: 260px;
+          margin: auto;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          top: 0;
+          background: #eee;
+          padding: 20px;
+          border-radius: 3px;
+          .el-form{
+            .el-form-item{
+              margin-bottom: 10px;
+            }
+          }
         }
     }
 </style>

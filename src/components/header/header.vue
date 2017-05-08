@@ -2,20 +2,18 @@
   <div class="header">
       <div class="top-left">
         <div class="text">
-          <img class="brand" src="./brand.png" alt="" width="42" height="42">
+          <img class="brand" src="./brand.png" alt="" width="38" height="38">
           <span class="company">郎阳科技</span>
           <span class="title">助动车管理系统</span>
         </div>
       </div>
-      <div class="toggleBox">
-          <span class="toggle"><i class="icon iconfont">&#xe606;</i></span>
-      </div>
+      <span class="toggle"><i class="icon iconfont" v-show="false">&#xe606;</i></span>
       <div class="top-right">
           <div class="rightIcon">
-            <div class="button"><span class="text update"><i class="icon iconfont">&#xe642;</i>刷新</span></div>
-            <div class="button"><span class="text message"><i class="icon iconfont">&#xe619;</i>消息</span></div>
-            <div class="button"><span class="text setting"><i class="icon iconfont">&#xe605;</i>设置</span></div>
-            <div class="button"><span class="text out"><i class="icon iconfont">&#xe643;</i>退出</span></div>
+            <div class="button"><span class="text update"><i class="icon iconfont">&#xe642;</i></span></div>
+            <div class="button"><span class="text message"><i class="icon iconfont">&#xe619;</i></span></div>
+            <div class="button"><span class="text setting"><i class="icon iconfont">&#xe605;</i></span></div>
+            <div class="button"><span class="text out"><i class="icon iconfont">&#xe643;</i></span></div>
           </div>
       </div>
   </div>
@@ -29,10 +27,10 @@ export default {
 
 <style lang="less" scoped>
 .header {
-  height: 64px;
+  height: 50px;
   width: 100%;
-  background-color: #222222;
-  border: 1px solid #101010;
+  background-color: #1f2d3d;
+  // border: 1px solid #101010;
   position: fixed;
   z-index: 10;
   // box-shadow: 0px 3px 7px #212037;
@@ -47,25 +45,25 @@ export default {
       position: absolute;
       width: 180px;
       height: 64px;
-
+      letter-spacing: 1px;
       .title{
         display: block;
         position: absolute;
         left: 62px;
-        top: 37px;
-        font-size: 14px;
+        top: 29px;
+        font-size: 12px;
       }
       .company{
         display: block;
         position: absolute;
-        top: 13px;
+        top: 9px;
         left: 62px;
-        font-size: 17px;
+        font-size: 15px;
       }
       .brand{
         position: absolute;
         top: 50%;
-        margin-top: -21px;
+        margin-top: -26px;
         margin-left: 10px;
       }
     }
@@ -79,26 +77,29 @@ export default {
       .toggle{
         color: #fff;
         font-size: 25px;
-        position: absolute;
-        /*top:50%;*/
-        /*margin-top: 0px;*/
+        float: left;
         margin-left: 15px;
+        line-height: 50px;
+        margin-bottom: 20px;
       }
       .rightIcon{
         color: #fff;
         float: right;
+        margin-right: 20px;
         .button{
           color: #fff;
           display: inline-block;
-          width: 70px;
-          height: 64px;
+          width: 40px;
+          height: 50px;
           text-align: center;
+          cursor: pointer;
           &:hover{
             background-color:#fff;
             color: #03003a;
           }
           .text{
-            line-height: 64px;
+            line-height: 50px;
+            // font-size: 50px;
           }
         }
       }

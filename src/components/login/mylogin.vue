@@ -46,6 +46,7 @@ export default {
                 this.$router.push('mapsearch');
                 this.username = this.telephone;
                 this.isLoging = true;
+                // this.global.bus.$emit("login",this.isLoging)
                 console.log("登录成功");
                 console.log(res.status);
             }else{

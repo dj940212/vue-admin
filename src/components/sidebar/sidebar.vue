@@ -214,7 +214,7 @@ export default {
                     }
                 }
                 .submenu{
-                    background-color: #000;
+                    background-color: #1f2d3d;
                     height: 0;
                     overflow: hidden;
                     transition: height 0.4s;
@@ -230,8 +230,8 @@ export default {
                         height: 35px;
                         line-height: 35px;
                         padding-left: 45px;
-                        border-top: 1px solid #000;
-                        border-bottom: 1px solid #000;
+                        border-top: 1px solid #1f2d3d;
+                        border-bottom: 1px solid #1f2d3d;
                         font-size: 12px;
                         cursor: pointer;
                         &:hover{

@@ -57,8 +57,16 @@ export default {
           this.$router.push('/mylogin');
           console.log("-> login")
         }else{
-          this.$router.push('/mapsearch');
+          // this.$router.push('/mapsearch');
           console.log("-> mapsearch")
+        }
+      },
+      checkRouteChange:function(){
+        if(!this.getCookie('session')){
+          this.$router.push('/mylogin');
+          console.log("-> login")
+        }else {
+          return
         }
       }
   }
@@ -73,7 +81,7 @@ export default {
     .routerView{
         position: absolute;
         display: inline-block;
-        top: 64px;
+        top: 50px;
         left: 180px;
         background-color: #f2f2f2;
         overflow:auto;

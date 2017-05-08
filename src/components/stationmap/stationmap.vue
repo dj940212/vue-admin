@@ -63,14 +63,13 @@ export default {
     this.getBaseStation();
     this.keepsocket();
     // this.drawLocalStorage();
-    // console.log(this.getLocalStation())
   },
   methods: {
     //初始化地图
     initMap: function() {
       var mapOptions = {
         zoom: 15,
-        center: [120.01332, 30.285], //定位到海创园
+        center: [119.9404736224, 30.2667629326], //定位到海创园
         resizeEnable: true,
       }
 
@@ -90,11 +89,12 @@ export default {
         console.log(res.data)
         if (res.data.lp == 0 && res.data.data.msg == "请求成功") {
           this.stationsInfo = res.data.data.list;
-        //   this.addMarker();
-        //   this.stationsInfo.forEach((item,index) => {
-        //     //   this.addNewMarker(item,index);
-        //     //   this.stationMac.push(item.mac);
-        //   })
+          console.log(this.stationsInfo)
+          this.stationsInfo.forEach((item,arrIndex) => {
+              this.addNewMarker(item,arrIndex);
+              this.stationMac.push(item.mac);
+          });
+          console.log(this.markers)
 
         } else {
           console.log('基站数据请求失败');
@@ -102,6 +102,20 @@ export default {
       }, (res) => {
         console.log(res.status)
       })
+    },
+    checkOnline:function(data){
+      setInterval(()=>{
+        data.forEach((item,index)=>{
+          if (!item.time) {
+            var time = Date.now() - new Date(item.time).getTime();
+            if (time > 1000*60) {
+              this.markers(index).setIcon(imgOffUrl)
+            }
+          }else {
+            console.log("没有时间信息")
+          }
+        })
+      },2000)
     },
     //localStorage
     drawLocalStorage:function(){
@@ -120,24 +134,26 @@ export default {
     },
     //建立websocket链接
     keepsocket: function() {
-        var socket = io('ws://121.196.194.14:3003');
+        var socket = io('ws://127.0.0.1:3003');
 
         socket.on('connect',function () {
           console.log('建立链接');
         });
         socket.on('message',(data) => {
-          // console.log("建立链接：===> stationmap");
           console.log("基站====>",data.mac.slice(12),data);
+          console.log("markerIndex",this.markers[this.stationMac.indexOf(data.mac)]);
           if (this.stationMac.indexOf(data.mac) === -1) {
-              this.stationMac.push(data.mac);
-              var i = this.markers.length;
-              this.addNewMarker(data,i)
+              this.addNewMarker(data,this.markers.length)
           }else{
-              this.markers[this.stationMac.indexOf(data.mac)].setIcon(imgOnUrl)
+              setTimeout(() => {
+                this.markers[this.stationMac.indexOf(data.mac)].setIcon(imgOnUrl)
+              },100)
+
           }
-          console.log(this.stationMac)
+          // console.log(this.stationMac)
         });
     },
+    //添加新标记
     addNewMarker:function(data,index){
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
         var _this = this;
@@ -146,12 +162,12 @@ export default {
           AMap.convertFrom(lnglat,"gps",(status,result)=>{
             //创建标记
             _this.marker = new AMap.Marker({
-              icon: imgOnUrl,
+              icon: imgOffUrl,
               position: result.locations[0],
               title: data.mac,
               map: _this.amap
             });
-            _this.markers[index] = _this.marker;
+            _this.markers[index]= _this.marker;
             //点击事件
             AMap.event.addListener(_this.marker, 'click',(e) => {
                 _this.amap.setCenter(e.target.getPosition());
