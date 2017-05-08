@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar" id="sidebar">
+  <div class="sidebar" id="sidebar" v-show="true">
       <div class="avatar">
           <router-link to="/userinfo"><img src="./avatar.jpg" alt="" width="64" height="64"></router-link>
           <div class="text">
@@ -157,6 +157,7 @@ export default {
     width: 181px;
     height: 100%;
     background-color: #4e4c75;
+    // display: none;
     .avatar{
         position: relative;
         width: 180px;
@@ -227,8 +228,8 @@ export default {
                         font-size: 20px;
                     }
                     &:hover{
-                        border-top:1px solid #e6e6eb;
-                        border-bottom: 1px solid #e6e6eb;
+                        border-top:1px solid #fff;
+                        border-bottom: 1px solid #fff;
                     }
                     &.active{
                     }

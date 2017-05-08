@@ -12,7 +12,6 @@
                 <el-table
                     :data="tableData"
                     border
-                    height="540"
                     style="width: 100%">
                     <el-table-column
                       prop="realname"
@@ -127,7 +126,7 @@ export default {
         .content{
             margin-left: 15px;
             margin-right: 15px;
-            padding: 5px;
+            padding: 0px;
             background-color: #fff;
             height: 90%;
         }

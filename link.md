@@ -18,3 +18,21 @@
 /langyang/Home/Police/giveAlarm
 
 ## 用户报警查询
+/langyang/Home/Police/getAlarms
+/langyang/Home/Admin/deleteCar
+
+## 基站数据
+/langyang/Home/Police/getBaseStations
+
+## 基站状态查询
+/langyang/Home/Police/getBaseStations
+
+## 基站信息添加
+/langyang/Home/Police/addBaseStation
+
+## 行驶记录
+/langyang/Home/Police/getRouteByMac
+
+## 助动车行驶轨迹查询
+/langyang/Home/Police/getRouteByMac
+/langyang/Home/Police/searchUserDeviceInfo
