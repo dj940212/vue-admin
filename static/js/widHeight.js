@@ -5,7 +5,7 @@ window.onload = function(){
   document.getElementById('app').style.height = window.innerHeight + "px";
   document.getElementById('app').style.width = window.innerWidth + "px";
 
-  document.getElementById('sidebar').style.height = "100%";
+  // document.getElementById('sidebar').style.height = "100%";
 
 }
 window.onresize=function() {
@@ -17,6 +17,6 @@ window.onresize=function() {
 
 
       // document.getElementById('tab').style.width = (window.innerHeight-290)+"px";
-      document.getElementById('sidebar').style.height = "100%";
+      // document.getElementById('sidebar').style.height = "100%";
 
 }

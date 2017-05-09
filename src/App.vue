@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <v-header></v-header>
-    <div class="sidebarWrapper" >
-        <sidebar></sidebar>
-    </div>
+    <sidebar></sidebar>
     <div class="routerView" id="routerView">
         <router-view></router-view>
     </div>
@@ -78,9 +76,6 @@ export default {
         left: 180px;
         background-color: #f2f2f2;
         overflow:auto;
-    }
-    .myloginView{
-
     }
 }
 </style>
