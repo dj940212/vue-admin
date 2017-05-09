@@ -161,7 +161,7 @@ export default {
         .content{
             margin-left: 15px;
             margin-right: 15px;
-            padding-top: 1px;
+            padding-top: 0px;
             padding-left: 0px;
             padding-right: 0px;
             background-color: #fff;

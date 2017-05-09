@@ -29,7 +29,7 @@
               </el-date-picker>
             </el-popover>
             <el-input
-              placeholder="请输入姓名或手机号查询"
+              placeholder="请输入mac查询"
               icon="search"
               class="el-input"
               v-model="mac"
@@ -95,7 +95,6 @@ export default {
   name: 'trackQuery',
   mounted: function() {
     this.initMap();
-
   },
   created:function(){
   },

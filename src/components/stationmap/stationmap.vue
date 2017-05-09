@@ -202,9 +202,6 @@ export default {
           });
         }());
     },
-    stationUpdate: function(data){
-        this.addNewMarker(data)
-    },
     //基站数据搜索
     searchData:function(){
         this.getBaseStation();

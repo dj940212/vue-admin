@@ -5,7 +5,6 @@
             <i class="icon iconfont">&#xe612;</i>
             <span>基站数据</span>
           </div>
-          <searchBox text="查询" @click="search" v-show="false"></searchBox>
           <div class="addStation" >
             <i class="el-icon-plus" @click="addValue=!addValue"></i>
           </div>
@@ -39,6 +38,16 @@
                     <el-table-column
                       prop="adcode"
                       label="工作状态">
+                    </el-table-column>
+                    <el-table-column
+                      fixed="right"
+                      prop="type"
+                      label="操作"
+                      width="100">
+                      <template scope="scope">
+                        <el-button @click="handleClick" type="text" size="small">移除</el-button>
+                        <el-button type="text" size="small">编辑</el-button>
+                      </template>
                     </el-table-column>
                 </el-table>
             </div>
@@ -120,9 +129,6 @@ export default {
               },50)
 
             })
-            // setTimeout(()=>{
-            //   this.tableData = newTableData;
-            // },5000)
           } else {
             console.log('基站数据请求失败');
           }
@@ -130,8 +136,14 @@ export default {
           console.log(res.status)
         })
       },
+      addBaseStation:function(){
+
+      },
       search:function(){
          getBaseStation();
+      },
+      handleClick() {
+        console.log(1);
       }
   }
 }
@@ -184,7 +196,7 @@ export default {
         .content{
             margin-left: 22px;
             margin-right: 22px;
-            padding-top: 1px;
+            padding-top: 0px;
             background-color: #fff;
             height: 88%;
         }
@@ -192,8 +204,9 @@ export default {
           position: absolute;
           width: 400px;
           height: 220px;
-          top: 70px;
-          right: 20px;
+          top: 64px;
+          right: 22px;
+          z-index: 100;
           // margin: auto;
           // bottom: 0;
           // left: 0;

@@ -47,7 +47,7 @@ export default {
         //检查是否存在session
         console.log(this.getCookie('session'))
         if(!this.getCookie('session')){
-          this.$router.push('/mylogin');
+          this.$router.push('/login');
           console.log("-> login")
         }else{
           // this.$router.push('/mapsearch');
@@ -56,7 +56,7 @@ export default {
       },
       checkRouteChange:function(){
         if(!this.getCookie('session')){
-          this.$router.push('/mylogin');
+          this.$router.push('/login');
           console.log("-> login")
         }else {
           return

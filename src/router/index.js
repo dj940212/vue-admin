@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/components/login/login'
-import mylogin from '@/components/login/mylogin'
 import userinfo from '@/components/userinfo/userinfo'
 import mapsearch from '@/components/mapsearch/mapsearch'
 import stationmap from '@/components/stationmap/stationmap'
@@ -18,21 +17,17 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name:'mylogin',
+      name:'login',
       components:{
-          mylogin:mylogin
+          mylogin:login
       }
     },
     {
-      path: '/mylogin',
-      name: 'mylogin',
-      components:{
-          mylogin:mylogin
-      }
-    },{
       path: '/login',
       name: 'login',
-      component:login
+      components:{
+          mylogin:login
+      }
     },{
       path: '/userinfo',
       name: 'userinfo',
