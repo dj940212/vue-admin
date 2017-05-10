@@ -4,6 +4,7 @@
     <div class="title">
       <i class="icon iconfont">&#xe612;</i>
       <span>实时地图查询</span>
+      <el-button type="button" name="button" @click="clearMap" >清空地图</el-button>
     </div>
     <div class="el-switch">
         <el-switch
@@ -100,8 +101,8 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    // this.keepsocket();
-    this.testSocket();
+    this.keepsocket();
+    // this.testSocket();
     this.getAlarms();
     this.global.bus.$on("arrIndex",(index) => {
         this.mac = this.tableData[index].mac;
@@ -174,14 +175,14 @@ export default {
     },
     //测试数据
     testSocket:function(){
-      var socket = io('ws://127.0.0.1:3000')
+      var socket = io('ws://121.196.194.14:3000')
       socket.on('connect', function() {
         console.log('连接成功！');
       });
       socket.on('testData',(testdata)=>{
         console.log("testData",testdata)
         if (this.switchValue) {
-          this.addMarker(testdata);
+           this.addMarker(testdata);
         }else {
             this.drawRoute(this.mac,testdata)
         }
@@ -193,17 +194,12 @@ export default {
       if (data.devEUI === mac) {
         console.log(data.devEUI,mac);
         AMap.service(["AMap.Walking"],() => {
-            console.log("bugggggg")
             var lnglat = new AMap.LngLat(data.longitude,data.latitude);
             AMap.convertFrom(lnglat,"gps",(status,result) => {
-              console.log("convertFrom")
                 if (this.routeData1.length === 0) {
-
                     this.routeData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                    console.log(result.locations[0].getLng(),result.locations[0].getLat());
                 }
                 this.routeData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                console.log("this.routeData1");
                 new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.routeData1,this.routeData2)
                 this.routeData1 = this.routeData2;
             })
@@ -285,12 +281,11 @@ export default {
       })
     },
     switchChange:function() {
-        if (this.switchValue) {
-            console.log("位置")
-            // this.amap.clear();
-        }else{
-            console.log("轨迹")
-        }
+        // this.amap.clearMap();
+        console.log("开关切换")
+    },
+    clearMap:function(){
+      this.amap.clearMap();
     },
     //信息表格
     toggleInfoBox:function(){
@@ -338,7 +333,7 @@ export default {
   },
   data() {
     return {
-      mac: "aaa",
+      mac: "1568791236462509",
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
       urlGetAlarms:this.global.port+"/langyang/Home/Police/getAlarms",
@@ -386,6 +381,11 @@ export default {
                 font-size: 28px;
                 position: relative;
                 top: 4px;
+            }
+            .el-button{
+              float: right;
+              margin-top: 15px;
+              margin-left: 30px;
             }
             span {
                 margin-left: 5px;
