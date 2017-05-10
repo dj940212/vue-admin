@@ -100,13 +100,14 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    this.keepsocket();
+    // this.keepsocket();
+    this.testSocket();
     this.getAlarms();
     this.global.bus.$on("arrIndex",(index) => {
         this.mac = this.tableData[index].mac;
         console.log(this.tableData[index].mac);
     })
-    this.eleFence();
+    console.log(this.testData);
   },
   methods: {
     //   初始化地图
@@ -171,17 +172,39 @@ export default {
 
       });
     },
+    //测试数据
+    testSocket:function(){
+      var socket = io('ws://127.0.0.1:3000')
+      socket.on('connect', function() {
+        console.log('连接成功！');
+      });
+      socket.on('testData',(testdata)=>{
+        console.log("testData",testdata)
+        if (this.switchValue) {
+          this.addMarker(testdata);
+        }else {
+            this.drawRoute(this.mac,testdata)
+        }
+
+      })
+    },
     //绘制轨迹
     drawRoute:function(mac,data){
       if (data.devEUI === mac) {
+        console.log(data.devEUI,mac);
         AMap.service(["AMap.Walking"],() => {
+            console.log("bugggggg")
             var lnglat = new AMap.LngLat(data.longitude,data.latitude);
             AMap.convertFrom(lnglat,"gps",(status,result) => {
+              console.log("convertFrom")
                 if (this.routeData1.length === 0) {
+
                     this.routeData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
+                    console.log(result.locations[0].getLng(),result.locations[0].getLat());
                 }
                 this.routeData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                new AMap.Walking({map:this.amap,hideMarkers:false,outlineColor:"red"}).search(this.newRouteData1,this.newRouteData2)
+                console.log("this.routeData1");
+                new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.routeData1,this.routeData2)
                 this.routeData1 = this.routeData2;
             })
 
@@ -285,20 +308,27 @@ export default {
     //添加标记
     addMarker:function(data){
         //添加覆盖物
-        var arrIndex = this.devEUIs.indexOf(data.devEUI);
-       if(arrIndex !== -1){
-            this.update(data,arrIndex);
+        console.log(!this.devEUIs.length);
+       if (!this.devEUIs.length) {
+          this.addNewMarker(data);
+          this.devEUIs.push(data.devEUI);
+          console.log("this.devEUIs",this.devEUIs)
        }else {
-         this.addNewMarker(data);
-         this.devEUIs.push(data.devEUI);
-         console.log("this.devEUIs",this.devEUIs)
+         var arrIndex = this.devEUIs.indexOf(data.devEUI);
+         if(arrIndex !== -1){
+              this.update(data,arrIndex);
+         }else {
+           this.addNewMarker(data);
+           this.devEUIs.push(data.devEUI);
+           console.log("this.devEUIs",this.devEUIs)
+         }
        }
     },
     //更新地图覆盖物的位置
     update : function (data,i) {
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
         AMap.convertFrom(lnglat,"gps",(status,result) => {
-          console.log(i,"markers");
+          console.log("marker",i);
           this.markers[i].setPosition(result.locations[0]);
           this.markers[i].setTitle(data.devEUI);
           this.markers[i].setMap(this.amap);
@@ -308,7 +338,7 @@ export default {
   },
   data() {
     return {
-      mac: "",
+      mac: "aaa",
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
       urlGetAlarms:this.global.port+"/langyang/Home/Police/getAlarms",
@@ -323,7 +353,14 @@ export default {
       devEUIs:[],
       mouseoverData:[],
       userCallMac:"",
-      tableData:[]
+      tableData:[],
+      testData:[
+        {"latitude":30.2792377697,"longitude":120.0171292379},
+        {"latitude":30.2807766388,"longitude":120.0231436424},
+        {"latitude":30.2871537529,"longitude":120.0283010801},
+        {"latitude":30.2865978848,"longitude":120.0338157019},
+        {"latitude":30.2848907441,"longitude":120.0387944695}
+      ]
     }
   }
 }
