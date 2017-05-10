@@ -45,35 +45,31 @@
                       label="操作"
                       width="100">
                       <template scope="scope">
-                        <el-button @click="handleClick" type="text" size="small">移除</el-button>
-                        <el-button type="text" size="small">编辑</el-button>
+                        <el-button @click="delStation" type="text" size="small">移除</el-button>
+                        <el-button @click="changeStaion" type="text" size="small">编辑</el-button>
                       </template>
                     </el-table-column>
                 </el-table>
             </div>
         </div>
         <div class="addForm" v-show="addValue">
-            <el-form ref="form" :model="form" label-width="80px">
+            <el-form ref="form" :model="addStationPost" label-width="80px">
               <el-form-item label="基站mac">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="addStationPost.mac"></el-input>
               </el-form-item>
               <el-form-item label="经度">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="addStationPost.longitude"></el-input>
               </el-form-item>
               <el-form-item label="纬度">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="addStationPost.latitude"></el-input>
               </el-form-item>
-            </el-form>
-          </el-col>
-            <el-form ref="form" :model="form" label-width="80px">
               <el-form-item label="海拔">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="addStationPost.altitude"></el-input>
               </el-form-item>
               <el-form-item label="">
-                <el-button v-model="form.name">添加基站</el-button>
+                <el-button @click="addStation">添加基站</el-button>
               </el-form-item>
             </el-form>
-          </el-col>
         </div>
     </div>
 </template>
@@ -83,14 +79,13 @@ import searchBox from '@/components/searchBox/searchBox'
 export default {
   name: 'userInfoManage',
   mounted:function(){
-     this.getBaseStation()
-  },
-  components:{
-      searchBox
+     this.getBaseStation();
   },
   data:function(){
       return {
           urlStation:this.global.port+"/langyang/Home/Police/getBaseStations",
+          urlAddStation:this.global.port+"/langyang/Home/Police/addBaseStation",
+          urlChangeStation:this.global.port+"/langyang/Home/Police/changeBaseStation",
           tableData:[],
           id:"",
           longitude:"",
@@ -98,16 +93,13 @@ export default {
           altitude:"",
           mac:"",
           addValue:false,
-          form: {
-            name: '',
-            region: '',
-            date1: '',
-            date2: '',
-            delivery: false,
-            type: [],
-            resource: '',
-            desc: '',
-          },
+          addStationPost:{
+            id:"66",
+            longitude:"27.73594",
+            latitude:"109.186925",
+            altitude:"11",
+            mac:"aa555a0000003333"
+          }
       }
   },
   methods:{
@@ -136,15 +128,33 @@ export default {
           console.log(res.status)
         })
       },
-      addBaseStation:function(){
+      //添加基站
+      addStation:function(){
+        this.$http.post(this.urlAddStation,this.addStationPost,{
+          emulateJSON:true
+        }).then((res)=>{
+          console.log(res.data);
+        },(res)=>{
 
+        })
+      },
+      //移除基站
+      delStation:function(){
+        alert(1);
+      },
+      //修改基站
+      changeStaion:function(){
+        this.$http.post(this.urlAddStation,this.addStationPost,{
+          emulateJSON:true
+        }).then((res)=>{
+          console.log(res.data);
+        },(res)=>{
+
+        })
       },
       search:function(){
          getBaseStation();
       },
-      handleClick() {
-        console.log(1);
-      }
   }
 }
 </script>
@@ -202,7 +212,7 @@ export default {
         }
         .addForm{
           position: absolute;
-          width: 400px;
+          width: 350px;
           height: 220px;
           top: 64px;
           right: 22px;

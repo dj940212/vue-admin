@@ -41,8 +41,8 @@ export default {
         }).then((res)=>{
             if (res.data.lp===0 && res.data.data.msg==="请求成功") {
                 //如果登录成功则保存登录状态并设置有效期
-                let expireDays = 1000 * 60 * 60 * 24 * 15;
-                this.setCookie('session', "dingjian", expireDays);
+                let expireDays = 1/24;  //一小时过期
+                this.setCookie('session', res.data.data.list.id, expireDays);
                 //跳转
                 this.$router.push('mapsearch');
                 this.username = this.telephone;
