@@ -2,16 +2,16 @@
     <div class="login-wrapper" id="particles-js">
         <div class="mylogin">
             <div class="title">
-                <span>登录</span>
+                <span>郎阳科技</span>
             </div>
             <div class="login-box">
                 <label for="">账号</label>
-                <input type="text" name="" value="" placeholder="请输入账号" v-model="telephone"><br>
+                <input type="text" name="" value="" placeholder="请输入账号" v-model="telephone" id="loginUsername"><br>
                 <label for="">密码</label>
-                <input type="password" name="" value="" placeholder="请输入密码" v-model="pwd"><br>
+                <input type="password" name="" value="" placeholder="请输入密码" v-model="pwd" @keyup.13="submit"><br>
             </div>
             <div class="button-box">
-                <button type="button" name="button" @click="submit">确定</button>
+                <input type="submit" name="submit" @click="submit" value="登录" @keyup.13="submit"/>
             </div>
             <div class="register">
                 <a href="/#/login">注册</a>
@@ -29,6 +29,7 @@ export default {
     // this.stationSocket();
     // this.getLocalStation();
     // this.particles();
+    document.getElementById("loginUsername").focus();
   },
   methods:{
     login:function(){
@@ -237,7 +238,7 @@ export default {
         width: 440px;
         height: 420px;
         position: absolute;
-        background-color: #f7fafc;
+        // background-color: #f7fafc;
         left: 50%;
         top: 50%;
         margin-left: -220px;
@@ -249,7 +250,8 @@ export default {
             text-align: center;
             margin-top: 32px;
             span{
-                font-size: 24px;
+                font-size: 28px;
+                color:#1f2d3d;
 
             }
         }
@@ -276,7 +278,7 @@ export default {
         }
         .button-box{
             margin-top: 50px;
-            button{
+            input{
                 width: 120px;
                 height: 36px;
                 display: block;
@@ -288,7 +290,7 @@ export default {
                 cursor: pointer;
                 &:focus{
                     outline: none;
-                    background-color: #13212e;
+                    background-color: #4d637d;
                 }
 
             }

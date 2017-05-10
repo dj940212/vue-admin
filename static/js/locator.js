@@ -45,6 +45,7 @@ io.on('connection', function(socket) {
 
   client.on('message', function(topic, message, packcet) {
     var data = JSON.parse(message);
+    console.log(data);
     socket.emit('message', data);
 
   });

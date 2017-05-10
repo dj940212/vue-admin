@@ -200,7 +200,7 @@ export default {
                     this.routeData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
                 }
                 this.routeData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.routeData1,this.routeData2)
+                new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.routeData1,this.routeData2)
                 this.routeData1 = this.routeData2;
             })
 
