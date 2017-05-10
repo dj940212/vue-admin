@@ -1,21 +1,14 @@
 <template>
   <div class="sidebar" id="sidebar" v-show="true">
-      <!-- <div class="company">
-        <img class="" src="./brand.png" alt="" width="35" height="35">
-        <div class="text">
-          <span class="name">郎阳科技</span>
-          <span class="title">助动车管理系统</span>
-        </div>
-      </div> -->
-      <!-- <div class="avatar">
+      <div class="avatar">
           <router-link to="/userinfo"><img src="./avatar.jpg" alt="" width="64" height="64"></router-link>
           <div class="text">
               <span class="police">警员：</span>
-              <span class="name">police</span>
+              <input class="name" v-model="username"></input>
           </div>
-      </div> -->
-      <!-- <div class="divider"></div> -->
-      <!-- <div class="tab" ref="tab" id="tab" >
+      </div>
+      <div class="divider"></div>
+      <div class="tab" ref="tab" id="tab">
           <ul class="menu">
               <li class="menu-item">
                   <div class="menu-item-title" @click="toggleSidebar1" :class="{active:sidebarActive1}" >
@@ -63,14 +56,14 @@
                   </ul>
               </li>
           </ul>
-      </div> -->
-      <!-- <div class="copyright" v-show="false">
+      </div>
+      <div class="copyright">
           <div class="messBox">
               <span class="mess">Copyright @2017</span>
               <span class="mess">杭州郎阳科技有限公司</span>
               <span class="mess">版权所有</span>
           </div>
-      </div> -->
+      </div>
   </div>
 </template>
 
@@ -159,50 +152,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
 .sidebar{
-    // padding-top: 64px;
-    // width: 181px;
-    // height: 100%;
-    // background-color: #4e4c75;
-    .company {
-      display: inline-block;
-      width: 180px;
-      background-color: red;//#1f2d3d;
-      position: absolute;
-      top: 0;
-      height:50px;
-      color: #fff;
-      z-index: 100;
-      border-right: 1px solid #fff;
-      img{
-        margin-top: 8px;
-        margin-left: 10px;
-      }
-      .text{
-        display: inline-block;
-        position: absolute;
-        width: 180px;
-        height: 64px;
-        letter-spacing: 1px;
-        .title{
-          display: block;
-          position: absolute;
-          left: 20px;
-          top: 29px;
-          font-size: 12px;
-        }
-        .name{
-          display: block;
-          position: absolute;
-          top: 8px;
-          left:20px;
-          font-size: 15px;
-        }
-      }
-    }
+    position: relative;
+    padding-top: 64px;
+    width: 181px;
+    height: 100%;
+    background-color: #4e4c75;
+    // display: none;
     .avatar{
-        position: absolute;
-        // top: 100px;
-        // left: 100px;
+        position: relative;
         width: 180px;
         height: 158px;
         background-color: #4e4c75;
@@ -234,25 +191,23 @@ export default {
               color: #fff;
             }
         }
+
     }
-    // .divider{
-    //     background-image: -webkit-linear-gradient(left, transparent, #fff, transparent);
-    //     background-image: -moz-linear-gradient(left, transparent, #fff, transparent);
-    //     background-image: -o-linear-gradient(left, transparent, #fff, transparent);
-    //     background-image: linear-gradient(left, transparent, #fff, transparent);
-    //     height: 2px;
-    //     // margin: 3px 0;
-    //     overflow: hidden;
-    //     width: 180px;
-    //     background-color: #4e4c75;
-    // }
+    .divider{
+        background-image: -webkit-linear-gradient(left, transparent, #fff, transparent);
+        background-image: -moz-linear-gradient(left, transparent, #fff, transparent);
+        background-image: -o-linear-gradient(left, transparent, #fff, transparent);
+        background-image: linear-gradient(left, transparent, #fff, transparent);
+        height: 2px;
+        // margin: 3px 0;
+        overflow: hidden;
+        width: 180px;
+        background-color: #4e4c75;
+    }
     .tab{
         width: 180px;
         background-color:#4e4c75;
         overflow-x: hidden;
-        position: absolute;
-        top: 250px;
-        // display: inline-block;
         .menu{
             width: 180px;
             .menu-item{
@@ -334,6 +289,37 @@ export default {
             }
         }
 
+    }
+}
+.min-sidebar{
+    width: 50px;
+    .avatar{
+      width: 50px;
+      img{
+        width: 45px;
+        height: 45px;
+        margin-left: -25px;
+      }
+      .text{
+        display: none;
+      }
+    }
+    .divider{
+      width: 50px;
+    }
+    .tab{
+      width: 50px;
+      .menu{
+        .iconfont{
+          margin-left: 10px !important;
+        }
+      }
+    }
+    .copyright{
+      width: 50px;
+      .messBox{
+        display: none;
+      }
     }
 }
 

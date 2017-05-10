@@ -1,14 +1,14 @@
 <template>
   <div class="header">
-      <!-- <div class="top-left">
+      <div class="top-left">
         <div class="text">
           <img class="brand" src="./brand.png" alt="" width="38" height="38">
           <span class="company">郎阳科技</span>
           <span class="title">助动车管理系统</span>
         </div>
-      </div> -->
-      <span class="toggle"><i class="icon iconfont" v-show="false">&#xe606;</i></span>
-      <i class="el-icon-menu"></i>
+      </div>
+      <!-- <span class="toggle"><i class="icon iconfont" v-show="false">&#xe606;</i></span> -->
+      <!-- <i class="el-icon-menu"></i> -->
       <div class="top-right">
           <div class="rightIcon">
             <el-popover
