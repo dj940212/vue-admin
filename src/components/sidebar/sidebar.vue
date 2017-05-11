@@ -4,7 +4,7 @@
           <router-link to="/userinfo"><img src="./avatar.jpg" alt="" width="64" height="64"></router-link>
           <div class="text">
               <span class="police">警员：</span>
-              <input class="name" v-model="username"></input>
+              <span class="name">{{username}}</span>
           </div>
       </div>
       <div class="divider"></div>
@@ -95,7 +95,7 @@ export default {
           if (!this.submenuActive1) {
               event.currentTarget.nextSibling.nextSibling.style.height=0+"px";
           }else {
-              event.currentTarget.nextSibling.nextSibling.style.height=111+"px";
+              event.currentTarget.nextSibling.nextSibling.style.height=148+"px";
           }
 
       },
@@ -131,13 +131,6 @@ export default {
               event.currentTarget.nextSibling.nextSibling.style.height=146+"px";
           }
       },
-      // name:function(){
-      //   this.global.bus.$on("username",function(id){
-      //     this.username = id;
-      //     console.log(id)
-      //   });
-      //   // console.log(this.username);
-      // }
   },
   mounted:function(){
       this.$refs.tab.style.height = (window.innerHeight-290)+"px";

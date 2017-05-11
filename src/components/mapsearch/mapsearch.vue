@@ -4,7 +4,6 @@
     <div class="title">
       <i class="icon iconfont">&#xe612;</i>
       <span>实时地图查询</span>
-      <el-button type="button" name="button" @click="clearMap" >清空地图</el-button>
     </div>
     <div class="el-switch">
         <el-switch
@@ -13,7 +12,7 @@
           off-color="#222222"
           on-text="位置"
           off-text="轨迹"
-          :change="switchChange()">
+          @change="switchChange">
         </el-switch>
     </div>
   </div>
@@ -75,19 +74,19 @@
           </tr>
           <tr>
             <th>当前经度</th>
-            <td>120.0135407484</td>
+            <td>{{mouseoverData.latitude}}</td>
           </tr>
           <tr>
             <th>当前纬度</th>
-            <td>120.0135407484</td>
+            <td>{{mouseoverData.longitude}}</td>
           </tr>
           <tr>
             <th>地区编码</th>
-            <td>330110</td>
+            <td>{{mouseoverData.adcode}}</td>
           </tr>
           <tr>
             <th>点击地址</th>
-            <td>浙江省杭州市余杭区五常街道浙江海外高层次人才创新园3幢浙江海外高层次人才创新园</td>
+            <td>{{mouseoverData.address}}</td>
           </tr>
         </table>
       </div>
@@ -101,8 +100,8 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    this.keepsocket();
-    // this.testSocket();
+    // this.keepsocket();
+    this.testSocket();
     this.getAlarms();
     this.global.bus.$on("arrIndex",(index) => {
         this.mac = this.tableData[index].mac;
@@ -175,7 +174,7 @@ export default {
     },
     //测试数据
     testSocket:function(){
-      var socket = io('ws://121.196.194.14:3000')
+      var socket = io('ws://127.0.0.1:3000')
       socket.on('connect', function() {
         console.log('连接成功！');
       });
@@ -198,10 +197,12 @@ export default {
             AMap.convertFrom(lnglat,"gps",(status,result) => {
                 if (this.routeData1.length === 0) {
                     this.routeData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
+                }else {
+                  this.routeData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
+                  new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.routeData1,this.routeData2,()=>{
+                      this.routeData1 = this.routeData2;
+                  })
                 }
-                this.routeData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.routeData1,this.routeData2)
-                this.routeData1 = this.routeData2;
             })
 
         })
@@ -232,13 +233,15 @@ export default {
              //划过事件
             AMap.event.addListener(_this.marker,'mouseover',(e) => {
                   _this.global.lonlatToAddr(result.locations[0],_this.mouseoverData);
+                  _this.mouseoverData.latitude =data.latitude;
+                  _this.mouseoverData.longitude = data.longitude;
                   _this.getUserInfo(data.devEUI);
                  setTimeout(() => {
                      AMap.plugin('AMap.AdvancedInfoWindow',() => {
                          //实例化信息窗体
                         var title = 'mac : '+data.devEUI,
                         content = [];
-                        content.push('<span class="info-span" style="font-weight:bold">海拔：</span>'+data.altitude);
+                        // content.push('<span class="info-span" style="font-weight:bold">海拔：</span>'+data.altitude);
                         content.push('<span class="info-span" style="font-weight:bold">经度：</span>'+data.latitude);
                         content.push('<span class="info-span" style="font-weight:bold">纬度：</span>'+data.longitude);
                         content.push('<span class="info-span" style="font-weight:bold">位置：</span>'+_this.mouseoverData.address)
@@ -261,31 +264,14 @@ export default {
     },
     //输入框搜索
     handleIconClick:function(){
-          this.getUserInfo(this.mac);
-    },
-    //电子围栏
-    eleFence:function(){
-      this.$http.post(this.urlEleFence, {
-        userid: 48
-      },{
-        emulateJSON: true
-      }).then((res) => {
-        console.log(res.data)
-        if (res.data.lp == 0 && res.data.data.msg == "请求成功") {
+        this.getUserInfo(this.mac);
 
-        } else {
-          console.log('数据请求失败');
-        }
-      }, (res) => {
-        console.log(res.status)
-      })
+        this.amap.setCenter(this.markers[this.devEUIs.indexOf(this.mac)].getPosition());
+        this.amap.setZoom(16);
     },
     switchChange:function() {
-        // this.amap.clearMap();
+        this.amap.clearMap();
         console.log("开关切换")
-    },
-    clearMap:function(){
-      this.amap.clearMap();
     },
     //信息表格
     toggleInfoBox:function(){

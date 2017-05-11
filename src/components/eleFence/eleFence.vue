@@ -26,6 +26,7 @@ export default {
   mounted: function() {
     this.initMap();
     this.getUserInfo();
+    this.searchUser();
   },
   methods: {
     //初始化地图
@@ -138,55 +139,23 @@ export default {
         });
       });
     },
-    //添加新标记
-    addNewMarker:function(data,index){
-        var lnglat = new AMap.LngLat(data.longitude,data.latitude);
-        var _this = this;
-        //闭包
-        (function(){
-          AMap.convertFrom(lnglat,"gps",(status,result)=>{
-            //创建标记
-            _this.marker = new AMap.Marker({
-              icon: imgOffUrl,
-              position: result.locations[0],
-              title: data.mac,
-              map: _this.amap
-            });
-            _this.markers[index]= _this.marker;
-            //点击事件
-            AMap.event.addListener(_this.marker, 'click',(e) => {
-                _this.amap.setCenter(e.target.getPosition());
-                _this.amap.setZoom(16);
-             });
-             //划过事件
-            AMap.event.addListener(_this.marker,'mouseover',(e) => {
-                  _this.global.lonlatToAddr(result.locations[0],_this.mouseoverData);
-                 setTimeout(() => {
-                     AMap.plugin('AMap.AdvancedInfoWindow',() => {
-                         //实例化信息窗体
-                        var title = '基站mac : '+data.mac,
-                        content = [];
-                        content.push('<span class="info-span" style="font-weight:bold">海拔：</span>'+data.altitude);
-                        content.push('<span class="info-span" style="font-weight:bold">经度：</span>'+data.latitude);
-                        content.push('<span class="info-span" style="font-weight:bold">纬度：</span>'+data.longitude);
-                        content.push('<span class="info-span" style="font-weight:bold">位置：</span>'+_this.mouseoverData.address)
-                        var infoWindow = new AMap.InfoWindow({
-                            isCustom: true,  //使用自定义窗体
-                            content: _this.global.createInfoWindow(title, content.join("<br/>")),
-                            offset: new AMap.Pixel(16, -45)
-                        });
-                        infoWindow.open(_this.amap,e.target.getPosition())
-                    });
-                },200);
-
-             });
-             //划出事件
-            AMap.event.addListener(_this.marker,'mouseout',()=>{
-                _this.amap.clearInfoWindow();
-            });
-          });
-        }());
-    },
+    searchUser:function(){
+      this.$http.post(this.urlSearchUser, {
+        idnumber_or_phone:"18768379083"
+      }, {
+        emulateJSON: true
+      }).then((res) => {
+        if (res.data.lp == 0 && res.data.data.msg == "请求成功") {
+          if (res.data.data.list) {
+            console.log("userinfo",res.data.data.list)
+          }
+        } else {
+          alert('找不到用户');
+        }
+      }, (res) => {
+        console.log(res.status)
+      })
+    }
   },
   data() {
     return {
@@ -200,6 +169,7 @@ export default {
       stationMac:[],
       urlEleFence: this.global.port+"/langyang/Home/Police/watchElectronicFences",
       urlUserInfo: this.global.port+"/langyang/Home/Police/watchInfo",
+      urlSearchUser: this.global.port+"/langyang/Home/Police/searchUser",
       user: {},
     }
   }

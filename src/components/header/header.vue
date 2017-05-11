@@ -19,7 +19,6 @@
               trigger="hover"
               content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
             </el-popover>
-            <!-- <el-button v-popover:popover2>click 激活</el-button> -->
             <div class="button" @click="reload"><span class="text update"><i class="icon iconfont">&#xe642;</i></span></div>
             <div class="button" v-popover:popover2><span class="text message"><i class="icon iconfont">&#xe619;</i></span></div>
             <div class="button"><span class="text setting"><i class="icon iconfont">&#xe605;</i></span></div>

@@ -5,6 +5,7 @@ import userinfo from '@/components/userinfo/userinfo'
 import mapsearch from '@/components/mapsearch/mapsearch'
 import stationmap from '@/components/stationmap/stationmap'
 import userInfoManage from '@/components/userInfoManage/userInfoManage'
+import userManage from '@/components/userManage/userManage'
 import userCallReg from '@/components/userCallReg/userCallReg'
 import userCallSearch from '@/components/userCallSearch/userCallSearch'
 import trackQuery from '@/components/trackQuery/trackQuery'
@@ -45,6 +46,10 @@ export default new Router({
       path: '/userInfoManage',
       name: 'userInfoManage',
       component: userInfoManage
+  },{
+      path: '/userManage',
+      name: 'userManage',
+      component: userManage
   },{
       path: '/userCallReg',
       name: 'userCallReg',
