@@ -99,6 +99,14 @@ export default {
             latitude:"109.186925",
             altitude:"11",
             mac:"aa555a0000003333"
+          },
+          changeStaionPost:{
+            id:"66",
+            station_id:"47",
+            longitude:"222222",
+            latitude:"3333333",
+            altitude:"11",
+            mac:"aa555a0000002222"
           }
       }
   },
@@ -133,7 +141,11 @@ export default {
         this.$http.post(this.urlAddStation,this.addStationPost,{
           emulateJSON:true
         }).then((res)=>{
-          console.log(res.data);
+          if (res.data.data.msg === "请求成功" && res.data.lp ===0) {
+            console.log("添加基站成功")
+          }else{
+            console.log("添加基站失败");
+          }
         },(res)=>{
 
         })
@@ -144,16 +156,17 @@ export default {
       },
       //修改基站
       changeStaion:function(){
-        this.$http.post(this.urlAddStation,this.addStationPost,{
+        this.$http.post(this.urlChangeStation,this.changeStaionPost,{
           emulateJSON:true
         }).then((res)=>{
-          console.log(res.data);
+          if (res.data.data.msg === "请求成功" && res.data.lp ===0) {
+            console.log("修改基站成功")
+          }else{
+            console.log("修改基站失败");
+          }
         },(res)=>{
-
+          console.log(res.status);
         })
-      },
-      search:function(){
-         getBaseStation();
       },
   }
 }

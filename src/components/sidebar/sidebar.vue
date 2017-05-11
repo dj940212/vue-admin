@@ -13,12 +13,13 @@
               <li class="menu-item">
                   <div class="menu-item-title" @click="toggleSidebar1" :class="{active:sidebarActive1}" >
                       <i class="icon iconfont">&#xe615;</i>
-                      <span>定位物管理</span>
+                      <span>用户设备管理</span>
                   </div>
                   <transition name="slide">
                       <ul class="submenu">
                           <li class="submenu-item"><router-link to="/userLocatorReg">用户与定位物登记</router-link></li>
-                          <li class="submenu-item"><router-link to="/userInfoManage">信息查询与修改</router-link></li>
+                          <li class="submenu-item"><router-link to="/userInfoManage">用户与设备信息</router-link></li>
+                          <li class="submenu-item"><router-link to="/eleFence">用户电子围栏</router-link></li>
                           <li class="submenu-item"><router-link to="/mapsearch">实时地图查询</router-link></li>
                       </ul>
                   </transition>

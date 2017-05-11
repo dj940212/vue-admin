@@ -89,7 +89,9 @@ export default {
   },
   methods:{
       getAlarms:function(){
-          this.$http.get(this.url,{
+          this.$http.post(this.url,{
+            page:1
+          },{
             emulateJSON: true
         }).then((res) => {
             if(res.data.lp==0&&res.data.data.msg=="请求成功"){
