@@ -151,7 +151,7 @@ export default {
             return true
           }else {
             for(var key in value){
-              if (value[key].indexOf(this.mac)!==-1) {
+              if (value[key] && value[key].indexOf(this.mac)!==-1) {
                 return true
               }
             }
@@ -242,6 +242,9 @@ export default {
             padding-top: 0px;
             background-color: #fff;
             height: 88%;
+            .el-table__header-wrapper{
+              // position: fixed;
+            }
         }
         .addForm{
           position: absolute;

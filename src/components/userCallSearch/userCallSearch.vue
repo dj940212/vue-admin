@@ -5,7 +5,13 @@
             <i class="icon iconfont">&#xe612;</i>
             <span>报警记录查询</span>
           </div>
-          <searchBox text="查询"></searchBox>
+          <el-input
+            placeholder="请输入关键字查询"
+            icon="search"
+            class="el-input"
+            v-model="mac"
+            @change="searchRecord">
+          </el-input>
         </div>
         <div class="content">
             <div class="table-data">
@@ -84,9 +90,6 @@ export default {
   mounted:function(){
       this.getAlarms();
   },
-  components:{
-      searchBox
-  },
   methods:{
       getAlarms:function(){
           this.$http.post(this.url,{
@@ -95,13 +98,27 @@ export default {
             emulateJSON: true
         }).then((res) => {
             if(res.data.lp==0&&res.data.data.msg=="请求成功"){
-                this.tableData = res.data.data.list.alarmid;
+                this.alarms = res.data.data.list.alarmid;
+                this.tableData = this.alarms;
             }
         }, (res) => {
             console.log(res.status)
         })
       },
-      search:function(){
+      searchRecord:function(){
+        console.log("12412");
+        this.tableData = this.alarms;
+        this.tableData = this.alarms.filter((value)=>{
+          if (this.mac === "") {
+            return true
+          }else {
+            for(var key in value){
+              if (value[key] && value[key].indexOf(this.mac)!==-1) {
+                return true
+              }
+            }
+          }
+        })
       },
       showMap:function(index){
         var location = {};
@@ -110,15 +127,14 @@ export default {
         this.global.bus.$emit("arrIndex",index)
         this.$router.push('mapsearch')
       },
-      button:function(){
-          this.global.message();
-      }
-
   },
   data:function() {
       return {
           url:this.global.port+"/langyang/Home/Police/getAlarms",
-          tableData:[]
+          tableData:[],
+          mac:"",
+          alarms:[]
+
       }
   }
 }
@@ -138,7 +154,6 @@ export default {
             line-height: 64px;
             font-size: 24px;
             margin-top: 22px;
-
             .title {
                 margin-left: 15px;
                 display: inline-block;
@@ -151,13 +166,11 @@ export default {
                     margin-left: 5px;
                 }
             }
-            .search-box {
-                display: inline-block;
-                float: right;
-                .button {
-                    top: -3px;
-                    left: -8px;
-                }
+            .el-input{
+              float: right;
+              width: 200px;
+              margin-top: 15px;
+              margin-right: 30px;
             }
         }
         .content{
