@@ -179,56 +179,6 @@ export default {
       this.getUserInfo();
     },
     //绘制轨迹
-    addMarker: function(){
-        this.amap.clearMap();
-        this.track.forEach((data,index) => {
-            //高德地址转换
-            var lnglat = new AMap.LngLat(data.longitude,data.latitude)
-            AMap.convertFrom(lnglat,"gps",(status,result) => {
-                //初始化marker
-                var marker = new AMap.Marker({
-                   title:index,
-                   position:result.locations[0],
-                   map:this.amap
-                //    animation:"AMAP_ANIMATION_DROP"
-                });
-                this.routeData.push([result.locations[0].getLng(),result.locations[0].getLat()])
-
-                AMap.event.addListener(marker,'mouseover',(e) => {
-                     this.mouseoverData = data;
-                     this.global.lonlatToAddr(result.locations[0],this.mouseoverData);
-                     setTimeout(() => {
-                         AMap.plugin('AMap.AdvancedInfoWindow',() => {
-                             //实例化信息窗体
-                            var title = '姓名：'+this.user.realname+'<span class="info-span" style="font-size:11px;">手机号:'+this.user.telephone+'</span>',
-                            content = [];
-                            content.push('<span class="info-span" style="font-weight:bold">定位物mac：</span>'+this.mac);
-                            content.push('<span class="info-span" style="font-weight:bold">经纬度：</span>'+result.locations[0]);
-                            content.push('<span class="info-span" style="font-weight:bold">当前位置：</span>'+this.mouseoverData.address)
-                            this.infoWindow = new AMap.InfoWindow({
-                                isCustom: true,  //使用自定义窗体
-                                content: this.global.createInfoWindow(title, content.join("<br/>")),
-                                offset: new AMap.Pixel(16, -45)
-                            });
-                            this.infoWindow.open(this.amap,e.target.getPosition())
-                        });
-                    },100);
-
-                 });
-                AMap.event.addListener(marker,'mouseout',()=>{
-                    this.amap.clearInfoWindow();
-                })
-
-                //表格数据
-                this.global.lonlatToAddr(result.locations[0],data)
-                // this.allData.push(data);
-            })
-        })
-        // console.log(this.allData)
-        // this.tableData = this.allData;
-
-    },
-    //绘制轨迹
     drawRoute:function(data){
         AMap.service(["AMap.Walking"],() => {
             this.amap.clearMap();
@@ -236,6 +186,7 @@ export default {
             var timer = setInterval(() => {
                 if (i >= data.length-1) {
                     clearInterval(timer);
+                    //显示起终标记
                     console.log(document.querySelectorAll(".amap-lib-marker-to"));
                     var endMarkers = document.querySelectorAll(".amap-lib-marker-to");
                     var startMarkers = document.querySelectorAll(".amap-lib-marker-from")
@@ -251,7 +202,7 @@ export default {
                         AMap.convertFrom(lnglat2,"gps",(status,result) => {
                             this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
                             console.log(this.newRouteData1,this.newRouteData2);
-                              new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
+                              new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
                                   if (status === "complete") {
                                       i++;
                                   }
@@ -260,6 +211,31 @@ export default {
                     })
                 }
             },700)
+        })
+    },
+    //绘制轨迹
+    drawRoute2:function(data){
+        AMap.service(["AMap.Walking"],() => {
+            this.amap.clearMap();
+            let i = 0;
+            while (i < data.length-1) {
+              var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
+              console.log("======1111=======",i);
+              AMap.convertFrom(lnglat1,"gps",(status,result) => {
+                  this.newRouteData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
+                  var lnglat2 = new AMap.LngLat(data[i+1].longitude,data[i+1].latitude);
+                  console.log("======2222=======",i+1);
+                  AMap.convertFrom(lnglat2,"gps",(status,result) => {
+                      this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
+                      console.log(this.newRouteData1,this.newRouteData2);
+                        new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
+                            if (status === "complete") {
+                                i++;
+                            }
+                        })
+                  })
+              })
+            }
         })
     },
     //显示关闭数据表格
@@ -273,16 +249,13 @@ export default {
     },
     handleIconClick: function(){
         this.submit();
-        // setTimeout(()=>{
-        //     this.mydriving();
-        // },20000)
     },
     mydriving:function(){
         //步行导航
         this.amap.clearMap();
         AMap.service(["AMap.Walking"], () => {
             for (var i = 0; i < this.routeData.length-1; i++) {
-                new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.routeData[i],this.routeData[i+1])
+                new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.routeData[i],this.routeData[i+1])
             }
         })
         console.log("线路规划");
@@ -291,7 +264,7 @@ export default {
   },
   data() {
     return {
-      mac: "",
+      mac: "3148369587325565",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac2",
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       urlGetMac: this.global.port+"/langyang/Home/Police/searchDeviceByNameOrTele",
@@ -301,8 +274,8 @@ export default {
       clickData: {},
       mouseoverData: {},
       allData:[],
-      dateValue1: '',
-      dateValue2: '',
+      dateValue1: new Date('Sat Apr 01 2017 19:00:30 GMT+0800'),
+      dateValue2: new Date('Sat Apr 01 2017 19:02:30 GMT+0800'),
       tableData: [],
       infoWindow:{},
       tableDataToggle: false,

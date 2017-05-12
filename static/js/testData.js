@@ -3,14 +3,14 @@ var io = require("socket.io")(server);
 var testData = [
   {"devEUI":"aaa","latitude":30.2796092364,"longitude":120.0161752634},
   {"devEUI":"aaa","latitude":30.2797389484,"longitude":120.0168458156},
-  {"devEUI":"aaa","latitude":30.2801280836,"longitude":120.0181279115},
-  {"devEUI":"aaa","latitude":30.2805450125,"longitude":120.0194368295},
-  {"devEUI":"aaa","latitude":30.2814993096,"longitude":120.0194046430},
-  {"devEUI":"aaa","latitude":30.2825879382,"longitude":120.0190023117},
-  {"devEUI":"aaa","latitude":30.2833105956,"longitude":120.0187072687},
-  {"devEUI":"aaa","latitude":30.2833059632,"longitude":120.0175968342},
-  {"devEUI":"aaa","latitude":30.2823980081,"longitude":120.0168565445},
-  {"devEUI":"aaa","latitude":30.2827037490,"longitude":120.0155154400}
+  {"devEUI":"bbb","latitude":30.2801280836,"longitude":120.0181279115},
+  {"devEUI":"bbb","latitude":30.2805450125,"longitude":120.0194368295},
+  {"devEUI":"ccc","latitude":30.2814993096,"longitude":120.0194046430},
+  {"devEUI":"ccc","latitude":30.2825879382,"longitude":120.0190023117},
+  {"devEUI":"ddd","latitude":30.2833105956,"longitude":120.0187072687},
+  {"devEUI":"ddd","latitude":30.2833059632,"longitude":120.0175968342},
+  {"devEUI":"eee","latitude":30.2823980081,"longitude":120.0168565445},
+  {"devEUI":"eee","latitude":30.2827037490,"longitude":120.0155154400}
 ];
 
 io.on("connection",function(socket){

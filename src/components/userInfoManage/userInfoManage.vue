@@ -107,7 +107,7 @@ export default {
           urlModifyCar:this.global.port + '/langyang/Home/Police/modifyCar',
           urlDeleteCar:this.global.port + '/langyang/Home/Police/deleteCar',
           tableData:[],
-          mac:"",
+          mac:"aa555a0000001002",
           onOffValue:false
       }
   }

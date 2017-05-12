@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar" id="sidebar" v-show="true">
       <div class="avatar">
-          <router-link to="/userinfo"><img src="./avatar.jpg" alt="" width="64" height="64"></router-link>
+          <router-link to="/userinfo"><img src="./avatar.png" alt="" width="64" height="64"></router-link>
           <div class="text">
               <span class="police">警员：</span>
               <span class="name">{{username}}</span>

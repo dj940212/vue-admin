@@ -59,7 +59,24 @@ const lonlatToAddr = function(lonlat,data) {
     });
   });
 }
+//坐标转换地址
+const lonlatToAddr2 = function(lonlat,data,cb) {
+  AMap.service('AMap.Geocoder', () => { //回调函数
+    var geocoder = new AMap.Geocoder();
+    geocoder.getAddress(lonlat, (status, result) => {
+      if (status === 'complete' && result.info === 'OK') {
+        //TODO:获得了有效经纬度，可以做一些展示工作
+        data.address = result.regeocode.formattedAddress;
+        data.adcode = result.regeocode.addressComponent.adcode;
 
+        cb && cb();
+
+      } else {
+        //获取经纬度失败
+      }
+    });
+  });
+}
 //格式化日期
 const formatDate=function(value){
     if(value){
@@ -88,7 +105,6 @@ const formatDate=function(value){
     }
     return
 }
-
 //构建自定义信息窗体
 const createInfoWindow = function(title,content){
     var info = document.createElement("div");
@@ -128,13 +144,14 @@ const createInfoWindow = function(title,content){
     info.appendChild(bottom);
     return info;
 }
+//组建通信
 const bus = new Vue();
-
 export default{
     port,
     message,
     initMap,
     lonlatToAddr,
+    lonlatToAddr2,
     createInfoWindow,
     formatDate,
     setCookie,

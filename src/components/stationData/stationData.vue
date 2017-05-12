@@ -8,6 +8,14 @@
           <div class="addStation" >
             <i class="el-icon-plus" @click="addValue=!addValue"></i>
           </div>
+          <el-input
+            placeholder="请输入关键字查询"
+            icon="search"
+            class="el-input"
+            v-model="mac"
+            :on-icon-click="searchStation"
+            @change="searchStation">
+          </el-input>
         </div>
         <div class="content">
             <div class="table-data">
@@ -25,7 +33,7 @@
                     </el-table-column>
                     <el-table-column
                       prop="longitude"
-                      label="纬度">
+                      label="经度">
                     </el-table-column>
                     <el-table-column
                       prop="latitude"
@@ -87,6 +95,7 @@ export default {
           urlAddStation:this.global.port+"/langyang/Home/Police/addBaseStation",
           urlChangeStation:this.global.port+"/langyang/Home/Police/changeBaseStation",
           tableData:[],
+          stationData:[],
           id:"",
           longitude:"",
           latitude:"",
@@ -120,20 +129,33 @@ export default {
         }).then((res) => {
           console.log(res.data)
           if (res.data.lp == 0 && res.data.data.msg == "请求成功") {
-            var newTableData = res.data.data.list;
-            newTableData.forEach((item,index) => {
+            this.stationData = res.data.data.list;
+            this.stationData.forEach((item,index) => {
               var lnglat = new AMap.LngLat(item.longitude,item.latitude);
-              this.global.lonlatToAddr(lnglat,item);
-              setTimeout(()=>{
+              this.global.lonlatToAddr2(lnglat,item,()=>{
                 this.tableData.push(item);
-              },50)
-
+              });
             })
           } else {
             console.log('基站数据请求失败');
           }
         }, (res) => {
           console.log(res.status)
+        })
+      },
+      //查询基站
+      searchStation:function(){
+        this.tableData = this.stationData;
+        this.tableData = this.tableData.filter((value)=>{
+          if (this.mac === "") {
+            return true
+          }else {
+            for(var key in value){
+              if (value[key].indexOf(this.mac)!==-1) {
+                return true
+              }
+            }
+          }
         })
       },
       //添加基站
@@ -198,22 +220,20 @@ export default {
                     margin-left: 5px;
                 }
             }
-            .search-box {
-                display: inline-block;
-                float: right;
-                .button {
-                    top: -3px;
-                    left: -8px;
-                }
-            }
             .addStation{
               float: right;
-              margin-right: 20px;
+              margin-right: 25px;
               font-size: 20px;
               cursor: pointer;
               &:hover{
                 color: green;
               }
+            }
+            .el-input{
+              float: right;
+              width: 200px;
+              margin-top: 15px;
+              margin-right: 30px;
             }
         }
         .content{
