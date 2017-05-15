@@ -54,7 +54,7 @@
                       width="100">
                       <template scope="scope">
                         <el-button @click="delStation" type="text" size="small">移除</el-button>
-                        <el-button @click="changeStaion" type="text" size="small">编辑</el-button>
+                        <el-button @click="openMessageBox" type="text" size="small">编辑</el-button>
                       </template>
                     </el-table-column>
                 </el-table>
@@ -111,10 +111,10 @@ export default {
           },
           changeStaionPost:{
             id:"66",
-            station_id:"47",
-            longitude:"222222",
-            latitude:"3333333",
-            altitude:"11",
+            station_id:"50",
+            longitude:"99999999",
+            latitude:"999999999",
+            altitude:"999999999",
             mac:"aa555a0000002222"
           }
       }
@@ -190,6 +190,23 @@ export default {
           console.log(res.status);
         })
       },
+      openMessageBox() {
+        this.$confirm('确定永久删除该基站信息?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      }
   }
 }
 </script>

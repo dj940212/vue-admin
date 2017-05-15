@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Resource from 'vue-resource'
-import { TimePicker, DatePicker, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon, Form, FormItem, Upload, Row, Col, Autocomplete, Card} from 'element-ui'
+import { TimePicker, DatePicker, Message, MessageBox, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon, Form, FormItem, Upload, Row, Col, Autocomplete, Card} from 'element-ui'
 import global_ from './common/vue/global.vue'
 Vue.prototype.global = global_
 
@@ -28,6 +28,12 @@ Vue.use(Col)
 Vue.use(Row)
 Vue.use(Autocomplete)
 Vue.use(Card)
+
+Vue.prototype.$message = Message
+Vue.prototype.$msgbox = MessageBox
+Vue.prototype.$alert = MessageBox.alert
+Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$prompt = MessageBox.prompt
 
 /* eslint-disable no-new */
 new Vue({

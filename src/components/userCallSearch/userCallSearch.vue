@@ -5,7 +5,9 @@
             <i class="icon iconfont">&#xe612;</i>
             <span>报警记录查询</span>
           </div>
-          <i class="el-icon-plus" @click="switchValue=!switchValue"></i>
+          <transition name="rotate">
+            <i class="el-icon-plus" @click="switchValue=!switchValue"></i>
+          </transition>
           <el-input
             placeholder="请输入关键字查询"
             icon="search"
@@ -18,26 +20,25 @@
           <div class="addUserLocator" v-show="switchValue">
               <el-col :span="12">
                   <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="身份证号">
+                    <el-form-item label="姓名">
                       <el-input v-model="form.name"></el-input>
                     </el-form-item>
                     <el-form-item label="手机号">
                       <el-input v-model="form.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="姓名">
+                    <el-form-item label="身份证号">
                       <el-input v-model="form.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="地址">
+                    <el-form-item label="mac">
                       <el-input v-model="form.name"></el-input>
                     </el-form-item>
                     </el-form-item>
-                    <el-form-item label="出生年月">
+                    <el-form-item label="定位物类型">
                         <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="性别">
+                    <el-form-item label="纬度">
                       <el-switch on-text="女" off-text="男" v-model="form.delivery"></el-switch>
                     </el-form-item>
-
                     <el-form-item>
                       <el-button type="primary" @click="onSubmit">立即创建</el-button>
                       <el-button>取消</el-button>
@@ -46,26 +47,17 @@
               </el-col>
               <el-col :span="12">
                   <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="定位物mac">
+                    <el-form-item label="经度">
                       <el-input v-model="form.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="定位物标识">
+                    <el-form-item label="纬度">
                       <el-input v-model="form.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="定位物类型">
+                    <el-form-item label="地址">
                       <el-input v-model="form.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="身份证照片">
-                        <el-upload
-                          class="avatar-uploader"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :show-file-list="false"
-                          :on-success="handleAvatarSuccess"
-                          :before-upload="beforeAvatarUpload"
-                          style="display:inline-block">
-                          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
+                    <el-form-item label="时间">
+                        <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
                     </el-form-item>
                   </el-form>
               </el-col>
@@ -142,7 +134,7 @@
 <script>
 import searchBox from '@/components/searchBox/searchBox'
 export default {
-  name: 'userInfoManage',
+  name: 'userCallSearch',
   mounted:function(){
       this.getAlarms();
   },
@@ -218,7 +210,7 @@ export default {
             desc: '',
           },
           imageUrl: '',
-          switchValue:true
+          switchValue:false
 
       }
   }
@@ -257,7 +249,15 @@ export default {
               margin-right: 20px;
               &:hover{
                 color: red;
+                transform: rotate(45deg);
               }
+
+            }
+            .rotate-enter,.rotate-leave-active{
+                transition: opacity .5s;
+            }
+            .rotate-enter-active,.rotate-leave{
+                opacity: 0;
             }
             .el-input{
               float: right;

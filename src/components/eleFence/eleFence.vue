@@ -1,5 +1,5 @@
 <template>
-<div class="stationmap">
+<div class="eleFence">
   <div class="header">
     <div class="title">
       <i class="icon iconfont">&#xe612;</i>
@@ -155,7 +155,10 @@ export default {
       }, (res) => {
         console.log(res.status)
       })
-    }
+    },
+    open:function(){
+      this.$message('这是一条消息提示');
+    },
   },
   data() {
     return {
@@ -177,7 +180,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.stationmap {
+.eleFence {
     width: 100%;
     height: 95%;
     padding-top: 15px;
