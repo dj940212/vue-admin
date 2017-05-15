@@ -104,8 +104,8 @@ export default {
     this.testSocket();
     this.getAlarms();
     this.global.bus.$on("arrIndex",(index) => {
-        this.mac = this.tableData[index].mac;
-        console.log(this.tableData[index].mac);
+        // this.mac = this.tableData[index].mac;
+        // console.log(this.tableData[index].mac);
     })
     console.log(this.testData);
   },
