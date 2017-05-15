@@ -1,5 +1,12 @@
 <template>
   <div class="sidebar" id="sidebar" v-show="true">
+      <div class="top-left">
+        <div class="text">
+          <img class="brand" src="./brand.png" alt="" width="38" height="38">
+          <span class="company">郎阳科技</span>
+          <span class="title">助动车管理系统</span>
+        </div>
+      </div>
       <div class="avatar">
           <router-link to="/userinfo"><img src="./avatar.png" alt="" width="64" height="64"></router-link>
           <div class="text">
@@ -146,12 +153,47 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
 .sidebar{
-    position: relative;
-    padding-top: 64px;
+    position: absolute;
     width: 181px;
     height: 100%;
     background-color: #4e4c75;
+    z-index: 11;
     // display: none;
+    .top-left {
+      display: inline-block;
+      width: 181px;
+      background-color: #1f2d3d;
+      height:50px;
+      color: #fff;
+      border-right: 1px solid #fff;
+      .text{
+        display: inline-block;
+        position: absolute;
+        width: 180px;
+        height: 64px;
+        letter-spacing: 1px;
+        .title{
+          display: block;
+          position: absolute;
+          left: 62px;
+          top: 29px;
+          font-size: 12px;
+        }
+        .company{
+          display: block;
+          position: absolute;
+          top: 9px;
+          left: 62px;
+          font-size: 15px;
+        }
+        .brand{
+          position: absolute;
+          top: 50%;
+          margin-top: -26px;
+          margin-left: 10px;
+        }
+      }
+    }
     .avatar{
         position: relative;
         width: 180px;
@@ -285,36 +327,4 @@ export default {
 
     }
 }
-.min-sidebar{
-    width: 50px;
-    .avatar{
-      width: 50px;
-      img{
-        width: 45px;
-        height: 45px;
-        margin-left: -25px;
-      }
-      .text{
-        display: none;
-      }
-    }
-    .divider{
-      width: 50px;
-    }
-    .tab{
-      width: 50px;
-      .menu{
-        .iconfont{
-          margin-left: 10px !important;
-        }
-      }
-    }
-    .copyright{
-      width: 50px;
-      .messBox{
-        display: none;
-      }
-    }
-}
-
 </style>

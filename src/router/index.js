@@ -12,6 +12,7 @@ import trackQuery from '@/components/trackQuery/trackQuery'
 import stationData from '@/components/stationData/stationData'
 import userLocatorReg from '@/components/userLocatorReg/userLocatorReg'
 import eleFence from '@/components/eleFence/eleFence'
+import test from '@/components/test/test'
 
 Vue.use(Router)
 
@@ -74,6 +75,10 @@ export default new Router({
       path: '/eleFence',
       name:'eleFence',
       component:eleFence
+  },{
+      path: '/test',
+      name:'test',
+      component:test
   }
   ]
 })

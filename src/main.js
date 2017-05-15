@@ -3,12 +3,15 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store/'
 import Resource from 'vue-resource'
 import { TimePicker, DatePicker, Message, MessageBox, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon, Form, FormItem, Upload, Row, Col, Autocomplete, Card} from 'element-ui'
 import global_ from './common/vue/global.vue'
 Vue.prototype.global = global_
 
 Vue.config.productionTip = false
+
+// Vue.use(Vuex)
 
 Vue.use(TimePicker)
 Vue.use(DatePicker)
@@ -39,6 +42,7 @@ Vue.prototype.$prompt = MessageBox.prompt
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

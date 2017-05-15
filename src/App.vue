@@ -5,6 +5,7 @@
     <div class="routerView" id="routerView">
         <router-view></router-view>
     </div>
+    <!-- <input type="button" value="增加" @click="increment"> -->
     <router-view class="myloginView" name="mylogin"></router-view>
   </div>
 </template>

@@ -75,7 +75,7 @@
                 <el-input v-model="addStationPost.altitude"></el-input>
               </el-form-item>
               <el-form-item label="">
-                <el-button @click="addStation">添加基站</el-button>
+                <el-button @click="openMessageBox">添加基站</el-button>
               </el-form-item>
             </el-form>
         </div>
@@ -159,12 +159,13 @@ export default {
         })
       },
       //添加基站
-      addStation:function(){
+      addStation:function(cb){
         this.$http.post(this.urlAddStation,this.addStationPost,{
           emulateJSON:true
         }).then((res)=>{
           if (res.data.data.msg === "请求成功" && res.data.lp ===0) {
             console.log("添加基站成功")
+            cb();
           }else{
             console.log("添加基站失败");
           }
@@ -191,19 +192,21 @@ export default {
         })
       },
       openMessageBox() {
-        this.$confirm('确定永久删除该基站信息?', '提示', {
+        this.$confirm('确定添加基站?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'info'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
+          this.addStation(()=>{
+            this.$message({
+              type: 'success',
+              message: '添加成功!'
+            });
+          })
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除'
+            message: '取消添加'
           });
         });
       }

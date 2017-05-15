@@ -1,14 +1,8 @@
 <template>
   <div class="header">
-      <div class="top-left">
-        <div class="text">
-          <img class="brand" src="./brand.png" alt="" width="38" height="38">
-          <span class="company">郎阳科技</span>
-          <span class="title">助动车管理系统</span>
-        </div>
-      </div>
       <!-- <span class="toggle"><i class="icon iconfont" v-show="false">&#xe606;</i></span> -->
-      <!-- <i class="el-icon-menu"></i> -->
+      <i class="el-icon-menu" @click="toggleSidebar"></i>
+      <!-- <input type="button" value="增加" @click="increment"> -->
       <div class="top-right">
           <div class="rightIcon">
             <el-popover
@@ -29,6 +23,7 @@
 </template>
 
 <script>
+// import {mapGetters,mapActions} from 'vuex'
 export default {
   name: 'header',
   methods: {
@@ -60,6 +55,14 @@ export default {
         return (arr[2]);
       else
         return false;
+    },
+    toggleSidebar:function(){
+    },
+
+  },
+  data:function(){
+    return{
+      sidebarValue:true
     }
   }
 }
@@ -73,55 +76,12 @@ export default {
   // border: 1px solid #101010;
   position: fixed;
   z-index: 10;
-  // box-shadow: 0px 3px 7px #212037;
-  .top-left {
-    display: inline-block;
-    width: 180px;
-    // width: 50px;
-    height:50px;
+  .el-icon-menu{
+    float: left;
+    margin-left: 195px;
     color: #fff;
-    border-right: 1px solid #fff;
-    .text{
-      display: inline-block;
-      position: absolute;
-      width: 180px;
-      height: 64px;
-      letter-spacing: 1px;
-      .title{
-        display: block;
-        position: absolute;
-        left: 62px;
-        top: 29px;
-        font-size: 12px;
-      }
-      .company{
-        display: block;
-        position: absolute;
-        top: 9px;
-        left: 62px;
-        font-size: 15px;
-      }
-      .brand{
-        position: absolute;
-        top: 50%;
-        margin-top: -26px;
-        margin-left: 10px;
-      }
-    }
-  }
-  .min-top-left {
-    width: 50px;
-    .text{
-      .title{
-        display: none;
-      }
-      .company{
-        display: none;
-      }
-      .brand{
-        margin-left: 5px;
-      }
-    }
+    font-size: 25px;
+    line-height: 50px;
   }
   .top-right {
     float: right;
