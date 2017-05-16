@@ -6,7 +6,7 @@
             <span>报警记录查询</span>
           </div>
           <transition name="rotate">
-            <i class="el-icon-plus" @click="switchValue=!switchValue"></i>
+            <i class="el-icon-plus" v-bind:class="{active:switchValue}" @click="switchValue=!switchValue"></i>
           </transition>
           <el-input
             placeholder="请输入关键字查询"
@@ -15,62 +15,75 @@
             v-model="mac"
             @change="searchRecord">
           </el-input>
+          <div class="triangle-up" v-show="switchValue"></div>
         </div>
         <div class="content">
           <div class="addUserLocator" v-show="switchValue">
               <el-col :span="12">
-                  <el-form ref="form" :model="form" label-width="80px">
+                  <el-form ref="form" :model="addAlarmPost" label-width="80px">
                     <el-form-item label="姓名">
-                      <el-input v-model="form.name"></el-input>
+                      <el-input v-model="addAlarmPost.realname"></el-input>
                     </el-form-item>
                     <el-form-item label="手机号">
-                      <el-input v-model="form.name"></el-input>
+                      <el-input v-model="addAlarmPost.telephone"></el-input>
                     </el-form-item>
                     <el-form-item label="身份证号">
-                      <el-input v-model="form.name"></el-input>
+                      <el-input v-model="addAlarmPost.idcard_number"></el-input>
                     </el-form-item>
                     <el-form-item label="mac">
-                      <el-input v-model="form.name"></el-input>
+                      <el-input v-model="addAlarmPost.mac"></el-input>
                     </el-form-item>
                     </el-form-item>
                     <el-form-item label="定位物类型">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
+                        <el-input v-model="addAlarmPost.device_type"></el-input>
                     </el-form-item>
-                    <el-form-item label="纬度">
-                      <el-switch on-text="女" off-text="男" v-model="form.delivery"></el-switch>
-                    </el-form-item>
-                    <el-form-item>
-                      <el-button type="primary" @click="onSubmit">立即创建</el-button>
-                      <el-button>取消</el-button>
+                    <el-form-item label="报警信息">
+                      <el-input
+                        type="textarea"
+                        :autosize="{ minRows: 3, maxRows: 4}"
+                        placeholder="请输入内容"
+                        v-model="addAlarmPost.message">
+                      </el-input>
                     </el-form-item>
                   </el-form>
               </el-col>
               <el-col :span="12">
-                  <el-form ref="form" :model="form" label-width="80px">
+                  <el-form ref="form" :model="addAlarmPost" label-width="80px">
                     <el-form-item label="经度">
-                      <el-input v-model="form.name"></el-input>
+                      <el-input v-model="addAlarmPost.longitude"></el-input>
                     </el-form-item>
                     <el-form-item label="纬度">
-                      <el-input v-model="form.name"></el-input>
+                      <el-input v-model="addAlarmPost.latitude"></el-input>
                     </el-form-item>
                     <el-form-item label="地址">
-                      <el-input v-model="form.name"></el-input>
+                      <el-input v-model="addAlarmPost.address"></el-input>
                     </el-form-item>
-                    <el-form-item label="时间">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
+                    <el-form-item label="地区编码">
+                      <el-input v-model="addAlarmPost.adcode"></el-input>
+                    </el-form-item>
+                    <el-form-item label="案发时间">
+                        <el-date-picker type="date" placeholder="选择日期" v-model="addAlarmPost.heppen_time" style="width: 100%;"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item>
+                      <br>
+                      <el-button type="primary" @click="openMessageBox">立即创建</el-button>
+                      <el-button @click="switchValue=false">取消</el-button>
                     </el-form-item>
                   </el-form>
               </el-col>
           </div>
-            <div class="table-data">
+          <div class="table-data">
                 <el-table
                     :data="tableData"
                     border
                     style="width: 100%">
                     <el-table-column
+                      prop="id"
+                      label="id">
+                    </el-table-column>
+                    <el-table-column
                       prop="realname"
                       label="姓名">
-                      height
                     </el-table-column>
                     <el-table-column
                       prop="idcard_number"
@@ -114,19 +127,28 @@
                     </el-table-column>
                     <el-table-column
                       fixed="right"
-                      label="查看"
-                      >
+                      label="操作"
+                      width="100">
                       <template scope="scope">
                         <el-button
                           type="text"
                           size="small" @click="showMap(scope.$index)">
                           显示
                         </el-button>
+                        <el-button
+                          type="text"
+                          size="small">
+                          编辑
+                        </el-button>
                       </template>
                     </el-table-column>
                 </el-table>
             </div>
-            <!-- <div class="table-map" id="table-map"></div> -->
+            <el-pagination
+               layout="prev, pager, next"
+               :total="1000"
+               :page-size="18">
+             </el-pagination>
         </div>
     </div>
 </template>
@@ -139,20 +161,35 @@ export default {
       this.getAlarms();
   },
   methods:{
+      //获取记录
       getAlarms:function(){
-          this.$http.post(this.url,{
-            page:1
+          this.$http.post(this.urlGetAlarms,{
+            page:7
           },{
             emulateJSON: true
         }).then((res) => {
             if(res.data.lp==0&&res.data.data.msg=="请求成功"){
                 this.alarms = res.data.data.list.alarmid;
+                this.alarmsData = res.data.data.list;
                 this.tableData = this.alarms;
             }
         }, (res) => {
             console.log(res.status)
         })
       },
+      //添加报警记录
+      addAlarm:function(cb){
+        this.$http.post(this.urlAddAlarm,this.addAlarmPost,{
+          emulateJSON:true
+        }).then((res)=>{
+          if (res.data.lp===0&&res.data.data.msg==="请求成功") {
+            cb()
+          }
+        },(res)=>{
+          console.log(res.status)
+        })
+      },
+      //记录查询，模糊匹配
       searchRecord:function(){
         this.tableData = this.alarms;
         this.tableData = this.alarms.filter((value)=>{
@@ -167,6 +204,7 @@ export default {
           }
         })
       },
+      //在地图上显示
       showMap:function(index){
         var location = {};
         location.latitude = this.tableData[index].latitude;
@@ -174,40 +212,66 @@ export default {
         this.global.bus.$emit("arrIndex",index)
         this.$router.push('mapsearch')
       },
-      onSubmit() {
-        console.log('submit!');
+      //打开对话框
+      openMessageBox() {
+        this.$confirm('确定提交报警信息?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'info'
+        }).then(() => {
+          this.addAlarm(()=>{
+            this.$message({
+              type: 'success',
+              message: '报警成功!'
+            });
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消报警'
+          });
+        });
       },
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
+      //更改报警状态对话框
+      openMessageBox2() {
+        this.$confirm('确定添加基站?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'info'
+        }).then(() => {
+          this.addStation(()=>{
+            this.$message({
+              type: 'success',
+              message: '添加成功!'
+            });
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消添加'
+          });
+        });
       }
   },
   data:function() {
       return {
-          url:this.global.port+"/langyang/Home/Police/getAlarms",
+          urlGetAlarms:this.global.port+"/langyang/Home/Police/getAlarms",
+          urlAddAlarm:this.global.port+"/langyang/Home/Police/giveAlarm",
           tableData:[],
+          alarmsData:[],
           mac:"",
           alarms:[],
-          form: {
-            name: '',
-            region: '',
-            date1: '',
-            date2: '',
-            delivery: false,
-            type: [],
-            resource: '',
-            desc: '',
+          addAlarmPost:{
+            realname:"",
+            idcard_number:"",
+            device_type:"",
+            message:"",
+            adcode:"",
+            longitude:"",
+            latitude:"",
+            address:"",
+            telephone	:"",
+            heppen_time	:""
           },
           imageUrl: '',
           switchValue:false
@@ -231,6 +295,7 @@ export default {
             line-height: 64px;
             font-size: 24px;
             margin-top: 22px;
+            position: relative;
             .title {
                 margin-left: 15px;
                 display: inline-block;
@@ -247,11 +312,16 @@ export default {
               float: right;
               margin-top: 20px;
               margin-right: 20px;
-              &:hover{
-                color: red;
-                transform: rotate(45deg);
-              }
+              cursor: pointer;
+              // &:hover{
+              //   color: red;
+              //   transform: rotate(45deg);
+              // }
 
+            }
+            .active{
+              color: red;
+              transform: rotate(45deg);
             }
             .rotate-enter,.rotate-leave-active{
                 transition: opacity .5s;
@@ -265,6 +335,17 @@ export default {
               margin-top: 15px;
               margin-right: 30px;
             }
+            .triangle-up{
+              position: absolute;
+              width: 0;
+              height: 0;
+              bottom: 0;
+              right: 17px;
+              border-left: 15px solid transparent;
+              border-right: 15px solid transparent;
+              border-bottom: 15px solid #fff;
+              z-index: 100;
+            }
         }
         .content{
             margin-left: 15px;
@@ -275,6 +356,9 @@ export default {
             background-color: #fff;
             height: 91%;
             position: relative;
+            .el-pagination{
+              margin:0 auto;
+            }
             .table-map{
               width: 100px;
               height: 100px;
@@ -283,10 +367,13 @@ export default {
               position: absolute;
             }
             .addUserLocator {
-                border: 1px solid #eee;
+                border-bottom: 1px solid #eee;
+                border-right: 1px solid #eee;
+                border-left: 1px solid #eee;
                 position: absolute;
                 z-index: 100;
                 background-color: #fff;
+                top: 0;
                 right: 0px;
                     .el-form {
                         float: right;

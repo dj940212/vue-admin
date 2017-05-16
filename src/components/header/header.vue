@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="header" ref="header">
       <!-- <span class="toggle"><i class="icon iconfont" v-show="false">&#xe606;</i></span> -->
       <i class="el-icon-menu" @click="toggleSidebar"></i>
       <!-- <input type="button" value="增加" @click="increment"> -->
@@ -23,10 +23,18 @@
 </template>
 
 <script>
-// import {mapGetters,mapActions} from 'vuex'
+import {mapGetters,mapActions} from 'vuex'
 export default {
   name: 'header',
+  computed:{
+    ...mapGetters([
+      'isSidebarOpen'
+    ])
+  },
   methods: {
+    ...mapActions([
+      'toggleSidebar'
+    ]),
     reload:function(){
       location.reload(true)
     },
@@ -56,8 +64,6 @@ export default {
       else
         return false;
     },
-    toggleSidebar:function(){
-    },
 
   },
   data:function(){
@@ -80,7 +86,7 @@ export default {
     float: left;
     margin-left: 195px;
     color: #fff;
-    font-size: 25px;
+    font-size: 20px;
     line-height: 50px;
   }
   .top-right {

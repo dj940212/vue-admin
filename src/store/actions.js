@@ -5,5 +5,10 @@ export default {
     commit
   })=>{
     commit(types.INCREMENT);
+  },
+  toggleSidebar:({
+    commit
+  })=>{
+    commit(types.TOGGLESIDEBAR)
   }
 }

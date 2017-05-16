@@ -100,8 +100,8 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    // this.keepsocket();
-    this.testSocket();
+    this.keepsocket();
+    // this.testSocket();
     this.getAlarms();
     this.global.bus.$on("arrIndex",(index) => {
         // this.mac = this.tableData[index].mac;
@@ -168,8 +168,6 @@ export default {
             console.log("绘制轨迹")
             this.drawRoute(this.mac,data);
         }
-
-
       });
     },
     //测试数据

@@ -3,16 +3,16 @@
         <div class="header">
           <div class="title">
             <i class="icon iconfont">&#xe612;</i>
-            <span>信息查询与修改</span>
+            <span>用户与设备信息</span>
           </div>
-          <i class="el-icon-plus" @click="onOffValue=!onOffValue"></i>
+          <i class="el-icon-plus" @click="onOffValue=!onOffValue" v-bind:class="{active:onOffValue}"></i>
           <el-input
             placeholder="请输入mac查询"
             icon="search"
             v-model="mac"
             :on-icon-click="handleIconClick">
           </el-input>
-
+          <div class="triangle-up" v-show="onOffValue"></div>
         </div>
         <div class="content">
             <addUserLocator :switchValue="onOffValue"></addUserLocator>
@@ -120,6 +120,7 @@ export default {
         // padding-top: 22px;
         position: relative;
         .header {
+            position: relative;
             height: 64px;
             margin-left: 15px;
             margin-right: 15px;
@@ -143,15 +144,27 @@ export default {
               float: right;
               margin-top: 20px;
               margin-right: 20px;
-              &:hover{
-                color: red;
-              }
+            }
+            .active{
+              color: red;
+              transform: rotate(45deg);
             }
             .el-input{
               float: right;
               width: 200px;
               margin-top: 15px;
               margin-right: 40px;
+            }
+            .triangle-up{
+              position: absolute;
+              width: 0;
+              height: 0;
+              bottom: 0;
+              right: 17px;
+              border-left: 15px solid transparent;
+              border-right: 15px solid transparent;
+              border-bottom: 15px solid #fff;
+              z-index: 100;
             }
         }
         .content{

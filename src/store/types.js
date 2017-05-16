@@ -1,1 +1,2 @@
 export const INCREMENT = 'INCREMENT';
+export const TOGGLESIDEBAR = 'TOGGLESIDEBAR';

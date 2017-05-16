@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar" id="sidebar" v-show="true">
+  <div class="sidebar" id="sidebar" v-show="isSidebarOpen">
       <div class="top-left">
         <div class="text">
           <img class="brand" src="./brand.png" alt="" width="38" height="38">
@@ -28,6 +28,7 @@
                           <li class="submenu-item"><router-link to="/userInfoManage">用户与设备信息</router-link></li>
                           <li class="submenu-item"><router-link to="/eleFence">用户电子围栏</router-link></li>
                           <li class="submenu-item"><router-link to="/mapsearch">实时地图查询</router-link></li>
+                          <li class="submenu-item"><router-link to="/userManage">用户信息</router-link></li>
                       </ul>
                   </transition>
               </li>
@@ -76,6 +77,7 @@
 </template>
 
 <script>
+import {mapGetters,mapActions} from 'vuex'
 export default {
   name: 'sidebar',
   created:function(){
@@ -94,6 +96,11 @@ export default {
       username:"police"
     }
   },
+  computed:{
+    ...mapGetters([
+      'isSidebarOpen'
+    ])
+  },
   methods: {
       toggleSidebar1: function(event){
           this.sidebarActive1 = !this.sidebarActive1;
@@ -102,7 +109,7 @@ export default {
           if (!this.submenuActive1) {
               event.currentTarget.nextSibling.nextSibling.style.height=0+"px";
           }else {
-              event.currentTarget.nextSibling.nextSibling.style.height=148+"px";
+              event.currentTarget.nextSibling.nextSibling.style.height=185+"px";
           }
 
       },
@@ -158,7 +165,6 @@ export default {
     height: 100%;
     background-color: #4e4c75;
     z-index: 11;
-    // display: none;
     .top-left {
       display: inline-block;
       width: 181px;
@@ -199,7 +205,6 @@ export default {
         width: 180px;
         height: 158px;
         background-color: #4e4c75;
-        // border-bottom: 1px solid #fff;
         img{
             position: absolute;
             top: 50%;

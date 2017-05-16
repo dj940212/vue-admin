@@ -6,7 +6,7 @@
             <span>基站数据</span>
           </div>
           <div class="addStation" >
-            <i class="el-icon-plus" @click="addValue=!addValue"></i>
+            <i class="el-icon-plus" v-bind:class="{active:addValue}" @click="addValue=!addValue"></i>
           </div>
           <el-input
             placeholder="请输入关键字查询"
@@ -16,6 +16,7 @@
             :on-icon-click="searchStation"
             @change="searchStation">
           </el-input>
+          <div class="triangle-up" v-show="addValue"></div>
         </div>
         <div class="content">
             <div class="table-data">
@@ -75,7 +76,7 @@
                 <el-input v-model="addStationPost.altitude"></el-input>
               </el-form-item>
               <el-form-item label="">
-                <el-button @click="openMessageBox">添加基站</el-button>
+                <el-button type="primary" @click="openMessageBox">添加基站</el-button>
               </el-form-item>
             </el-form>
         </div>
@@ -191,6 +192,7 @@ export default {
           console.log(res.status);
         })
       },
+      //弹出对话框
       openMessageBox() {
         this.$confirm('确定添加基站?', '提示', {
           confirmButtonText: '确定',
@@ -221,6 +223,7 @@ export default {
         // padding-top: 22px;
         position: relative;
         .header {
+            position: relative;
             height: 64px;
             margin-left: 22px;
             margin-right: 22px;
@@ -240,14 +243,26 @@ export default {
                     margin-left: 5px;
                 }
             }
+            .triangle-up{
+              position: absolute;
+              width: 0;
+              height: 0;
+              bottom: 0;
+              right: 17px;
+              border-left: 15px solid transparent;
+              border-right: 15px solid transparent;
+              border-bottom: 15px solid #fff;
+              z-index: 100;
+            }
             .addStation{
               float: right;
-              margin-right: 25px;
+              margin-right: 23px;
               font-size: 20px;
               cursor: pointer;
-              &:hover{
-                color: green;
-              }
+            }
+            .active{
+              color: red;
+              transform: rotate(45deg);
             }
             .el-input{
               float: right;
@@ -268,19 +283,16 @@ export default {
         }
         .addForm{
           position: absolute;
+          border-bottom: 1px solid #eee;
+          border-left: 1px solid #eee;
+          border-right: 1px solid #eee;
           width: 350px;
           height: 220px;
           top: 64px;
           right: 22px;
           z-index: 100;
-          // margin: auto;
-          // bottom: 0;
-          // left: 0;
-          // right: 0;
-          // top: 0;
-          background: #eee;
+          background: #fff;
           padding: 20px;
-          border-radius: 3px;
           .el-form{
             .el-form-item{
               margin-bottom: 10px;

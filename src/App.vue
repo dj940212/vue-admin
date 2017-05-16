@@ -1,11 +1,12 @@
 <template>
   <div id="app">
     <v-header></v-header>
-    <sidebar></sidebar>
+    <div class="sidebarBox">
+      <sidebar></sidebar>
+    </div>
     <div class="routerView" id="routerView">
         <router-view></router-view>
     </div>
-    <!-- <input type="button" value="增加" @click="increment"> -->
     <router-view class="myloginView" name="mylogin"></router-view>
   </div>
 </template>
@@ -19,6 +20,11 @@ export default {
   //进入页面时
   created: function(){
       this.checkLogin();
+  },
+  mounted:function(){
+    this.routerV()
+
+
   },
   //监听路由变化
   watch:{
@@ -60,7 +66,10 @@ export default {
         }else {
           return
         }
-      }
+      },
+      routerV:function(){
+        console.log(document.getElementById('routerView'));
+      },
   }
 }
 </script>
@@ -70,6 +79,9 @@ export default {
 
 #app {
     position: relative;
+    .sidebarBox{
+
+    }
     .routerView{
         position: absolute;
         display: inline-block;

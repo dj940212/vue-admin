@@ -1,7 +1,7 @@
 <template lang="html">
     <div class="addUserLocator" v-show="switchValue">
         <el-col :span="12">
-            <el-form ref="form" :model="form" label-width="80px">
+            <el-form ref="form" :model="form" label-width="90px">
               <el-form-item label="身份证号">
                 <el-input v-model="form.name"></el-input>
               </el-form-item>
@@ -29,7 +29,7 @@
             </el-form>
         </el-col>
         <el-col :span="12">
-            <el-form ref="form" :model="form" label-width="80px">
+            <el-form ref="form" :model="form" label-width="90px">
               <el-form-item label="定位物mac">
                 <el-input v-model="form.name"></el-input>
               </el-form-item>
@@ -103,7 +103,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .addUserLocator {
-    border: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+    border-left: 1px solid #eee;
     position: absolute;
     z-index: 100;
     background-color: #fff;
