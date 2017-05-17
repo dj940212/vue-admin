@@ -67,7 +67,7 @@
                         </el-upload>
                     </el-form-item>
                     <el-form-item>
-                      <el-button type="primary" @click="openMessageBoxAddUser">添加用户</el-button>
+                      <el-button type="primary" @click="openMessageBoxAddUser">注册用户</el-button>
                       <el-button @click="onOffValue=false">取消</el-button>
                     </el-form-item>
                   </el-form>
