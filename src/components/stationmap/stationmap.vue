@@ -134,7 +134,7 @@ export default {
     },
     //建立websocket链接
     keepsocket: function() {
-        var socket = io('ws://127.0.0.1:3003');  //121.196.194.14
+        var socket = io('ws://121.196.194.14:3003');  //121.196.194.14
 
         socket.on('connect',function () {
           console.log('建立链接');

@@ -155,7 +155,7 @@ export default {
     },
     //建立websocket链接
     keepsocket: function() {
-      var socket = io('ws://127.0.0.1:3002'); //121.196.194.14:3002
+      var socket = io('ws://121.196.194.14:3002'); //121.196.194.14:3002
       socket.on('connect', function() {
         console.log('连接成功！');
       });
@@ -197,7 +197,7 @@ export default {
                     this.routeData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
                 }else {
                   this.routeData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                  new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.routeData1,this.routeData2,()=>{
+                  new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.routeData1,this.routeData2,()=>{
                       this.routeData1 = this.routeData2;
                   })
                 }
