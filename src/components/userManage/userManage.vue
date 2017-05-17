@@ -17,53 +17,55 @@
         <div class="content">
           <div class="addUserLocator" v-show="onOffValue">
               <el-col :span="12">
-                  <el-form ref="form" :model="addAlarmPost" label-width="80px">
+                  <el-form ref="form" :model="addUserPost" label-width="100px">
                     <el-form-item label="姓名">
-                      <el-input v-model="addAlarmPost.realname"></el-input>
+                      <el-input v-model="addUserPost.realname"></el-input>
+                    </el-form-item>
+                    <el-form-item label="性别">
+                      <el-input v-model="addUserPost.sex"></el-input>
                     </el-form-item>
                     <el-form-item label="手机号">
-                      <el-input v-model="addAlarmPost.telephone"></el-input>
+                      <el-input v-model="addUserPost.telephone"></el-input>
                     </el-form-item>
-                    <el-form-item label="身份证号">
-                      <el-input v-model="addAlarmPost.idcard_number"></el-input>
-                    </el-form-item>
-                    <el-form-item label="mac">
-                      <el-input v-model="addAlarmPost.mac"></el-input>
-                    </el-form-item>
-                    </el-form-item>
-                    <el-form-item label="定位物类型">
-                        <el-input v-model="addAlarmPost.device_type"></el-input>
-                    </el-form-item>
-                    <el-form-item label="报警信息">
-                      <el-input
-                        type="textarea"
-                        :autosize="{ minRows: 3, maxRows: 4}"
-                        placeholder="请输入内容"
-                        v-model="addAlarmPost.message">
-                      </el-input>
+                    <el-form-item label="身份证正面">
+                        <el-upload
+                          class="avatar-uploader"
+                          action= "http://121.196.194.14/langyang/Home/Police/uploadIdCardFrontPic"
+                          :show-file-list="false"
+                          :on-success="handleAvatarSuccessFront"
+                          :before-upload="beforeAvatarUpload"
+                          style="display:inline-block">
+                          <img v-if="addUserPost.idcard_frontpic" :src="addUserPost.idcard_frontpic" class="avatar">
+                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
                     </el-form-item>
                   </el-form>
               </el-col>
               <el-col :span="12">
-                  <el-form ref="form" :model="addAlarmPost" label-width="80px">
-                    <el-form-item label="经度">
-                      <el-input v-model="addAlarmPost.longitude"></el-input>
-                    </el-form-item>
-                    <el-form-item label="纬度">
-                      <el-input v-model="addAlarmPost.latitude"></el-input>
-                    </el-form-item>
+                  <el-form ref="form" :model="addUserPost" label-width="100px">
                     <el-form-item label="地址">
-                      <el-input v-model="addAlarmPost.address"></el-input>
+                      <el-input v-model="addUserPost.address"></el-input>
                     </el-form-item>
-                    <el-form-item label="地区编码">
-                      <el-input v-model="addAlarmPost.adcode"></el-input>
+                    <el-form-item label="生日">
+                      <el-input v-model="addUserPost.birthday"></el-input>
                     </el-form-item>
-                    <el-form-item label="案发时间">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="addAlarmPost.heppen_time" style="width: 100%;"></el-date-picker>
+                    <el-form-item label="身份证号">
+                      <el-input v-model="addUserPost.idcard_number"></el-input>
+                    </el-form-item>
+                    <el-form-item label="身份证背面">
+                        <el-upload
+                          class="avatar-uploader"
+                          action="http://121.196.194.14/langyang/Home/Police/uploadIdCardBackPic"
+                          :show-file-list="false"
+                          :on-success="handleAvatarSuccessBack"
+                          :before-upload="beforeAvatarUpload"
+                          style="display:inline-block">
+                          <img v-if="addUserPost.idcard_backpic" :src="addUserPost.idcard_backpic" class="avatar">
+                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
                     </el-form-item>
                     <el-form-item>
-                      <br>
-                      <el-button type="primary" >立即创建</el-button>
+                      <el-button type="primary" @click="openMessageBox">添加用户</el-button>
                       <el-button @click="onOffValue=false">取消</el-button>
                     </el-form-item>
                   </el-form>
@@ -114,6 +116,16 @@
                       prop="address"
                       label="地址">
                     </el-table-column>
+                    <el-table-column
+                      fixed="right"
+                      prop="type"
+                      label="操作"
+                      width="100">
+                      <template scope="scope">
+                        <!-- <el-button @click="delStation" type="text" size="small">移除</el-button> -->
+                        <el-button @click="openMessageBox" type="text" size="small">绑定设备</el-button>
+                      </template>
+                    </el-table-column>
                 </el-table>
             </div>
         </div>
@@ -152,27 +164,84 @@ export default {
     handleIconClick(ev) {
       console.log(this.tableData);
       this.searchUser();
+    },
+    addUser:function(cb){
+      this.$http.post(this.urlAddUser,this.addUserPost,{
+        emulateJSON: true
+      }).then((res)=>{
+          if(res.data.lp==0&&res.data.data.msg=="请求成功"){
+            cb();
+          }
+      },(res)=>{
+        console.log(res.status);
+      })
+    },
+    getPicResponse:function(file){
+      console.log(file.response);
+    },
+    handleAvatarSuccessFront(res, file) {
+      this.addUserPost.idcard_frontpic = URL.createObjectURL(file.raw);
+
+      console.log(res.data,this.imageUrlFront)
+    },
+    handleAvatarSuccessBack(res, file) {
+      this.addUserPost.idcard_backpic = URL.createObjectURL(file.raw);
+
+      console.log(res.data,this.imageUrlBack)
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 1;
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    //弹出对话框
+    openMessageBox() {
+      this.$confirm('确定添加基站?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(() => {
+        this.addUser(()=>{
+          this.$message({
+            type: 'success',
+            message: '添加成功!'
+          });
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消添加'
+        });
+      });
     }
   },
   data:function(){
       return {
           urlSearchUser:this.global.port + '/langyang/Home/Police/searchUser',
-          urlModifyCar:this.global.port + '/langyang/Home/Police/modifyCar',
+          urlAddUser:this.global.port + '/langyang/Home/Police/registerUser',
           urlDeleteCar:this.global.port + '/langyang/Home/Police/deleteCar',
+          urlFrontPic:this.global.port+ '/Police/uploadIdCardFrontPic',
+          urlBackPic:this.global.port+'//Police/uploadIdCardFrontPic',
           tableData:[],
           idnumber_or_phone:"18768379083",
           onOffValue:false,
-          addAlarmPost:{
+          imageUrlFront:"",
+          imageUrlBack:"",
+          addUserPost:{
             realname:"",
-            idcard_number:"",
-            device_type:"",
-            message:"",
-            adcode:"",
-            longitude:"",
-            latitude:"",
+            idcardnumber:"",
+            sex:"",
+            birthday:"",
+            idcard_frontpic:"",
+            idcard_backpic:"",
             address:"",
-            telephone	:"",
-            heppen_time	:""
+            telephone:""
           },
       }
   }
