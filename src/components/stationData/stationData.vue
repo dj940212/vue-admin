@@ -58,8 +58,31 @@
                       label="操作"
                       width="100">
                       <template scope="scope">
-                        <el-button @click="delStation" type="text" size="small">移除</el-button>
-                        <el-button @click="openMessageBox" type="text" size="small">编辑</el-button>
+                        <el-popover
+                          ref="popover4"
+                          placement="bottom-start"
+                          width="350"
+                          trigger="click">
+                          <el-form ref="form" :model="addStationPost" label-width="80px">
+                            <el-form-item label="基站mac">
+                              <el-input v-model="addStationPost.mac"></el-input>
+                            </el-form-item>
+                            <el-form-item label="经度">
+                              <el-input v-model="addStationPost.longitude"></el-input>
+                            </el-form-item>
+                            <el-form-item label="纬度">
+                              <el-input v-model="addStationPost.latitude"></el-input>
+                            </el-form-item>
+                            <el-form-item label="海拔">
+                              <el-input v-model="addStationPost.altitude"></el-input>
+                            </el-form-item>
+                          </el-form>
+                          <div style="text-align: center; margin-top:10px">
+                            <el-button type="success" @click="changeStaion">确定更改</el-button>
+                          </div>
+                        </el-popover>
+                        <el-button @click="openMessageBoxDelete(scope.$index)" type="text" size="small">移除</el-button>
+                        <el-button type="text" size="small" v-popover:popover4 @click="getChangeStaionPost(scope.$index)">编辑</el-button>
                       </template>
                     </el-table-column>
                 </el-table>
@@ -80,7 +103,7 @@
                 <el-input v-model="addStationPost.altitude"></el-input>
               </el-form-item>
               <el-form-item label="">
-                <el-button type="primary" @click="openMessageBox">添加基站</el-button>
+                <el-button type="primary" @click="openMessageBoxAdd">添加基站</el-button>
               </el-form-item>
             </el-form>
         </div>
@@ -99,6 +122,7 @@ export default {
           urlStation:this.global.port+"/langyang/Home/Police/getBaseStations",
           urlAddStation:this.global.port+"/langyang/Home/Police/addBaseStation",
           urlChangeStation:this.global.port+"/langyang/Home/Police/changeBaseStation",
+          urlDeleteStation:this.global.port+"/langyang/Home/Police/deleteBaseStation",
           tableData:[],
           stationData:[],
           id:"",
@@ -108,13 +132,13 @@ export default {
           mac:"",
           addValue:false,
           addStationPost:{
-            id:"66",
-            longitude:"27.73594",
-            latitude:"109.186925",
-            altitude:"11",
-            mac:"aa555a0000003333"
+            id:"",
+            longitude:"",
+            latitude:"",
+            altitude:"",
+            mac:""
           },
-          changeStaionPost:{
+          changeStationPost:{
             id:"66",
             station_id:"50",
             longitude:"99999999",
@@ -179,16 +203,31 @@ export default {
         })
       },
       //移除基站
-      delStation:function(){
-        alert(1);
-      },
-      //修改基站
-      changeStaion:function(){
-        this.$http.post(this.urlChangeStation,this.changeStaionPost,{
+      delStation:function(nowid,cb){
+        this.$http.post(this.urlDeleteStation,{stationid:nowid,id:66},{
           emulateJSON:true
         }).then((res)=>{
           if (res.data.data.msg === "请求成功" && res.data.lp ===0) {
-            console.log("修改基站成功")
+            console.log("删除基站成功")
+            cb();
+          }else{
+            console.log("删除基站失败");
+          }
+        },(res)=>{
+
+        })
+      },
+      //修改基站
+      changeStaion:function(){
+        this.$http.post(this.urlChangeStation,this.addStationPost,{
+          emulateJSON:true
+        }).then((res)=>{
+          if (res.data.data.msg === "请求成功" && res.data.lp ===0) {
+            console.log("修改基站成功");
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
           }else{
             console.log("修改基站失败");
           }
@@ -196,8 +235,15 @@ export default {
           console.log(res.status);
         })
       },
+      getChangeStaionPost:function(index){
+        console.log(index);
+        this.addStationPost = this.tableData[index];
+        console.log(this.tableData[index])
+        this.addStationPost.id = "66";
+        this.addStationPost.station_id = this.tableData[index].id;
+      },
       //弹出对话框
-      openMessageBox() {
+      openMessageBoxAdd() {
         this.$confirm('确定添加基站?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -213,6 +259,28 @@ export default {
           this.$message({
             type: 'info',
             message: '取消添加'
+          });
+        });
+      },
+      //弹出对话框
+      openMessageBoxDelete(index) {
+        this.$confirm('确定移除该基站?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'info'
+        }).then(() => {
+          let nowId = this.tableData[index].id
+          this.tableData.splice(index,1);
+          this.delStation(nowId,()=>{
+            this.$message({
+              type: 'success',
+              message: '移除成功!'
+            });
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消移除'
           });
         });
       }

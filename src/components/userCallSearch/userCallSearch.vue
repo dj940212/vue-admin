@@ -152,7 +152,7 @@
             </div>
             <el-pagination
                layout="prev, pager, next"
-               :total="100"
+               :total="7"
                :page-size="18">
              </el-pagination>
         </div>
