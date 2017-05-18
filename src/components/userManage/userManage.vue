@@ -151,7 +151,71 @@
                               </el-form>
                           </el-col>
                         </el-popover>
-                        <el-button type="text" size="small" >修改</el-button>
+                        <el-popover
+                          ref="popover2"
+                          placement="bottom-start"
+                          title=" "
+                          width="600"
+                          trigger="click">
+                          <el-col :span="12">
+                              <el-form ref="form" :model="addUserPost" label-width="100px">
+                                <el-form-item label="用户id">
+                                  <el-input v-model="addUserPost.id"></el-input>
+                                </el-form-item>
+                                <el-form-item label="姓名">
+                                  <el-input v-model="addUserPost.realname"></el-input>
+                                </el-form-item>
+                                <el-form-item label="性别">
+                                  <el-input v-model="addUserPost.sex"></el-input>
+                                </el-form-item>
+                                <el-form-item label="手机号">
+                                  <el-input v-model="addUserPost.telephone"></el-input>
+                                </el-form-item>
+                                <el-form-item label="身份证正面">
+                                    <el-upload
+                                      class="avatar-uploader"
+                                      action= "http://121.196.194.14/langyang/Home/Police/uploadIdCardFrontPic"
+                                      :show-file-list="false"
+                                      :on-success="handleAvatarSuccessFront"
+                                      :before-upload="beforeAvatarUpload"
+                                      style="display:inline-block">
+                                      <img v-if="addUserPost.idcard_frontpic" :src="addUserPost.idcard_frontpic" class="avatar">
+                                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                    </el-upload>
+                                </el-form-item>
+                              </el-form>
+                          </el-col>
+                          <el-col :span="12">
+                              <el-form ref="form" :model="addUserPost" label-width="100px">
+                                <el-form-item label="地址">
+                                  <el-input v-model="addUserPost.address"></el-input>
+                                </el-form-item>
+                                <el-form-item label="生日">
+                                  <el-input v-model="addUserPost.birthday"></el-input>
+                                </el-form-item>
+                                <el-form-item label="身份证号">
+                                  <el-input v-model="addUserPost.idcard_number"></el-input>
+                                </el-form-item>
+                                <el-form-item label="身份证背面">
+                                    <el-upload
+                                      class="avatar-uploader"
+                                      action="http://121.196.194.14/langyang/Home/Police/uploadIdCardBackPic"
+                                      :show-file-list="false"
+                                      :on-success="handleAvatarSuccessBack"
+                                      :before-upload="beforeAvatarUpload"
+                                      style="display:inline-block">
+                                      <img v-if="addUserPost.idcard_backpic" :src="addUserPost.idcard_backpic" class="avatar">
+                                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                    </el-upload>
+                                </el-form-item>
+                                <el-form-item>
+                                  <el-button type="primary" @click="openMessageBoxModifyUser">修改用户</el-button>
+                                  <el-button @click="onOffValue=false">取消</el-button>
+                                </el-form-item>
+                              </el-form>
+                          </el-col>
+                        </el-popover>
+                        <el-button type="text" size="small" v-popover:popover2 @click="getModifyPost(scope.$index)">修改</el-button>
                         <el-button type="text" size="small" v-popover:popover1>绑定</el-button>
                       </template>
                     </el-table-column>
@@ -169,7 +233,6 @@ export default {
       addUserLocator
   },
   mounted:function(){
-
   },
   methods:{
     searchUser:function(){
@@ -204,6 +267,17 @@ export default {
     },
     bindDevice:function(cb){
       this.$http.post(this.urlBindDevice,this.bindDevicePost,{
+        emulateJSON: true
+      }).then((res)=>{
+          if(res.data.lp==0&&res.data.data.msg=="请求成功"){
+            cb()
+          }
+      },(res)=>{
+        console.log(res.status);
+      })
+    },
+    modifyUser:function(cb){
+      this.$http.post(this.urlModifyUser,this.addUserPost,{
         emulateJSON: true
       }).then((res)=>{
           if(res.data.lp==0&&res.data.data.msg=="请求成功"){
@@ -278,6 +352,33 @@ export default {
           message: '取消添加'
         });
       });
+    },
+    //获取当前id
+    getModifyPost(index){
+      this.addUserPost = this.tableData[index];
+      this.addUserPost.id = this.tableData[index].id;
+      console.log(this.tableData[index].id);
+      console.log(this.addUserPost)
+    },
+    //弹出对话框
+    openMessageBoxModifyUser() {
+      this.$confirm('确定修改用户信息?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(() => {
+        this.modifyUser(()=>{
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          });
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消添加'
+        });
+      });
     }
   },
   data:function(){
@@ -286,6 +387,7 @@ export default {
           urlAddUser:this.global.port + '/langyang/Home/Police/registerUser',
           urlDeleteCar:this.global.port + '/langyang/Home/Police/deleteCar',
           urlBindDevice:this.global.port + '/langyang/Home/Police/bindDevice',
+          urlModifyUser:this.global.port + '/langyang/Home/Police/modifyUser',
           tableData:[],
           idnumber_or_phone:"18768379083",
           onOffValue:false,
@@ -306,6 +408,9 @@ export default {
             type:"",
             userid:"",
             label:""
+          },
+          modifyUserPost:{
+
           }
       }
   }

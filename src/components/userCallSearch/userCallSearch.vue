@@ -152,7 +152,7 @@
             </div>
             <el-pagination
                layout="prev, pager, next"
-               :total="1000"
+               :total="100"
                :page-size="18">
              </el-pagination>
         </div>
@@ -189,6 +189,7 @@ export default {
           emulateJSON:true
         }).then((res)=>{
           if (res.data.lp===0&&res.data.data.msg==="请求成功") {
+            this.pageNum = 100;//res.data.data.page_number;
             cb()
           }
         },(res)=>{
@@ -311,7 +312,8 @@ export default {
             heppen_time	:""
           },
           imageUrl: '',
-          switchValue:false
+          switchValue:false,
+          pageNum:"",
 
       }
   }

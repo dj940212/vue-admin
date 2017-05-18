@@ -25,6 +25,10 @@
                     border
                     style="width: 100%">
                     <el-table-column
+                      prop="id"
+                      label="id">
+                    </el-table-column>
+                    <el-table-column
                       prop="mac"
                       label="基站mac">
                     </el-table-column>
