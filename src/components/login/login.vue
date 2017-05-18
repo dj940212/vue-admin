@@ -2,7 +2,7 @@
     <div class="login-wrapper" id="particles-js">
         <div class="mylogin">
             <div class="title">
-                <span>郎阳科技</span>
+                <span>朗阳科技</span>
             </div>
             <div class="login-box">
                 <label for="">账号</label>

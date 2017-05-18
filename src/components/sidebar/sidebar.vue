@@ -3,7 +3,7 @@
       <div class="top-left">
         <div class="text">
           <img class="brand" src="./brand.png" alt="" width="38" height="38">
-          <span class="company">郎阳科技</span>
+          <span class="company">朗阳科技</span>
           <span class="title">助动车管理系统</span>
         </div>
       </div>
@@ -69,7 +69,7 @@
       <div class="copyright">
           <div class="messBox">
               <span class="mess">Copyright @2017</span>
-              <span class="mess">杭州郎阳科技有限公司</span>
+              <span class="mess">杭州朗阳科技有限公司</span>
               <span class="mess">版权所有</span>
           </div>
       </div>

@@ -130,16 +130,22 @@
                       label="操作"
                       width="100">
                       <template scope="scope">
-                        <el-button
-                          type="text"
-                          size="small" @click="showMap(scope.$index)">
-                          显示
-                        </el-button>
-                        <el-button
-                          type="text"
-                          size="small">
-                          编辑
-                        </el-button>
+                        <el-popover
+                          ref="popover1"
+                          placement="bottom-start"
+                          width="220"
+                          trigger="click">
+                          <el-radio-group v-model="alarmStatus">
+                            <el-radio-button label="未处理" @click="myAlert"></el-radio-button>
+                            <el-radio-button label="处理中"></el-radio-button>
+                            <el-radio-button label="已完成"></el-radio-button>
+                          </el-radio-group>
+                          <div style="text-align: center; margin-top:10px">
+                            <el-button type="success" size="small" @click="changeAlarmsStatus(scope.$index)">确定更改</el-button>
+                          </div>
+                        </el-popover>
+                        <el-button type="text" size="small" @click="showMap(scope.$index)"> 显示 </el-button>
+                        <el-button type="text" size="small" v-popover:popover1 @click="getAlarmStatusAndId(scope.$index)"> 编辑 </el-button>
                       </template>
                     </el-table-column>
                 </el-table>
@@ -164,7 +170,7 @@ export default {
       //获取记录
       getAlarms:function(){
           this.$http.post(this.urlGetAlarms,{
-            page:7
+            page:1
           },{
             emulateJSON: true
         }).then((res) => {
@@ -184,6 +190,25 @@ export default {
         }).then((res)=>{
           if (res.data.lp===0&&res.data.data.msg==="请求成功") {
             cb()
+          }
+        },(res)=>{
+          console.log(res.status)
+        })
+      },
+      //修改报警状态
+      changeAlarmsStatus:function(index){
+        this.$http.post(this.urlChangeAlarmsStatus,{
+          status:this.alarmStatus,
+          id:this.alarmID
+        },{
+          emulateJSON:true
+        }).then((res)=>{
+          if (res.data.lp===0&&res.data.data.msg==="修改成功") {
+            this.$message({
+              type: 'success',
+              message: '更改报警状态成功!'
+            });
+            this.tableData[index].status = this.alarmStatus;
           }
         },(res)=>{
           console.log(res.status)
@@ -212,7 +237,15 @@ export default {
         this.global.bus.$emit("arrIndex",index)
         this.$router.push('mapsearch')
       },
-      //打开对话框
+      //获取当前记录的状态
+      getAlarmStatusAndId:function(index){
+        this.alarmStatus = this.tableData[index].status;
+        this.alarmID = this.tableData[index].id;
+      },
+      myAlert:function(){
+        alert(1)
+      },
+      //打开报警对话框
       openMessageBox() {
         this.$confirm('确定提交报警信息?', '提示', {
           confirmButtonText: '确定',
@@ -257,10 +290,14 @@ export default {
       return {
           urlGetAlarms:this.global.port+"/langyang/Home/Police/getAlarms",
           urlAddAlarm:this.global.port+"/langyang/Home/Police/giveAlarm",
+          urlChangeAlarmsStatus:this.global.port+"/langyang/Home/Police/changeAlarmsStatus",
           tableData:[],
           alarmsData:[],
           mac:"",
+          visible:false,
           alarms:[],
+          alarmStatus:"",
+          alarmID:"",
           addAlarmPost:{
             realname:"",
             idcard_number:"",

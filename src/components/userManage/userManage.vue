@@ -162,12 +162,10 @@
 </template>
 
 <script>
-import searchBox from '@/components/searchBox/searchBox';
 import addUserLocator from '@/components/addUserLocator/addUserLocator';
 export default {
-  name: 'userInfoManage',
+  name: 'userManage',
   components:{
-      searchBox,
       addUserLocator
   },
   mounted:function(){
