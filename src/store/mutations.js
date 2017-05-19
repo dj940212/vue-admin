@@ -13,6 +13,7 @@ const mutations = {
   [TOGGLESIDEBAR](state){
     state.isSidebarOpen=!state.isSidebarOpen
     console.log(state.isSidebarOpen);
+    
   }
 }
 

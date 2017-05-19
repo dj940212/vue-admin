@@ -6,7 +6,9 @@ window.onload = function(){
   document.getElementById('app').style.width = window.innerWidth + "px";
 
   // document.getElementById('sidebar').style.height = "100%";
-
+  // document.getElementById('sidebar').style.height = 0;
+  // document.getElementById('sidebar').style.width = 0;
+  // console.log(document.getElementById('sidebar'));
 }
 window.onresize=function() {
       document.getElementById('routerView').style.width = (window.innerWidth-180)+"px";

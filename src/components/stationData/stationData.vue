@@ -63,22 +63,22 @@
                           placement="bottom-start"
                           width="350"
                           trigger="click">
-                          <el-form ref="form" :model="addStationPost" label-width="80px">
+                          <el-form ref="form" :model="changeStationPost" label-width="80px">
                             <el-form-item label="基站mac">
-                              <el-input v-model="addStationPost.mac"></el-input>
+                              <el-input v-model="changeStationPost.mac"></el-input>
                             </el-form-item>
                             <el-form-item label="经度">
-                              <el-input v-model="addStationPost.longitude"></el-input>
+                              <el-input v-model="changeStationPost.longitude"></el-input>
                             </el-form-item>
                             <el-form-item label="纬度">
-                              <el-input v-model="addStationPost.latitude"></el-input>
+                              <el-input v-model="changeStationPost.latitude"></el-input>
                             </el-form-item>
                             <el-form-item label="海拔">
-                              <el-input v-model="addStationPost.altitude"></el-input>
+                              <el-input v-model="changeStationPost.altitude"></el-input>
                             </el-form-item>
                           </el-form>
                           <div style="text-align: center; margin-top:10px">
-                            <el-button type="success" @click="changeStaion">确定更改</el-button>
+                            <el-button type="success" @click="changeStaion(scope.$index)">确定更改</el-button>
                           </div>
                         </el-popover>
                         <el-button @click="openMessageBoxDelete(scope.$index)" type="text" size="small">移除</el-button>
@@ -132,19 +132,19 @@ export default {
           mac:"",
           addValue:false,
           addStationPost:{
-            id:"",
+            id:"66",
             longitude:"",
             latitude:"",
             altitude:"",
             mac:""
           },
           changeStationPost:{
-            id:"66",
-            station_id:"50",
-            longitude:"99999999",
-            latitude:"999999999",
-            altitude:"999999999",
-            mac:"aa555a0000002222"
+            station_id:64,
+            id:66,
+            longitude:888,
+            latitude:888,
+            altitude:888,
+            mac:888
           }
       }
   },
@@ -193,13 +193,19 @@ export default {
           emulateJSON:true
         }).then((res)=>{
           if (res.data.data.msg === "请求成功" && res.data.lp ===0) {
-            console.log("添加基站成功")
+            console.log("添加基站成功");
             cb();
+            let newData = {};
+            newData.id = res.data.data.list.basestation_id;
+            newData.mac = this.addStationPost.mac;
+            newData.latitude = this.addStationPost.latitude;
+            newData.longitude = this.addStationPost.longitude;
+            newData.altitude = this.addStationPost.altitude;
+            this.tableData.unshift(newData)
           }else{
             console.log("添加基站失败");
           }
         },(res)=>{
-
         })
       },
       //移除基站
@@ -218,12 +224,16 @@ export default {
         })
       },
       //修改基站
-      changeStaion:function(){
-        this.$http.post(this.urlChangeStation,this.addStationPost,{
+      changeStaion:function(index){
+        this.$http.post(this.urlChangeStation,this.changeStationPost,{
           emulateJSON:true
         }).then((res)=>{
           if (res.data.data.msg === "请求成功" && res.data.lp ===0) {
             console.log("修改基站成功");
+            this.tableData[index].latitude = this.changeStationPost.latitude;
+            this.tableData[index].longitude = this.changeStationPost.longitude;
+            this.tableData[index].altitude = this.changeStationPost.altitude;
+            this.tableData[index].mac = this.changeStationPost.mac;
             this.$message({
               type: 'success',
               message: '修改成功!'
@@ -235,12 +245,15 @@ export default {
           console.log(res.status);
         })
       },
+      //请求参数
       getChangeStaionPost:function(index){
-        console.log(index);
-        this.addStationPost = this.tableData[index];
-        console.log(this.tableData[index])
-        this.addStationPost.id = "66";
-        this.addStationPost.station_id = this.tableData[index].id;
+        this.changeStationPost.id = "66";
+        this.changeStationPost.station_id = this.tableData[index].id;
+        this.changeStationPost.latitude = this.tableData[index].latitude;
+        this.changeStationPost.longitude = this.tableData[index].longitude;
+        this.changeStationPost.altitude = this.tableData[index].altitude;
+        this.changeStationPost.mac = this.tableData[index].mac;
+        console.log(this.changeStationPost);
       },
       //弹出对话框
       openMessageBoxAdd() {

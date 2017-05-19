@@ -26,7 +26,7 @@ export default {
   mounted: function() {
     this.initMap();
     this.getUserInfo();
-    this.searchUser();
+    // this.searchUser();
   },
   methods: {
     //初始化地图

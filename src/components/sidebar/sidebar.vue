@@ -165,6 +165,7 @@ export default {
     height: 100%;
     background-color: #4e4c75;
     z-index: 11;
+    // overflow: hidden;
     .top-left {
       display: inline-block;
       width: 181px;

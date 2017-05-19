@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-header></v-header>
-    <div class="sidebarBox">
+    <div class="sidebarBox" id="sidebarBox">
       <sidebar></sidebar>
     </div>
     <div class="routerView" id="routerView">
@@ -89,6 +89,7 @@ export default {
         left: 180px;
         background-color: #f2f2f2;
         overflow:auto;
+        // z-index: 2000;
     }
 }
 </style>
