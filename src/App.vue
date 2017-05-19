@@ -22,8 +22,6 @@ export default {
       this.checkLogin();
   },
   mounted:function(){
-    this.routerV()
-
 
   },
   //监听路由变化
@@ -67,9 +65,6 @@ export default {
           return
         }
       },
-      routerV:function(){
-        console.log(document.getElementById('routerView'));
-      },
   }
 }
 </script>
@@ -79,17 +74,15 @@ export default {
 
 #app {
     position: relative;
-    .sidebarBox{
-
-    }
+    // @sideWidth 180px;
     .routerView{
-        position: absolute;
+        float: left;
         display: inline-block;
-        top: 50px;
-        left: 180px;
+        margin-top: 50px;
         background-color: #f2f2f2;
         overflow:auto;
         // z-index: 2000;
+        // width: 60%;
     }
 }
 </style>

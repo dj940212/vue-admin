@@ -11,9 +11,17 @@ const mutations = {
     state.count++;
   },
   [TOGGLESIDEBAR](state){
-    state.isSidebarOpen=!state.isSidebarOpen
-    console.log(state.isSidebarOpen);
-    
+    state.isSidebarOpen=!state.isSidebarOpen;
+    let sidebarWidth = document.getElementById('sidebar').clientWidth;
+    if (sidebarWidth) {
+      sidebarWidth =0;
+    }else {
+      sidebarWidth=181;
+    }
+    document.getElementById('routerView').style.width = (window.innerWidth-sidebarWidth)+"px";
+    console.log(sidebarWidth);
+
+
   }
 }
 

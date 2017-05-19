@@ -88,6 +88,7 @@ export default {
     color: #fff;
     font-size: 20px;
     line-height: 50px;
+    cursor: pointer;
   }
   .top-right {
     float: right;

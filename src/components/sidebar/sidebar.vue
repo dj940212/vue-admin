@@ -160,11 +160,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
 .sidebar{
-    position: absolute;
+    float: left;
     width: 181px;
     height: 100%;
     background-color: #4e4c75;
-    z-index: 11;
+    z-index: 20;
     // overflow: hidden;
     .top-left {
       display: inline-block;
@@ -173,6 +173,7 @@ export default {
       height:50px;
       color: #fff;
       border-right: 1px solid #fff;
+      z-index: 20;
       .text{
         display: inline-block;
         position: absolute;
