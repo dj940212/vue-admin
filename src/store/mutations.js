@@ -21,6 +21,8 @@ const mutations = {
     document.getElementById('routerView').style.width = (window.innerWidth-sidebarWidth)+"px";
     console.log(sidebarWidth);
 
+    document.getElementById('header').style.width=(window.innerWidth-sidebarWidth)+"px";
+
 
   }
 }

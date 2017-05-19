@@ -1,5 +1,5 @@
 <template>
-  <div class="header" ref="header">
+  <div class="header" id="header">
       <!-- <span class="toggle"><i class="icon iconfont" v-show="false">&#xe606;</i></span> -->
       <i class="el-icon-menu" @click="toggleSidebar"></i>
       <!-- <input type="button" value="增加" @click="increment"> -->
@@ -80,11 +80,12 @@ export default {
   width: 100%;
   background-color: #1f2d3d;
   // border: 1px solid #101010;
-  position: fixed;
+  // position: fixed;
+  float: right;
   z-index: 10;
   .el-icon-menu{
     float: left;
-    margin-left: 195px;
+    margin-left: 15px;
     color: #fff;
     font-size: 20px;
     line-height: 50px;

@@ -316,8 +316,8 @@ export default {
         }
     }
     .copyright{
-        width: 180px;
-        height: 70px;
+        width: 181px;
+        height: 80px;
         position: fixed;
         background-color: #3e465e;
         bottom: 0;

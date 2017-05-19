@@ -78,7 +78,7 @@ export default {
     .routerView{
         float: left;
         display: inline-block;
-        margin-top: 50px;
+        // margin-top: 50px;
         background-color: #f2f2f2;
         overflow:auto;
         // z-index: 2000;
