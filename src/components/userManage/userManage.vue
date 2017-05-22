@@ -194,7 +194,7 @@
                                   <el-input v-model="addUserPost.birthday"></el-input>
                                 </el-form-item>
                                 <el-form-item label="身份证号">
-                                  <el-input v-model="addUserPost.idcard_number"></el-input>
+                                  <el-input v-model="addUserPost.idcardnumber"></el-input>
                                 </el-form-item>
                                 <el-form-item label="身份证背面">
                                     <el-upload
@@ -389,7 +389,7 @@ export default {
           urlBindDevice:this.global.port + '/langyang/Home/Police/bindDevice',
           urlModifyUser:this.global.port + '/langyang/Home/Police/modifyUser',
           tableData:[],
-          idnumber_or_phone:"18768379083",
+          idnumber_or_phone:"13225515682",
           onOffValue:false,
           imageUrlFront:"",
           imageUrlBack:"",

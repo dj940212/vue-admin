@@ -18,13 +18,21 @@
   </div>
   <div class="content">
     <div class="real-time-map" id="real-time-map" ref="realtimeMap">
-        <el-input
+        <!-- <el-input
           placeholder="请输入mac查询"
           icon="search"
           class="el-input"
           v-model="mac"
           :on-icon-click="handleIconClick">
-        </el-input>
+        </el-input> -->
+        <el-autocomplete
+          class="inline-input"
+          v-model="nameOrTele"
+          :fetch-suggestions="querySearch"
+          placeholder="请输入手机号码查询"
+          :trigger-on-focus="true"
+          @select="handleSelect"
+        ></el-autocomplete>
         <i class="el-icon-d-arrow-left" @click="toggleInfoBox" ref="elIcon"></i>
     </div>
     <div class="info-box" v-show="toggleInfoBoxValue">
@@ -101,13 +109,11 @@ export default {
   mounted: function() {
     this.initMap();
     this.keepsocket();
-    // this.testSocket();
-    this.getAlarms();
+    this.testSocket();
     this.global.bus.$on("arrIndex",(index) => {
         // this.mac = this.tableData[index].mac;
         // console.log(this.tableData[index].mac);
     })
-    console.log(this.testData);
   },
   methods: {
     //   初始化地图
@@ -133,7 +139,6 @@ export default {
             this.user = res.data.data.list[0];
             console.log(this.user)
           }
-
         } else {
           alert('找不到该设备，请重新输入！');
         }
@@ -141,16 +146,28 @@ export default {
         console.log(res.status)
       })
     },
-    //获取tableDate
-    getAlarms:function(){
-        this.$http.get(this.urlGetAlarms,{
-          emulateJSON: true
+    //根据姓名或电话查找定位物
+    searchDeviceByNameOrTele: function(cb){
+      this.$http.post(this.urlSearchDeviceByNameOrTele, {
+        nameOrTele: this.nameOrTele
+      }, {
+        emulateJSON: true
       }).then((res) => {
-          if(res.data.lp==0&&res.data.data.msg=="请求成功"){
-              this.tableData = res.data.data.list.alarmid;
-          }
+        if (res.data.lp == 0 && res.data.message == "请求成功") {
+            console.log(res.data.data[0].deviceinfo);
+            if (res.data.data[0].deviceinfo) {
+              this.macList = res.data.data[0].deviceinfo;
+              this.macList.forEach((item,index)=>{
+                item.value = item.mac;
+              })
+              cb()
+            }
+
+        } else {
+          console.log('找不到该设备，请重新输入！');
+        }
       }, (res) => {
-          console.log(res.status)
+        console.log(res.status)
       })
     },
     //建立websocket链接
@@ -221,7 +238,9 @@ export default {
               title: data.mac,
               map: _this.amap
             });
+            _this.marker.mac = data.devEUI;
             _this.markers.push(_this.marker);
+            console.log(_this.marker)
             //点击事件
             AMap.event.addListener(_this.marker, 'click',(e) => {
                 _this.amap.setCenter(e.target.getPosition());
@@ -267,6 +286,7 @@ export default {
         this.amap.setCenter(this.markers[this.devEUIs.indexOf(this.mac)].getPosition());
         this.amap.setZoom(16);
     },
+    //开关切换事件
     switchChange:function() {
         this.amap.clearMap();
         console.log("开关切换")
@@ -287,7 +307,7 @@ export default {
     //添加标记
     addMarker:function(data){
         //添加覆盖物
-        console.log(!this.devEUIs.length);
+      console.log(!this.devEUIs.length);
        if (!this.devEUIs.length) {
           this.addNewMarker(data);
           this.devEUIs.push(data.devEUI);
@@ -313,15 +333,35 @@ export default {
           this.markers[i].setMap(this.amap);
           console.log("更新位置完成")
         });
-    }
+    },
+    //输入框获取mac
+    querySearch(queryString, cb) {
+        // var restaurants = this.restaurants;
+        this.searchDeviceByNameOrTele(()=>{
+          var results = this.macList
+          cb(results);
+          console.log("results",results);
+        })
+    },
+    //选择建议项
+    handleSelect(item) {
+      console.log(item);
+      this.mac =item.mac;
+      this.getUserInfo(this.mac);
+      if (this.devEUIs.indexOf(this.mac) !== -1) {
+        this.amap.setCenter(this.markers[this.devEUIs.indexOf(this.mac)].getPosition());
+        this.amap.setZoom(16);
+      }else {
+        this.$message.error('地图上没有该标记');
+      }
+     }
   },
   data() {
     return {
-      mac: "1568791236462509",
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
-      urlGetAlarms:this.global.port+"/langyang/Home/Police/getAlarms",
-      urlEleFence:this.global.port+"/langyang/Home/Police/watchElectronicFences",
+      urlSearchDeviceByNameOrTele:this.global.port+"/langyang/Home/Police/searchDeviceByNameOrTele",
+      mac:"",
       user: {},
       switchValue:true,
       toggleInfoBoxValue:false,
@@ -333,13 +373,11 @@ export default {
       mouseoverData:[],
       userCallMac:"",
       tableData:[],
-      testData:[
-        {"latitude":30.2792377697,"longitude":120.0171292379},
-        {"latitude":30.2807766388,"longitude":120.0231436424},
-        {"latitude":30.2871537529,"longitude":120.0283010801},
-        {"latitude":30.2865978848,"longitude":120.0338157019},
-        {"latitude":30.2848907441,"longitude":120.0387944695}
-      ]
+      nameOrTele:"",
+      restaurants: [],
+      state1: '',
+      state2: '',
+      macList:[],
     }
   }
 }
@@ -414,7 +452,7 @@ export default {
                 cursor: pointer;
                 // transition: all 1s;
             }
-            .el-input{
+            .el-autocomplete{
                 z-index: 110;
                 width: 200px;
                 float:left;
