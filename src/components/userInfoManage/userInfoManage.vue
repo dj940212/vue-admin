@@ -10,7 +10,7 @@
             placeholder="请输入mac查询"
             icon="search"
             v-model="mac"
-            :on-icon-click="handleIconClick">
+            :on-icon-click="submit">
           </el-input>
           <div class="triangle-up" v-show="onOffValue"></div>
         </div>
@@ -72,12 +72,10 @@
 </template>
 
 <script>
-import searchBox from '@/components/searchBox/searchBox';
 import addUserLocator from '@/components/addUserLocator/addUserLocator';
 export default {
   name: 'userInfoManage',
   components:{
-      searchBox,
       addUserLocator
   },
   mounted:function(){
@@ -85,7 +83,7 @@ export default {
   },
   methods:{
     userDeviceInfo:function(){
-      this.$http.post(this.urlUserDeviceInfo,{
+      this.$http.post(this.urlSearchDevice,{
         mac:this.mac
       },{
         emulateJSON: true
@@ -96,18 +94,34 @@ export default {
 
       })
     },
-    handleIconClick(ev) {
+    searchDevice:function(){
+      this.$http.post(this.urlSearchDevice,{
+        name_or_phone:this.mac
+      },{
+        emulateJSON: true
+      }).then((res)=>{
+          console.log("数据",res.data.data.list);
+          if (res.data.lp===0&&res.data.data.msg==="请求成功") {
+            this.tableData = res.data.data.list;
+          }
+
+      },(res)=>{
+
+      })
+    },
+    submit(ev) {
       console.log(this.tableData);
-      this.userDeviceInfo();
+      this.searchDevice();
     }
   },
   data:function(){
       return {
           urlUserDeviceInfo:this.global.port + '/langyang/Home/Police/searchUserDeviceInfo',
+          urlSearchDevice:this.global.port+ '/langyang/Home/Police/searchDevice',
           urlModifyCar:this.global.port + '/langyang/Home/Police/modifyCar',
           urlDeleteCar:this.global.port + '/langyang/Home/Police/deleteCar',
           tableData:[],
-          mac:"aa555a0000001002",
+          mac:"123456789",
           onOffValue:false
       }
   }

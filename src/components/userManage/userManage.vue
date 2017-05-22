@@ -78,6 +78,30 @@
                     :data="tableData"
                     border
                     style="width: 100%">
+                    <el-table-column type="expand">
+                      <template scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                          <el-form-item label="性别">
+                            <span>{{ props.row.sex===1 ? "男" : "女" }}</span>
+                          </el-form-item>
+                          <el-form-item label="出生年月">
+                            <span>{{ props.row.birthday }}</span>
+                          </el-form-item>
+                          <el-form-item label="地址">
+                            <span>{{ props.row.address }}</span>
+                          </el-form-item>
+                          <el-form-item label="身份证号">
+                            <span>{{ props.row.idcardnumber }}</span>
+                          </el-form-item>
+                          <el-form-item label="身份证正面">
+                            <img src="props.row.idcard_fronpic">
+                          </el-form-item>
+                          <el-form-item label="身份证背面">
+                            <img src="props.row.idcard_backpic" alt="">
+                          </el-form-item>
+                        </el-form>
+                      </template>
+                    </el-table-column>
                     <el-table-column
                       prop="id"
                       label="用户id">
@@ -91,32 +115,8 @@
                       label="真实姓名">
                     </el-table-column>
                     <el-table-column
-                      prop="sex"
-                      label="性别">
-                    </el-table-column>
-                    <el-table-column
-                      prop="birthday"
-                      label="出生年月">
-                    </el-table-column>
-                    <el-table-column
                       prop="telephone"
                       label="手机号">
-                    </el-table-column>
-                    <el-table-column
-                      prop="idcardnumber"
-                      label="身份证号">
-                    </el-table-column>
-                    <el-table-column
-                      prop="idcard_frontpic"
-                      label="身份证正面">
-                    </el-table-column>
-                    <el-table-column
-                      prop="idcard_backpic"
-                      label="身份证背面">
-                    </el-table-column>
-                    <el-table-column
-                      prop="address"
-                      label="地址">
                     </el-table-column>
                     <el-table-column
                       fixed="right"
@@ -128,28 +128,51 @@
                           ref="popover1"
                           placement="bottom-start"
                           title=" "
-                          width="400"
+                          width="600"
                           trigger="click">
-                          <el-col :span="24">
-                              <el-form ref="form" :model="bindDevicePost" label-width="100px">
+                          <el-col :span="12">
+                              <el-form ref="form" :model="bindDetailDevicePost" label-width="100px">
                                 <el-form-item label="用户id">
-                                  <el-input v-model="bindDevicePost.userid"></el-input>
+                                  <el-input v-model="bindDetailDevicePost.userid"></el-input>
                                 </el-form-item>
                                 <el-form-item label="mac">
-                                  <el-input v-model="bindDevicePost.mac"></el-input>
+                                  <el-input v-model="bindDetailDevicePost.mac"></el-input>
                                 </el-form-item>
                                 <el-form-item label="定位物类型">
-                                  <el-input v-model="bindDevicePost.type"></el-input>
+                                  <el-input v-model="bindDetailDevicePost.type"></el-input>
                                 </el-form-item>
                                 <el-form-item label="定位物标识">
-                                  <el-input v-model="bindDevicePost.label"></el-input>
+                                  <el-input v-model="bindDetailDevicePost.label"></el-input>
+                                </el-form-item>
+                                <el-form-item label="车牌号">
+                                  <el-input v-model="bindDetailDevicePost.car_number"></el-input>
                                 </el-form-item>
                                 <el-form-item>
-                                  <el-button type="primary" @click="openMessageBoxBindDevice">绑定设备</el-button>
-                                  <el-button v-popover:popover1>取消</el-button>
+
                                 </el-form-item>
                               </el-form>
                           </el-col>
+                          <el-col :span="12">
+                            <el-form ref="form" :model="bindDetailDevicePost" label-width="100px">
+                              <el-form-item label="车辆型号">
+                                <el-input v-model="bindDetailDevicePost.car_type"></el-input>
+                              </el-form-item>
+                              <el-form-item label="车辆颜色">
+                                <el-input v-model="bindDetailDevicePost.color"></el-input>
+                              </el-form-item>
+                              <el-form-item label="车辆照片">
+                                <el-input v-model="bindDetailDevicePost.car_pic"></el-input>
+                              </el-form-item>
+                              <el-form-item label="车辆备注">
+                                <el-input v-model="bindDetailDevicePost.remark"></el-input>
+                              </el-form-item>
+                              <el-form-item label="车辆昵称">
+                                <el-input v-model="bindDetailDevicePost.nickname"></el-input>
+                              </el-form-item>
+                              </el-form>
+                          </el-col>
+                          <el-button type="primary" @click="openMessageBoxBindDevice">绑定车辆</el-button>
+                          <!-- <el-button v-popover:popover1>取消</el-button> -->
                         </el-popover>
                         <el-popover
                           ref="popover2"
@@ -265,15 +288,36 @@ export default {
         console.log(res.status);
       })
     },
+    //绑定模块
     bindDevice:function(cb){
       this.$http.post(this.urlBindDevice,this.bindDevicePost,{
         emulateJSON: true
       }).then((res)=>{
           if(res.data.lp==0&&res.data.data.msg=="请求成功"){
             cb()
+          }else {
+
           }
       },(res)=>{
         console.log(res.status);
+      })
+    },
+    //绑定助动车
+    bindDetailDevice:function(cb1,cb2){
+      this.$http.post(this.urlBindDetailDevice,this.bindDetailDevicePost,{
+        emulateJSON: true
+      }).then((res)=>{
+          if(res.data.lp==0&&res.data.data.msg=="请求成功"){
+            cb1()
+          }else if(res.data.lp==1&&res.data.data.msg=="该模块已绑定"){
+            cb2()
+          }
+      },(res)=>{
+        console.log(res.status);
+        this.$message({
+          type:"error",
+          message:"绑定失败"
+        })
       })
     },
     modifyUser:function(cb){
@@ -287,16 +331,20 @@ export default {
         console.log(res.status);
       })
     },
+    //上传照片正面成功
     handleAvatarSuccessFront(res, file) {
-      this.addUserPost.idcard_frontpic = URL.createObjectURL(file.raw);
+      // this.addUserPost.idcard_frontpic = URL.createObjectURL(file.raw);
+      this.addUserPost.idcard_frontpic = res.data.list.frontpic;
 
-      console.log(res.data,this.imageUrlFront)
+      console.log(res.data.list.frontpic);
     },
+    //上传背面照片成功
     handleAvatarSuccessBack(res, file) {
-      this.addUserPost.idcard_backpic = URL.createObjectURL(file.raw);
+      this.addUserPost.idcard_backpic = res.data.list.backpic;
 
-      console.log(res.data,this.imageUrlBack)
+      console.log(res.data.list.backpic)
     },
+    //上传照片之前
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
       const isLt2M = file.size / 1024 / 1024 < 1;
@@ -308,18 +356,23 @@ export default {
       }
       return isJPG && isLt2M;
     },
-    //弹出对话框
+    //车辆绑定对话框
     openMessageBoxBindDevice() {
       this.$confirm('确定绑定设备?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'info'
       }).then(() => {
-        this.bindDevice(()=>{
+        this.bindDetailDevice(()=>{
           this.$message({
             type: 'success',
             message: '绑定成功!'
           });
+        },()=>{
+          this.$message({
+            type: 'error',
+            message: '该模块已绑定'
+          })
         })
       }).catch(() => {
         this.$message({
@@ -387,9 +440,10 @@ export default {
           urlAddUser:this.global.port + '/langyang/Home/Police/registerUser',
           urlDeleteCar:this.global.port + '/langyang/Home/Police/deleteCar',
           urlBindDevice:this.global.port + '/langyang/Home/Police/bindDevice',
+          urlBindDetailDevice:this.global.port + '/langyang/Home/Police/bindDetailDevice',
           urlModifyUser:this.global.port + '/langyang/Home/Police/modifyUser',
           tableData:[],
-          idnumber_or_phone:"13225515682",
+          idnumber_or_phone:"123456789",
           onOffValue:false,
           imageUrlFront:"",
           imageUrlBack:"",
@@ -408,6 +462,18 @@ export default {
             type:"",
             userid:"",
             label:""
+          },
+          bindDetailDevicePost:{
+            userid:"",
+            mac:"",
+            label:"",
+            type:"",
+            car_number:"",
+            car_type:"",
+            color:"",
+            car_pic:"",
+            remark:"",
+            nickname:""
           },
           modifyUserPost:{
 
@@ -508,14 +574,14 @@ export default {
                             .avatar-uploader-icon {
                                 font-size: 28px;
                                 color: #8c939d;
-                                width: 178px;
-                                height: 178px;
-                                line-height: 178px;
+                                width: 100px;
+                                height: 100px;
+                                line-height: 100px;
                                 text-align: center;
                             }
                             .avatar {
-                                width: 178px;
-                                height: 178px;
+                                width: 100px;
+                                height: 100px;
                                 display: block;
                             }
                             .el-form-item__label{
@@ -524,6 +590,18 @@ export default {
                         }
                     }
             }
+        }
+        .demo-table-expand {
+          font-size: 0;
+          label{
+            width: 90px;
+            color: #99a9bf;
+          }
+          .el-form-item{
+            margin-right: 0;
+            margin-bottom: 0;
+            width: 50%;
+          }
         }
     }
 </style>
