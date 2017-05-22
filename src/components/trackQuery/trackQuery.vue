@@ -5,7 +5,7 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>行驶轨迹查询</span>
     </div>
-    <span class="tableDataOnOff" @click="showTableData"><i class="icon iconfont" >&#xe742;</i>查看数据</span>
+    <span class="tableDataOnOff" @click="tableDataToggle = !tableDataToggle"><i class="icon iconfont" >&#xe742;</i>查看数据</span>
   </div>
   <div class="content">
     <div class="trackQuery-map" id="trackQuery-map">
@@ -34,9 +34,19 @@
               class="el-input"
               v-model="mac"
               v-popover:popover1
-              :on-icon-click="handleIconClick"
+              :on-icon-click="submit"
               :fetch-suggestions="getMac">
             </el-input>
+            <!-- <el-autocomplete
+              class="inline-input"
+              v-popover:popover1
+              v-model="nameOrTele"
+              :on-icon-click="handleIconClick"
+              :fetch-suggestions="querySearch"
+              placeholder="请输入手机号码查询"
+              :trigger-on-focus="true"
+              @select="handleSelect"
+            ></el-autocomplete> -->
         </div>
         <div class="block" v-show="false">
            <el-date-picker
@@ -56,7 +66,7 @@
     <div class="tableData" v-show="tableDataToggle">
         <el-table
             :data="tableData"
-            height="500"
+            height="400"
             empty-text="请先输入mac查询"
             :default-sort = "{prop: 'time', order: 'descending'}">
             <el-table-column
@@ -169,9 +179,29 @@ export default {
         console.log(res.status)
       })
     },
-    //获取mac来查询
-    getMac:function(){
+    //根据姓名或电话查找定位物
+    searchDeviceByNameOrTele: function(cb){
+      this.$http.post(this.urlSearchDeviceByNameOrTele, {
+        nameOrTele: this.nameOrTele
+      }, {
+        emulateJSON: true
+      }).then((res) => {
+        if (res.data.lp == 0 && res.data.message == "请求成功") {
+            console.log(res.data.data[0].deviceinfo);
+            if (res.data.data[0].deviceinfo) {
+              this.macList = res.data.data[0].deviceinfo;
+              this.macList.forEach((item,index)=>{
+                item.value = item.mac;
+              })
+              cb()
+            }
 
+        } else {
+          console.log('找不到该设备，请重新输入！');
+        }
+      }, (res) => {
+        console.log(res.status)
+      })
     },
     // 提交搜索
     submit: function() {
@@ -186,12 +216,12 @@ export default {
             var timer = setInterval(() => {
                 if (i >= data.length-1) {
                     clearInterval(timer);
-                    //显示起终标记
-                    console.log(document.querySelectorAll(".amap-lib-marker-to"));
-                    var endMarkers = document.querySelectorAll(".amap-lib-marker-to");
-                    var startMarkers = document.querySelectorAll(".amap-lib-marker-from")
-                    endMarkers[endMarkers.length-1].style.display = "block";
-                    startMarkers[0].style.display="block";
+                    // //显示起终标记
+                    // console.log(document.querySelectorAll(".amap-lib-marker-to"));
+                    // var endMarkers = document.querySelectorAll(".amap-lib-marker-to");
+                    // var startMarkers = document.querySelectorAll(".amap-lib-marker-from")
+                    // endMarkers[endMarkers.length-1].style.display = "block";
+                    // // startMarkers[0].style.display="block";
                 }else {
                     var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
                     console.log("======1111=======",i);
@@ -213,61 +243,28 @@ export default {
             },700)
         })
     },
-    //绘制轨迹
-    drawRoute2:function(data){
-        AMap.service(["AMap.Walking"],() => {
-            this.amap.clearMap();
-            let i = 0;
-            while (i < data.length-1) {
-              var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
-              console.log("======1111=======",i);
-              AMap.convertFrom(lnglat1,"gps",(status,result) => {
-                  this.newRouteData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                  var lnglat2 = new AMap.LngLat(data[i+1].longitude,data[i+1].latitude);
-                  console.log("======2222=======",i+1);
-                  AMap.convertFrom(lnglat2,"gps",(status,result) => {
-                      this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                      console.log(this.newRouteData1,this.newRouteData2);
-                        new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
-                            if (status === "complete") {
-                                i++;
-                            }
-                        })
-                  })
-              })
-            }
+    //输入框获取mac
+    querySearch(queryString, cb) {
+        // var restaurants = this.restaurants;
+        this.searchDeviceByNameOrTele(()=>{
+          var results = this.macList
+          cb(results);
+          console.log("results",results);
         })
     },
-    //显示关闭数据表格
-    showTableData: function(){
-        this.tableDataToggle = !this.tableDataToggle;
-        // this.addMarker();
-        // this.amap.clearMap();
-        // this.mydriving();
-        // console.log("routeData",this.routeData.length);
-        // console.log("track",this.track.length);
-    },
-    handleIconClick: function(){
-        this.submit();
-    },
-    mydriving:function(){
-        //步行导航
-        this.amap.clearMap();
-        AMap.service(["AMap.Walking"], () => {
-            for (var i = 0; i < this.routeData.length-1; i++) {
-                new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.routeData[i],this.routeData[i+1])
-            }
-        })
-        console.log("线路规划");
-
-    },
+    //选择建议项
+    handleSelect(item) {
+      console.log(item);
+      this.mac =item.mac;
+      this.getTrack(this.mac);
+     }
   },
   data() {
     return {
       mac: "3148369587325565",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac2",
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
-      urlGetMac: this.global.port+"/langyang/Home/Police/searchDeviceByNameOrTele",
+      urlSearchDeviceByNameOrTele: this.global.port+"/langyang/Home/Police/searchDeviceByNameOrTele",
       user: {},
       track:[],
       amap: {},
@@ -279,15 +276,8 @@ export default {
       tableData: [],
       infoWindow:{},
       tableDataToggle: false,
-      testRouteData:[
-          [120.016444,30.279617],
-          [120.017597,30.279954],
-          [120.018322,30.280239],
-          [120.018171,30.281146],
-          [120.017827,30.28271],
-          [120.01775,30.283475],
-          [120.019013,30.283011]
-      ],
+      macList:[],
+      nameOrTele:"",
       routeData:[],
       newRouteData1:[],   //高德转换位置
       newRouteData2:[],   //高德转换位置
@@ -357,6 +347,7 @@ export default {
                     margin-right: 20px;
                     margin-top: 10px;
                     box-shadow: 3px 4px 3px 0px silver;
+                    z-index: 5000;
                 }
             }
             .block{
@@ -373,9 +364,9 @@ export default {
         .tableData{
             position: absolute;
             background-color: red;
-            top: 130px;
-            left: 40px;
-            width: 94%;
+            top: 150px;
+            left: 24px;
+            width: 96%;
             z-index: 200;
         }
     }

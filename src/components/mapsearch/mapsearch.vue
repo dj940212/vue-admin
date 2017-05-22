@@ -18,13 +18,6 @@
   </div>
   <div class="content">
     <div class="real-time-map" id="real-time-map" ref="realtimeMap">
-        <!-- <el-input
-          placeholder="请输入mac查询"
-          icon="search"
-          class="el-input"
-          v-model="mac"
-          :on-icon-click="handleIconClick">
-        </el-input> -->
         <el-autocomplete
           class="inline-input"
           v-model="nameOrTele"
@@ -374,9 +367,6 @@ export default {
       userCallMac:"",
       tableData:[],
       nameOrTele:"",
-      restaurants: [],
-      state1: '',
-      state2: '',
       macList:[],
     }
   }

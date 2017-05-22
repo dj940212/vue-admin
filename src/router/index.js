@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/components/login/login'
+import register from '@/components/register/register'
 import userinfo from '@/components/userinfo/userinfo'
 import mapsearch from '@/components/mapsearch/mapsearch'
 import stationmap from '@/components/stationmap/stationmap'
@@ -23,6 +24,13 @@ export default new Router({
       name:'login',
       components:{
           mylogin:login
+      }
+    },
+    {
+      path: '/register',
+      name:'register',
+      components:{
+          mylogin:register
       }
     },
     {
