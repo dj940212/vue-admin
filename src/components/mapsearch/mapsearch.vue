@@ -18,14 +18,20 @@
   </div>
   <div class="content">
     <div class="real-time-map" id="real-time-map" ref="realtimeMap">
-        <el-autocomplete
+        <!-- <el-autocomplete
           class="inline-input"
           v-model="nameOrTele"
           :fetch-suggestions="querySearch"
           placeholder="请输入手机号码查询"
           :trigger-on-focus="true"
           @select="handleSelect"
-        ></el-autocomplete>
+        ></el-autocomplete> -->
+        <el-input
+          placeholder="亲输入mac查询"
+          icon="search"
+          v-model="mac"
+          :on-icon-click="handleIconClick">
+        </el-input>
         <i class="el-icon-d-arrow-left" @click="toggleInfoBox" ref="elIcon"></i>
     </div>
     <div class="info-box" v-show="toggleInfoBoxValue">
@@ -102,7 +108,7 @@ export default {
   mounted: function() {
     this.initMap();
     this.keepsocket();
-    this.testSocket();
+    // this.testSocket();
     this.global.bus.$on("arrIndex",(index) => {
         // this.mac = this.tableData[index].mac;
         // console.log(this.tableData[index].mac);
@@ -275,7 +281,6 @@ export default {
     //输入框搜索
     handleIconClick:function(){
         this.getUserInfo(this.mac);
-
         this.amap.setCenter(this.markers[this.devEUIs.indexOf(this.mac)].getPosition());
         this.amap.setZoom(16);
     },
@@ -368,6 +373,8 @@ export default {
       tableData:[],
       nameOrTele:"",
       macList:[],
+      input5:"",
+      select:''
     }
   }
 }
@@ -411,6 +418,18 @@ export default {
                 width: 70px;
             }
         }
+        .el-input{
+          width: 300px;
+          .el-input-group__prepend{
+            .el-select{
+              .el-input {
+                // width: 110px !important;
+              }
+            }
+          }
+
+        }
+
     }
     .content {
         margin-left: 15px;
@@ -442,7 +461,7 @@ export default {
                 cursor: pointer;
                 // transition: all 1s;
             }
-            .el-autocomplete{
+            .el-input{
                 z-index: 110;
                 width: 200px;
                 float:left;

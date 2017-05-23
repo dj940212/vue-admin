@@ -52,7 +52,7 @@
                       <el-input v-model="addUserPost.birthday"></el-input>
                     </el-form-item>
                     <el-form-item label="身份证号">
-                      <el-input v-model="addUserPost.idcard_number"></el-input>
+                      <el-input v-model="addUserPost.idcardnumber"></el-input>
                     </el-form-item>
                     <el-form-item label="身份证背面">
                         <el-upload

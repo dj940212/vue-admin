@@ -1,2 +1,3 @@
 export const INCREMENT = 'INCREMENT';
 export const TOGGLESIDEBAR = 'TOGGLESIDEBAR';
+export const GETPOLICE = 'GETPOLICE';

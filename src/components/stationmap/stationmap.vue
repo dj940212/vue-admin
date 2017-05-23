@@ -321,10 +321,4 @@ export default {
         }
     }
 }
-// ====================media==================
-@media only screen and (max-width:1350px){
-    .base-station-map{
-        width: 100% !important;
-    }
-}
 </style>

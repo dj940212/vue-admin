@@ -5,13 +5,11 @@ import App from './App'
 import router from './router'
 import store from './store/'
 import Resource from 'vue-resource'
-import { TimePicker, Radio, RadioGroup, RadioButton, Badge, DatePicker, Pagination, Message, MessageBox, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon, Form, FormItem, Upload, Row, Col, Autocomplete, Card} from 'element-ui'
+import { TimePicker, Radio, Option, Select, RadioGroup, RadioButton, Badge, DatePicker, Pagination, Message, MessageBox, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon, Form, FormItem, Upload, Row, Col, Autocomplete, Card} from 'element-ui'
 import global_ from './common/vue/global.vue'
 Vue.prototype.global = global_
 
 Vue.config.productionTip = false
-
-// Vue.use(Vuex)
 
 Vue.use(TimePicker)
 Vue.use(DatePicker)
@@ -36,6 +34,8 @@ Vue.use(Badge)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(RadioButton)
+Vue.use(Select)
+Vue.use(Option)
 
 Vue.prototype.$message = Message
 Vue.prototype.$msgbox = MessageBox

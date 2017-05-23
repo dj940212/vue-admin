@@ -34,8 +34,7 @@
               class="el-input"
               v-model="mac"
               v-popover:popover1
-              :on-icon-click="submit"
-              :fetch-suggestions="getMac">
+              :on-icon-click="submit">
             </el-input>
             <!-- <el-autocomplete
               class="inline-input"

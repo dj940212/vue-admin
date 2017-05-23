@@ -1,9 +1,10 @@
-import {INCREMENT,TOGGLESIDEBAR} from './types'
+import {INCREMENT,TOGGLESIDEBAR,GETPOLICE} from './types'
 import getters from './getters'
 
 const state = {
   count:20,
-  isSidebarOpen:true
+  isSidebarOpen:true,
+  policeName:"未登录"
 };
 
 const mutations = {
@@ -22,7 +23,8 @@ const mutations = {
     console.log(sidebarWidth);
 
     document.getElementById('header').style.width=(window.innerWidth-sidebarWidth)+"px";
-
+  },
+  [GETPOLICE](state){
 
   }
 }
