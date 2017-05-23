@@ -22,48 +22,48 @@
                     border
                     style="width: 100%">
                     <el-table-column
-                      prop="realname"
-                      label="姓名">
+                      prop="car_number"
+                      label="车牌号">
                     </el-table-column>
                     <el-table-column
-                      prop="telephone"
-                      label="手机号">
+                      prop="car_type"
+                      label="车辆型号">
                     </el-table-column>
                     <el-table-column
-                      prop="idcardnumber"
-                      label="身份证号">
+                      prop="car_pic"
+                      label="车辆照片">
                     </el-table-column>
                     <el-table-column
-                      prop="idcard_frontpic"
-                      label="身份证照片">
+                      prop="device_id"
+                      label="车辆id">
                     </el-table-column>
                     <el-table-column
-                      prop="birthday"
-                      label="出生年月">
-                    </el-table-column>
-                    <el-table-column
-                      prop="sex"
-                      label="性别">
-                    </el-table-column>
-                    <el-table-column
-                      prop="address"
-                      label="地址">
-                    </el-table-column>
-                    <el-table-column
-                      prop="mac"
-                      label="定位物物理地址">
+                      prop="color"
+                      label="车辆颜色">
                     </el-table-column>
                     <el-table-column
                       prop="device_type"
                       label="定位物类型">
                     </el-table-column>
                     <el-table-column
-                      prop="device_type"
+                      prop="label"
                       label="定位物标识">
                     </el-table-column>
                     <el-table-column
-                      prop="status"
-                      label="编辑">
+                      prop="mac"
+                      label="定位物mac">
+                    </el-table-column>
+                    <el-table-column
+                      prop="nickname"
+                      label="车辆昵称">
+                    </el-table-column>
+                    <el-table-column
+                      prop="remark"
+                      label="备注">
+                    </el-table-column>
+                    <el-table-column
+                      prop="setup_time"
+                      label="绑定时间">
                     </el-table-column>
                 </el-table>
             </div>
@@ -94,6 +94,7 @@ export default {
 
       })
     },
+    //查找机动车
     searchDevice:function(){
       this.$http.post(this.urlSearchDevice,{
         name_or_phone:this.mac
@@ -103,6 +104,8 @@ export default {
           console.log("数据",res.data.data.list);
           if (res.data.lp===0&&res.data.data.msg==="请求成功") {
             this.tableData = res.data.data.list;
+          }else if (res.data.lp===1&&res.data.data.msg==="该用户未绑定设备") {
+            this.$message.warning("该用户未绑定设备")
           }
 
       },(res)=>{

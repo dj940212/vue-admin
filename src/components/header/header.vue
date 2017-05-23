@@ -79,6 +79,7 @@ export default {
   height: 50px;
   width: 100%;
   background-color: #1f2d3d;
+  // background-color: #fff;
   // border: 1px solid #101010;
   // position: fixed;
   float: right;

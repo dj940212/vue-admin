@@ -3,13 +3,13 @@
         <div class="header">
           <div class="title">
             <i class="icon iconfont">&#xe612;</i>
-            <span>用户管理</span>
+            <span>用户设备信息</span>
           </div>
           <el-tooltip class="item" effect="dark" content="注册用户" placement="bottom">
             <i class="el-icon-plus" v-bind:class="{active:onOffValue}" @click="onOffValue=!onOffValue"></i>
           </el-tooltip>
           <el-input
-            placeholder="请输入mac查询"
+            placeholder="请输入手机号查询"
             icon="search"
             v-model="idnumber_or_phone"
             :on-icon-click="searchUser">
@@ -73,7 +73,7 @@
                   </el-form>
               </el-col>
           </div>
-          <div class="table-data">
+          <div class="table-data" v-show="showUserInfo">
                 <el-table
                     :data="tableData"
                     border
@@ -94,10 +94,10 @@
                             <span>{{ props.row.idcardnumber }}</span>
                           </el-form-item>
                           <el-form-item label="身份证正面">
-                            <img src="props.row.idcard_fronpic">
+                            <img v-bind:src="props.row.idcard_frontpic" width="100px" height="100px">
                           </el-form-item>
                           <el-form-item label="身份证背面">
-                            <img src="props.row.idcard_backpic" alt="">
+                            <img v-bind:src="props.row.idcard_backpic" width="100px" height="100px">
                           </el-form-item>
                         </el-form>
                       </template>
@@ -132,9 +132,6 @@
                           trigger="click">
                           <el-col :span="12">
                               <el-form ref="form" :model="bindDetailDevicePost" label-width="100px">
-                                <el-form-item label="用户id">
-                                  <el-input v-model="bindDetailDevicePost.userid"></el-input>
-                                </el-form-item>
                                 <el-form-item label="mac">
                                   <el-input v-model="bindDetailDevicePost.mac"></el-input>
                                 </el-form-item>
@@ -147,8 +144,17 @@
                                 <el-form-item label="车牌号">
                                   <el-input v-model="bindDetailDevicePost.car_number"></el-input>
                                 </el-form-item>
-                                <el-form-item>
-
+                                <el-form-item label="车辆照片">
+                                    <el-upload
+                                      class="avatar-uploader"
+                                      action= "http://121.196.194.14/langyang/Home/Police/uploadCarPic"
+                                      :show-file-list="false"
+                                      :on-success="handleAvatarSuccessCarPic"
+                                      :before-upload="beforeAvatarUpload"
+                                      style="display:inline-block">
+                                      <img v-if="bindDetailDevicePost.car_pic" :src="bindDetailDevicePost.car_pic" class="avatar">
+                                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                    </el-upload>
                                 </el-form-item>
                               </el-form>
                           </el-col>
@@ -160,18 +166,16 @@
                               <el-form-item label="车辆颜色">
                                 <el-input v-model="bindDetailDevicePost.color"></el-input>
                               </el-form-item>
-                              <el-form-item label="车辆照片">
-                                <el-input v-model="bindDetailDevicePost.car_pic"></el-input>
-                              </el-form-item>
                               <el-form-item label="车辆备注">
-                                <el-input v-model="bindDetailDevicePost.remark"></el-input>
+                                <el-input v-model="bindDetailDevicePost.remark" type="textarea"></el-input>
                               </el-form-item>
                               <el-form-item label="车辆昵称">
                                 <el-input v-model="bindDetailDevicePost.nickname"></el-input>
                               </el-form-item>
+                              <el-button type="primary" @click="openMessageBoxBindDevice(scope.$index)">绑定车辆</el-button>
                               </el-form>
                           </el-col>
-                          <el-button type="primary" @click="openMessageBoxBindDevice">绑定车辆</el-button>
+
                           <!-- <el-button v-popover:popover1>取消</el-button> -->
                         </el-popover>
                         <el-popover
@@ -182,9 +186,9 @@
                           trigger="click">
                           <el-col :span="12">
                               <el-form ref="form" :model="addUserPost" label-width="100px">
-                                <el-form-item label="用户id">
+                                <!-- <el-form-item label="用户id">
                                   <el-input v-model="addUserPost.id"></el-input>
-                                </el-form-item>
+                                </el-form-item> -->
                                 <el-form-item label="姓名">
                                   <el-input v-model="addUserPost.realname"></el-input>
                                 </el-form-item>
@@ -214,7 +218,7 @@
                                   <el-input v-model="addUserPost.address"></el-input>
                                 </el-form-item>
                                 <el-form-item label="生日">
-                                  <el-input v-model="addUserPost.birthday"></el-input>
+                                  <el-input v-model="addUserPost.birthday" placeholder="0000-00-00"></el-input>
                                 </el-form-item>
                                 <el-form-item label="身份证号">
                                   <el-input v-model="addUserPost.idcardnumber"></el-input>
@@ -244,6 +248,66 @@
                     </el-table-column>
                 </el-table>
             </div>
+          <div class="table-data" v-show="showCarInfo">
+                <el-table
+                    :data="tableDataCar"
+                    border
+                    style="width: 100%">
+                    <el-table-column type="expand">
+                      <template scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                          <el-form-item label="定位物标识">
+                            <span>{{ props.row.label }}</span>
+                          </el-form-item>
+                          <el-form-item label="车辆类型">
+                            <span>{{ props.row.car_type }}</span>
+                          </el-form-item>
+                          <el-form-item label="定位物类型">
+                            <span>{{ props.row.device_type }}</span>
+                          </el-form-item>
+                          <el-form-item label="备注">
+                            <span>{{ props.row.remark }}</span>
+                          </el-form-item>
+                          <el-form-item label="车辆昵称">
+                            <span>{{ props.row.nickname }}</span>
+                          </el-form-item>
+                          <el-form-item label="车辆颜色">
+                            <span>{{ props.row.color }}</span>
+                          </el-form-item>
+                          <el-form-item label="车辆照片">
+                            <img v-bind:src="props.row.car_pic" width="100px" height="100px">
+                          </el-form-item>
+                        </el-form>
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                      prop="car_number"
+                      label="车牌号">
+                    </el-table-column>
+                    <el-table-column
+                      prop="device_id"
+                      label="车辆id">
+                    </el-table-column>
+                    <el-table-column
+                      prop="mac"
+                      label="定位物mac">
+                    </el-table-column>
+                    <el-table-column
+                      prop="setup_time"
+                      label="绑定时间">
+                    </el-table-column>
+                    <el-table-column
+                      fixed="right"
+                      prop="type"
+                      label="操作"
+                      width="100">
+                      <template scope="scope">
+                        <el-button type="text" size="small">修改</el-button>
+                        <el-button type="text" size="small">删除</el-button>
+                      </template>
+                    </el-table-column>
+                </el-table>
+            </div>
         </div>
     </div>
 </template>
@@ -253,11 +317,13 @@ import addUserLocator from '@/components/addUserLocator/addUserLocator';
 export default {
   name: 'userManage',
   components:{
-      addUserLocator
+      addUserLocator,
+      // image
   },
   mounted:function(){
   },
   methods:{
+    //查找用户
     searchUser:function(){
       this.$http.post(this.urlSearchUser,{
         idnumber_or_phone:this.idnumber_or_phone
@@ -267,13 +333,34 @@ export default {
           if(res.data.lp==0&&res.data.data.msg=="请求成功"){
             console.log("数据",res.data.data.list);
             this.tableData=[];
-            this.tableData[0]=(res.data.data.list);
-            console.log(this.tableData)
+            this.tableDataCar=[];
+            this.tableData[0]=res.data.data.list;
+            this.searchDevice();
           }
       },(res)=>{
         console.log(res.status);
       })
     },
+    //查找机动车
+    searchDevice:function(){
+      this.$http.post(this.urlSearchDevice,{
+        name_or_phone:this.idnumber_or_phone
+      },{
+        emulateJSON: true
+      }).then((res)=>{
+          console.log("数据",res.data.data.list);
+          if (res.data.lp===0&&res.data.data.msg==="请求成功") {
+            this.tableDataCar = res.data.data.list;
+            this.showCarInfo = true;
+          }else if (res.data.lp===1&&res.data.data.msg==="该用户未绑定设备") {
+            this.$message.warning("该用户未绑定设备")
+          }
+
+      },(res)=>{
+
+      })
+    },
+    //添加用户
     addUser:function(cb1,cb2){
       this.$http.post(this.urlAddUser,this.addUserPost,{
         emulateJSON: true
@@ -320,6 +407,7 @@ export default {
         })
       })
     },
+    //修改用户信息
     modifyUser:function(cb){
       this.$http.post(this.urlModifyUser,this.addUserPost,{
         emulateJSON: true
@@ -344,6 +432,12 @@ export default {
 
       console.log(res.data.list.backpic)
     },
+    //上传车辆照片成功
+    handleAvatarSuccessCarPic(res, file) {
+      this.bindDetailDevicePost.car_pic = res.data.list.carpic;
+
+      console.log(res.data.car)
+    },
     //上传照片之前
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
@@ -357,12 +451,14 @@ export default {
       return isJPG && isLt2M;
     },
     //车辆绑定对话框
-    openMessageBoxBindDevice() {
+    openMessageBoxBindDevice(index) {
       this.$confirm('确定绑定设备?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'info'
       }).then(() => {
+        //获取userid
+        this.bindDetailDevicePost.userid = this.tableData[index].id;
         this.bindDetailDevice(()=>{
           this.$message({
             type: 'success',
@@ -447,6 +543,8 @@ export default {
           onOffValue:false,
           imageUrlFront:"",
           imageUrlBack:"",
+          showCarInfo:false,
+          showUserInfo:true,
           addUserPost:{
             realname:"",
             idcardnumber:"",
@@ -477,7 +575,13 @@ export default {
           },
           modifyUserPost:{
 
-          }
+          },
+          urlUserDeviceInfo:this.global.port + '/langyang/Home/Police/searchUserDeviceInfo',
+          urlSearchDevice:this.global.port+ '/langyang/Home/Police/searchDevice',
+          urlModifyCar:this.global.port + '/langyang/Home/Police/modifyCar',
+          urlDeleteCar:this.global.port + '/langyang/Home/Police/deleteCar',
+          tableDataCar:[],
+          onOffValue:false
       }
   }
 }
@@ -486,7 +590,6 @@ export default {
     .userInfoManage{
         width: 100%;
         height: 95%;
-        // padding-top: 22px;
         position: relative;
         .header {
             height: 64px;
@@ -561,35 +664,9 @@ export default {
                         // padding-left: 30px;
                         padding-right: 30px;
                         padding-top: 30px;
-                        .el-form-item {
-                            margin-bottom: 10px;
-                            .avatar-uploader .el-upload {
-                                display: inline-block;
-                                border: 1px solid #d9d9d9 !important;
-                                border-radius: 6px;
-                                cursor: pointer;
-                                position: relative;
-                                overflow: hidden;
-                            }
-                            .avatar-uploader-icon {
-                                font-size: 28px;
-                                color: #8c939d;
-                                width: 100px;
-                                height: 100px;
-                                line-height: 100px;
-                                text-align: center;
-                            }
-                            .avatar {
-                                width: 100px;
-                                height: 100px;
-                                display: block;
-                            }
-                            .el-form-item__label{
-                              width: 100px !important;
-                            }
-                        }
                     }
             }
+
         }
         .demo-table-expand {
           font-size: 0;
@@ -602,6 +679,30 @@ export default {
             margin-bottom: 0;
             width: 50%;
           }
+        }
+        // upload style
+        .avatar-uploader .el-upload {
+          border: 1px dashed #d9d9d9;
+          border-radius: 6px;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+          border-color: #20a0ff;
+        }
+        .avatar-uploader-icon {
+          font-size: 28px;
+          color: #8c939d;
+          width: 100px;
+          height: 100px;
+          line-height: 100px;
+          text-align: center;
+        }
+        .avatar {
+          width: 100px;
+          height: 100px;
+          display: block;
         }
     }
 </style>
