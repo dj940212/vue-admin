@@ -27,7 +27,7 @@
           @select="handleSelect"
         ></el-autocomplete> -->
         <el-input
-          placeholder="亲输入mac查询"
+          placeholder="请输入mac查询"
           icon="search"
           v-model="mac"
           :on-icon-click="handleIconClick">

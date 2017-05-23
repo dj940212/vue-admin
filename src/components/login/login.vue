@@ -15,7 +15,7 @@
             </div>
             <div class="register">
                 <a href="/#/register">注册</a>
-                <a href="/#/login">忘记密码</a>
+                <a href="/">忘记密码</a>
             </div>
         </div>
     </div>
@@ -26,9 +26,6 @@
 export default {
   name: 'login',
   mounted: function(){
-    // this.stationSocket();
-    // this.getLocalStation();
-    // this.particles();
     document.getElementById("loginUsername").focus();
   },
   methods:{
@@ -48,7 +45,6 @@ export default {
                 this.username = this.telephone;
                 this.global.bus.$emit("username",this.telephone);
                 this.isLoging = true;
-                // this.global.bus.$emit("login",this.isLoging)
                 console.log("登录成功");
             }else{
                 alert("密码或账号错误");
@@ -58,7 +54,6 @@ export default {
         })
     },
     submit:function(){
-        // console.log(this.$route);
         if (this.telephone!=="" && this.pwd!=="") {
             this.login()
         }
@@ -83,10 +78,11 @@ export default {
         }
       });
     },
-    setCookie: function(c_name, value, expiredays){
-      var exdate = new Date();　　　　
+    setCookie:function(c_name, value, expiredays){
+      var exdate = new Date();　
       exdate.setDate(exdate.getDate() + expiredays);　　　　
       document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
+      console.log("setCookie",document.cookie);
     }
   },
   data:function(){

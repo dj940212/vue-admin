@@ -32,13 +32,6 @@ export default new Router({
       components:{
           mylogin:register
       }
-    },
-    {
-      path: '/login',
-      name: 'login',
-      components:{
-          mylogin:login
-      }
     },{
       path: '/userinfo',
       name: 'userinfo',

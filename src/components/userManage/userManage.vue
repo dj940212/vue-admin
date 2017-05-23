@@ -122,7 +122,7 @@
                       fixed="right"
                       prop="type"
                       label="操作"
-                      width="100">
+                      width="150px">
                       <template scope="scope">
                         <el-popover
                           ref="popover1"
@@ -139,7 +139,7 @@
                                   <el-input v-model="bindDetailDevicePost.type"></el-input>
                                 </el-form-item>
                                 <el-form-item label="定位物标识">
-                                  <el-input v-model="bindDetailDevicePost.label"></el-input>
+                                  <el-input v-model="bindDetailDevicePost.lable"></el-input>
                                 </el-form-item>
                                 <el-form-item label="车牌号">
                                   <el-input v-model="bindDetailDevicePost.car_number"></el-input>
@@ -152,7 +152,7 @@
                                       :on-success="handleAvatarSuccessCarPic"
                                       :before-upload="beforeAvatarUpload"
                                       style="display:inline-block">
-                                      <img v-if="bindDetailDevicePost.car_pic" :src="bindDetailDevicePost.car_pic" class="avatar">
+                                      <img v-if="bindDetailDevicePost.car_pic" :src="bindDetailDevicePost.car_pic" class="avatar" width="100px" height="100px">
                                       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                     </el-upload>
                                 </el-form-item>
@@ -175,8 +175,6 @@
                               <el-button type="primary" @click="openMessageBoxBindDevice(scope.$index)">绑定车辆</el-button>
                               </el-form>
                           </el-col>
-
-                          <!-- <el-button v-popover:popover1>取消</el-button> -->
                         </el-popover>
                         <el-popover
                           ref="popover2"
@@ -186,9 +184,6 @@
                           trigger="click">
                           <el-col :span="12">
                               <el-form ref="form" :model="addUserPost" label-width="100px">
-                                <!-- <el-form-item label="用户id">
-                                  <el-input v-model="addUserPost.id"></el-input>
-                                </el-form-item> -->
                                 <el-form-item label="姓名">
                                   <el-input v-model="addUserPost.realname"></el-input>
                                 </el-form-item>
@@ -206,7 +201,7 @@
                                       :on-success="handleAvatarSuccessFront"
                                       :before-upload="beforeAvatarUpload"
                                       style="display:inline-block">
-                                      <img v-if="addUserPost.idcard_frontpic" :src="addUserPost.idcard_frontpic" class="avatar">
+                                      <img v-if="addUserPost.idcard_frontpic" :src="addUserPost.idcard_frontpic" class="avatar" width="100px" height="100px">
                                       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                     </el-upload>
                                 </el-form-item>
@@ -231,7 +226,7 @@
                                       :on-success="handleAvatarSuccessBack"
                                       :before-upload="beforeAvatarUpload"
                                       style="display:inline-block">
-                                      <img v-if="addUserPost.idcard_backpic" :src="addUserPost.idcard_backpic" class="avatar">
+                                      <img v-if="addUserPost.idcard_backpic" :src="addUserPost.idcard_backpic" class="avatar" width="100px" height="100px">
                                       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                     </el-upload>
                                 </el-form-item>
@@ -257,7 +252,7 @@
                       <template scope="props">
                         <el-form label-position="left" inline class="demo-table-expand">
                           <el-form-item label="定位物标识">
-                            <span>{{ props.row.label }}</span>
+                            <span>{{ props.row.lable }}</span>
                           </el-form-item>
                           <el-form-item label="车辆类型">
                             <span>{{ props.row.car_type }}</span>
@@ -300,7 +295,7 @@
                       fixed="right"
                       prop="type"
                       label="操作"
-                      width="100">
+                      width="150">
                       <template scope="scope">
                         <el-button type="text" size="small">修改</el-button>
                         <el-button type="text" size="small">删除</el-button>
@@ -559,12 +554,12 @@ export default {
             mac:"",
             type:"",
             userid:"",
-            label:""
+            lable:""
           },
           bindDetailDevicePost:{
             userid:"",
             mac:"",
-            label:"",
+            lable:"",
             type:"",
             car_number:"",
             car_type:"",
