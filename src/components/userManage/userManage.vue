@@ -134,7 +134,7 @@
                       fixed="right"
                       prop="type"
                       label="操作"
-                      width="140">
+                      width="160">
                       <template scope="scope">
                         <!-- 绑定电动车表单 -->
                         <el-popover
@@ -315,7 +315,7 @@
                       fixed="right"
                       prop="type"
                       label="操作"
-                      width="140">
+                      width="160">
                       <template scope="scope">
                         <el-popover
                           ref="popover5"

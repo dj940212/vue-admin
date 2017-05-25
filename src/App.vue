@@ -34,11 +34,6 @@ export default {
       breadcrumb
   },
   methods:{
-      setCookie: function(c_name, value, expiredays){
-        var exdate = new Date();　　　　
-        exdate.setDate(exdate.getDate() + expiredays);　　　　
-        document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
-      },
       getCookie:function(name) {
         var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
         if (arr = document.cookie.match(reg))
@@ -48,7 +43,7 @@ export default {
       },
       checkLogin:function(){
         //检查是否存在session
-        console.log(this.getCookie('session'))
+        console.log("getCookie",this.getCookie('session'))
         if(!this.getCookie('session')){
           this.$router.push('/');
           console.log("-> login")

@@ -32,6 +32,7 @@ export default {
                 //如果登录成功则保存登录状态并设置有效期
                 let expireDays = 1/24;  //一小时过期
                 this.setCookie('session', res.data.data.list.id, expireDays);
+                console.log("setCookie===>");
                 //跳转
                 this.$router.push('mapsearch');
                 this.username = this.telephone;
@@ -72,9 +73,14 @@ export default {
       });
     },
     setCookie: function(c_name, value, expiredays){
-      var exdate = new Date();　　　　
-      exdate.setDate(exdate.getDate() + expiredays);　　　　
+      console.log("进入setCookie");
+      var exdate = new Date();　
+      console.log(exdate);　　　
+      exdate.setDate(exdate.getDate() + expiredays);　
+      console.log("dasfda",exdate.setDate(exdate.getDate() + expiredays));　
+      console.log(exdate.toGMTString());　　
       document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
+      console.log("document.cookie",document.cookie);
     }
   },
   data:function(){

@@ -12,8 +12,8 @@
             placeholder="请输入关键字查询"
             icon="search"
             class="el-input"
-            v-model="mac"
-            @change="searchRecord">
+            v-model="telephone"
+            :on-icon-click="searchAlarms">
           </el-input>
           <div class="triangle-up" v-show="switchValue"></div>
         </div>
@@ -128,7 +128,7 @@
                     <el-table-column
                       fixed="right"
                       label="操作"
-                      width="100">
+                      width="160">
                       <template scope="scope">
                         <el-popover
                           ref="popover1"
@@ -136,7 +136,7 @@
                           width="220"
                           trigger="click">
                           <el-radio-group v-model="alarmStatus">
-                            <el-radio-button label="未处理" @click="myAlert"></el-radio-button>
+                            <el-radio-button label="未处理"></el-radio-button>
                             <el-radio-button label="处理中"></el-radio-button>
                             <el-radio-button label="已完成"></el-radio-button>
                           </el-radio-group>
@@ -144,16 +144,17 @@
                             <el-button type="success" size="small" @click="changeAlarmsStatus(scope.$index)">确定更改</el-button>
                           </div>
                         </el-popover>
-                        <el-button type="text" size="small" @click="showMap(scope.$index)"> 显示 </el-button>
-                        <el-button type="text" size="small" v-popover:popover1 @click="getAlarmStatusAndId(scope.$index)"> 编辑 </el-button>
+                        <el-button type="info" size="small" @click="showMap(scope.$index)"> 显示 </el-button>
+                        <el-button type="warning" size="small" v-popover:popover1 @click="getAlarmStatusAndId(scope.$index)"> 编辑 </el-button>
                       </template>
                     </el-table-column>
                 </el-table>
             </div>
             <el-pagination
                layout="prev, pager, next"
-               :total="7"
-               :page-size="18">
+               :page-count="pageNum"
+               :page-size="18"
+               @current-change="paging">
              </el-pagination>
         </div>
     </div>
@@ -168,9 +169,9 @@ export default {
   },
   methods:{
       //获取记录
-      getAlarms:function(){
-          this.$http.post(this.urlGetAlarms,{
-            page:1
+      getAlarms:function(nowpage=1){
+        this.$http.post(this.urlGetAlarms,{
+            page:nowpage
           },{
             emulateJSON: true
         }).then((res) => {
@@ -178,6 +179,7 @@ export default {
                 this.alarms = res.data.data.list.alarmid;
                 this.alarmsData = res.data.data.list;
                 this.tableData = this.alarms;
+                this.pageNum = res.data.data.page_number;
             }
         }, (res) => {
             console.log(res.status)
@@ -189,7 +191,7 @@ export default {
           emulateJSON:true
         }).then((res)=>{
           if (res.data.lp===0&&res.data.data.msg==="请求成功") {
-            this.pageNum = 100;//res.data.data.page_number;
+
             cb()
           }
         },(res)=>{
@@ -230,6 +232,28 @@ export default {
           }
         })
       },
+      //报警记录查询
+      searchAlarms:function(){
+        this.$http.post(this.urlSearchAlarms,{
+            telephone:this.telephone
+          },{
+            emulateJSON: true
+        }).then((res) => {
+            if(res.data.lp==0&&res.data.data.msg=="请求成功"){
+              this.tableData = res.data.data.list;
+            }else if (res.data.lp===1&&res.data.data.msg==="无符合的报警记录") {
+              this.$message.error("没有找到报警记录");
+            }else if (res.data.lp===1&&res.data.data.msg==="搜索条件为空") {
+              this.$message.warning("搜索条件为空");
+            }
+        }, (res) => {
+            this.$message.error("数据请求出现错误");
+        })
+      },
+      //翻页
+      paging:function(currentPage){
+        this.getAlarms(currentPage)
+      },
       //在地图上显示
       showMap:function(index){
         var location = {};
@@ -242,9 +266,6 @@ export default {
       getAlarmStatusAndId:function(index){
         this.alarmStatus = this.tableData[index].status;
         this.alarmID = this.tableData[index].id;
-      },
-      myAlert:function(){
-        alert(1)
       },
       //打开报警对话框
       openMessageBox() {
@@ -292,6 +313,7 @@ export default {
           urlGetAlarms:this.global.port+"/langyang/Home/Police/getAlarms",
           urlAddAlarm:this.global.port+"/langyang/Home/Police/giveAlarm",
           urlChangeAlarmsStatus:this.global.port+"/langyang/Home/Police/changeAlarmsStatus",
+          urlSearchAlarms:this.global.port+"/langyang/Home/Police/searchAlarms",
           tableData:[],
           alarmsData:[],
           mac:"",
@@ -313,8 +335,8 @@ export default {
           },
           imageUrl: '',
           switchValue:false,
-          pageNum:"",
-
+          pageNum:1,
+          telephone:""
       }
   }
 }
@@ -352,11 +374,6 @@ export default {
               margin-top: 20px;
               margin-right: 20px;
               cursor: pointer;
-              // &:hover{
-              //   color: red;
-              //   transform: rotate(45deg);
-              // }
-
             }
             .active{
               color: red;

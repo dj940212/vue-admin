@@ -24,14 +24,9 @@
 </template>
 
 <script>
-// import particlesJSON from "@/components/login/particles.json"
 export default {
   name: 'register',
   mounted: function(){
-    // this.stationSocket();
-    // this.getLocalStation();
-    // this.particles();
-    // document.getElementById("loginUsername").focus();
   },
   methods:{
     login:function(){
