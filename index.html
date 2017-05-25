@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>langyang-police</title>
     <link rel="stylesheet" type="text/css" href="./static/css/reset.css">
-    <!-- <script type="text/javascript" src="./static/js/particles.js"></script> -->
+    <script type="text/javascript" src="./static/js/particles.js"></script>
   </head>
   <body>
     <div id="app"></div>
@@ -12,5 +12,12 @@
     <script type="text/javascript" src="./static/js/widHeight.js"></script>
     <script src="http://webapi.amap.com/maps?v=1.3&key=6dd05925131ff51e2a38cc5ca3a68b1a&plugin=AMap.Geocoder"></script>
     <script type="text/javascript" src="./static/js/socket.io.js"></script>
+    <script type="text/javascript">
+      setTimeout(function(){
+          particlesJS.load('particles-js', 'static/js/particles.json', function() {
+            console.log('callback - particles.js config loaded');
+          });
+        },500)
+    </script>
   </body>
 </html>
