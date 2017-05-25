@@ -77,6 +77,54 @@
                     :data="tableData"
                     border
                     style="width: 100%">
+                    <el-table-column type="expand">
+                        <template scope="props">
+                          <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="id">
+                              <span>{{ props.row.id }}</span>
+                            </el-form-item>
+                            <el-form-item label="地区编码">
+                              <span>{{ props.row.adcode }}</span>
+                            </el-form-item>
+                            <el-form-item label="地址">
+                              <span>{{ props.row.address }}</span>
+                            </el-form-item>
+                            <el-form-item label="报警时间">
+                              <span>{{ props.row.call_time }}</span>
+                            </el-form-item>
+                            <el-form-item label="发生时间">
+                              <span>{{ props.row.heppen_time }}</span>
+                            </el-form-item>
+                            <el-form-item label="报警类型">
+                              <span>{{ props.row.call_type }}</span>
+                            </el-form-item>
+                            <el-form-item label="省份证号码">
+                              <span>{{ props.row.idcard_number }}</span>
+                            </el-form-item>
+                            <el-form-item label="经度">
+                              <span>{{ props.row.longitude }}</span>
+                            </el-form-item>
+                            <el-form-item label="纬度">
+                              <span>{{ props.row.latitude }}</span>
+                            </el-form-item>
+                            <el-form-item label="mac">
+                              <span>{{ props.row.mac }}</span>
+                            </el-form-item>
+                            <el-form-item label="报警备注">
+                              <span>{{ props.row.message }}</span>
+                            </el-form-item>
+                            <el-form-item label="姓名">
+                              <span>{{ props.row.realname }}</span>
+                            </el-form-item>
+                            <el-form-item label="报警状态">
+                              <span>{{ props.row.status }}</span>
+                            </el-form-item>
+                            <el-form-item label="手机号">
+                              <span>{{ props.row.telephone }}</span>
+                            </el-form-item>
+                          </el-form>
+                        </template>
+                    </el-table-column>
                     <el-table-column
                       prop="id"
                       label="id">
@@ -86,16 +134,8 @@
                       label="姓名">
                     </el-table-column>
                     <el-table-column
-                      prop="idcard_number"
-                      label="身份证号">
-                    </el-table-column>
-                    <el-table-column
                       prop="telephone"
                       label="电话号码">
-                    </el-table-column>
-                    <el-table-column
-                      prop="address"
-                      label="发生地点">
                     </el-table-column>
                     <el-table-column
                       prop="call_time"
@@ -106,24 +146,8 @@
                       label="发生时间">
                     </el-table-column>
                     <el-table-column
-                      prop="mac"
-                      label="mac">
-                    </el-table-column>
-                    <el-table-column
-                      prop="device_type"
-                      label="定位物类型">
-                    </el-table-column>
-                    <el-table-column
-                      prop="call_type"
-                      label="报警方式">
-                    </el-table-column>
-                    <el-table-column
                       prop="status"
                       label="报警状态">
-                    </el-table-column>
-                    <el-table-column
-                      prop="message"
-                      label="报警备注">
                     </el-table-column>
                     <el-table-column
                       fixed="right"
@@ -466,5 +490,17 @@ export default {
                     }
             }
         }
+        .demo-table-expand {
+            font-size: 0;
+          }
+          .demo-table-expand label {
+            width: 90px;
+            color: #99a9bf;
+          }
+          .demo-table-expand .el-form-item {
+            margin-right: 0;
+            margin-bottom: 0;
+            width: 50%;
+          }
     }
 </style>

@@ -39,7 +39,7 @@
                   </div>
                   <ul class="submenu">
                       <li class="submenu-item"><router-link to="/userCallReg">用户报警登记</router-link></li>
-                      <li class="submenu-item"><router-link to="/userCallSearch">报警记录查询</router-link></li>
+                      <li class="submenu-item"><router-link to="/userCallSearch">报警记录管理</router-link></li>
                   </ul>
               </li>
               <li class="menu-item">
