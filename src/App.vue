@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <router-view class="myloginView" name="mylogin"></router-view>
     <v-header></v-header>
     <div class="sidebarBox" id="sidebarBox">
       <sidebar></sidebar>
@@ -7,7 +8,6 @@
     <div class="routerView" id="routerView">
         <router-view></router-view>
     </div>
-    <router-view class="myloginView" name="mylogin"></router-view>
   </div>
 </template>
 
@@ -34,28 +34,29 @@ export default {
       breadcrumb
   },
   methods:{
-      getCookie(c_name) {
-          if (document.cookie.length > 0) {
-              var c_start = document.cookie.indexOf(c_name + "=")
-              if (c_start != -1) {
-                  c_start = c_start + c_name.length + 1
-                  var c_end = document.cookie.indexOf(";", c_start)
-                  if (c_end == -1) c_end = document.cookie.length
-                  return unescape(document.cookie.substring(c_start, c_end))
-              }
-          }
-          return ""
+      setCookie: function(c_name, value, expiredays){
+        var exdate = new Date();　　　　
+        exdate.setDate(exdate.getDate() + expiredays);　　　　
+        document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
+      },
+      getCookie:function(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg))
+          return (arr[2]);
+        else
+          return false;
       },
       checkLogin:function(){
         //检查是否存在session
         console.log(this.getCookie('session'))
-        if(this.getCookie('session')!=null && this.getCookie('session')!=""){                                     //this.getCookie('session')!=null && this.getCookie('session')!=""
-          console.log("-> mapsearch")
-        }else{
+        if(!this.getCookie('session')){
           this.$router.push('/');
-          console.log("djdjdj","-> login")
+          console.log("-> login")
+        }else{
+          // this.$router.push('/mapsearch');
+          console.log("-> mapsearch")
         }
-      },
+      }
   }
 }
 </script>
@@ -65,11 +66,15 @@ export default {
 
 #app {
     position: relative;
+    // @sideWidth 180px;
     .routerView{
         float: left;
         display: inline-block;
+        // margin-top: 50px;
         background-color: #f2f2f2;
         overflow:auto;
+        // z-index: 2000;
+        // width: 60%;
     }
 }
 </style>

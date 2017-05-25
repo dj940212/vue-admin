@@ -18,19 +18,12 @@
   </div>
   <div class="content">
     <div class="real-time-map" id="real-time-map" ref="realtimeMap">
-        <!-- <el-autocomplete
-          class="inline-input"
-          v-model="nameOrTele"
-          :fetch-suggestions="querySearch"
-          placeholder="请输入手机号码查询"
-          :trigger-on-focus="true"
-          @select="handleSelect"
-        ></el-autocomplete> -->
         <el-input
-          placeholder="请输入mac查询"
+          placeholder="请输入车牌号查询"
           icon="search"
-          v-model="mac"
-          :on-icon-click="handleIconClick">
+          v-model="carnumber"
+          :on-icon-click="handleIconClick"
+          :maxlength="8">
         </el-input>
         <i class="el-icon-d-arrow-left" @click="toggleInfoBox" ref="elIcon"></i>
     </div>
@@ -42,58 +35,58 @@
         <table>
           <tr>
             <th>姓名</th>
-            <td>{{user.realname}}</td>
+            <td>{{carUserInfo.realname}}</td>
           </tr>
           <tr>
             <th>手机号</th>
-            <td>{{user.telephone}}</td>
+            <td>{{carUserInfo.telephone}}</td>
           </tr>
           <tr>
             <th>身份证号</th>
-            <td>{{user.idcardnumber}}</td>
+            <td>{{carUserInfo.idcardnumber}}</td>
           </tr>
           <tr>
             <th>性别</th>
-            <td>{{(user.sex===1)?"女":"男"}}</td>
+            <td>{{carUserInfo.sex=== 1 ? "女":"男"}}</td>
           </tr>
           <tr>
             <th>生日</th>
-            <td>{{user.birthday}}</td>
+            <td>{{carUserInfo.birthday}}</td>
           </tr>
           <tr>
             <th>地址</th>
-            <td>{{user.address}}</td>
+            <td>{{carUserInfo.address}}</td>
           </tr>
         </table>
       </div>
       <div class="module-ionfo">
         <div class="title">
-          <span>模块信息</span>
+          <span>助动车信息</span>
         </div>
         <table border="1">
           <tr>
-            <th>定位物mac</th>
-            <td>{{user.mac}}</td>
+            <th>mac</th>
+            <td>{{carUserInfo.mac}}</td>
           </tr>
           <tr>
-            <th>定位物类型</th>
-            <td>{{(user.device_type==1)?'助动车':(user.device_type==2)?'老人':(user.device_type==3)?'小孩':(user.device_type==4)?'宠物':""}}</td>
+            <th>车牌号</th>
+            <td>{{carUserInfo.car_number}}</td>
           </tr>
           <tr>
-            <th>当前经度</th>
-            <td>{{mouseoverData.latitude}}</td>
+            <th>标识</th>
+            <td>{{carUserInfo.lable}}</td>
           </tr>
           <tr>
-            <th>当前纬度</th>
-            <td>{{mouseoverData.longitude}}</td>
+            <th>颜色</th>
+            <td>{{carUserInfo.car_color}}</td>
           </tr>
           <tr>
-            <th>地区编码</th>
-            <td>{{mouseoverData.adcode}}</td>
+            <th>备注</th>
+            <td>{{carUserInfo.remark}}</td>
           </tr>
           <tr>
-            <th>点击地址</th>
-            <td>{{mouseoverData.address}}</td>
+            <th>绑定时间</th>
+            <td>{{carUserInfo.setup_time}}</td>
           </tr>
         </table>
       </div>
@@ -143,6 +136,22 @@ export default {
         }
       }, (res) => {
         console.log(res.status)
+      })
+    },
+    //车牌号查找电动车与个人信息
+    findDeviceByCarNum:function(cb){
+      this.$http.post(this.urlFindDeviceByCarNum,{car_number:this.carnumber},{
+        emulateJSON: true
+      }).then((res)=>{
+          if(res.data.lp==0&&res.data.data.msg=="请求成功"){
+            this.carUserInfo = res.data.data.list;
+            cb()
+          }else if (res.data.lp==1&&res.data.data.msg=="无符合的助动车") {
+            this.$message.warning("找不到助动车")
+          }
+      },(res)=>{
+        console.log(res.status);
+        this.$message.error("数据请求出现错误")
       })
     },
     //根据姓名或电话查找定位物
@@ -280,9 +289,16 @@ export default {
     },
     //输入框搜索
     handleIconClick:function(){
-        this.getUserInfo(this.mac);
-        this.amap.setCenter(this.markers[this.devEUIs.indexOf(this.mac)].getPosition());
-        this.amap.setZoom(16);
+        this.findDeviceByCarNum(()=>{
+          this.mac = this.carUserInfo.mac;
+          let markerIndex = this.devEUIs.indexOf(this.carUserInfo.mac);
+          if (markerIndex===-1) {
+            this.$message.warning("地图上还未显示此标记");
+          }else {
+            this.amap.setCenter(this.markers[markerIndex].getPosition());
+            this.amap.setZoom(16);
+          }
+        });
     },
     //开关切换事件
     switchChange:function() {
@@ -332,35 +348,15 @@ export default {
           console.log("更新位置完成")
         });
     },
-    //输入框获取mac
-    querySearch(queryString, cb) {
-        // var restaurants = this.restaurants;
-        this.searchDeviceByNameOrTele(()=>{
-          var results = this.macList
-          cb(results);
-          console.log("results",results);
-        })
-    },
-    //选择建议项
-    handleSelect(item) {
-      console.log(item);
-      this.mac =item.mac;
-      this.getUserInfo(this.mac);
-      if (this.devEUIs.indexOf(this.mac) !== -1) {
-        this.amap.setCenter(this.markers[this.devEUIs.indexOf(this.mac)].getPosition());
-        this.amap.setZoom(16);
-      }else {
-        this.$message.error('地图上没有该标记');
-      }
-     }
   },
   data() {
     return {
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
       urlSearchDeviceByNameOrTele:this.global.port+"/langyang/Home/Police/searchDeviceByNameOrTele",
+      urlFindDeviceByCarNum:this.global.port + '/langyang/Home/Police/findDeviceByCarNum',
       mac:"",
-      user: {},
+      carUserInfo: {},
       switchValue:true,
       toggleInfoBoxValue:false,
       amap:{},
@@ -374,7 +370,8 @@ export default {
       nameOrTele:"",
       macList:[],
       input5:"",
-      select:''
+      select:'',
+      carnumber:""
     }
   }
 }
@@ -483,7 +480,7 @@ export default {
             }
             .title {
                 span {
-                    width: 80px;
+                    width: 90px;
                     display: block;
                     font-size: 18px;
                     border-bottom: 3px solid #03003a;
@@ -515,9 +512,6 @@ export default {
 }
 // ====================media==================
 @media only screen and (max-width:1350px){
-    // .real-time-map{
-    //     width: 100% !important;
-    // }
     .info-box{
         margin-top: 30px;
         .module-ionfo{
@@ -525,7 +519,6 @@ export default {
             vertical-align: top;
         }
         .user-info{
-            // display: inline-block;
         }
     }
 }

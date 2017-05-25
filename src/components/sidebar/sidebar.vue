@@ -151,7 +151,7 @@ export default {
 
       this.global.bus.$on("username",function(id){
         this.username = id;
-        console.log(id,"我是username!!!!!!")
+        console.log(id)
       });
   }
 }

@@ -1,32 +1,24 @@
 <template>
     <div class="login-wrapper" id="particles-js">
-        <div class="mylogin">
-            <div class="title">
-                <span>朗阳科技</span>
-            </div>
-            <div class="login-box">
-                <label for="">账号</label>
-                <input type="text" name="" value="" placeholder="请输入账号" v-model="telephone" id="loginUsername"><br>
-                <label for="">密码</label>
-                <input type="password" name="" value="" placeholder="请输入密码" v-model="pwd" @keyup.13="submit"><br>
-            </div>
-            <div class="button-box">
-                <input type="submit" name="submit" @click="submit" value="登录" @keyup.13="submit"/>
-            </div>
-            <div class="register">
-                <a href="/#/register">注册</a>
-                <a href="/">忘记密码</a>
-            </div>
+        <div class="login">
+        	<h1>助动车管理系统</h1>
+        	<div class="form">
+        		<input type="text" name="u" placeholder="手机号" v-model="telephone" required="required" />
+        		<input type="password" name="p" placeholder="密码" v-model="pwd" required="required" @keyup.13="submit" />
+        		<button type="submit" class="btn btn-primary btn-block btn-large" @click="submit" @keyup.13="submit">登录</button>
+        	</div>
+          <div class="bottom">
+              <a href="/#/register" class="register">注册</a>
+              <a href="/#/login" class="forgetPwd">忘记密码</a>
+          </div>
         </div>
     </div>
 </template>
 
 <script>
-// import particlesJSON from "@/components/login/particles.json"
 export default {
   name: 'login',
   mounted: function(){
-    document.getElementById("loginUsername").focus();
   },
   methods:{
     login:function(){
@@ -45,9 +37,10 @@ export default {
                 this.username = this.telephone;
                 this.global.bus.$emit("username",this.telephone);
                 this.isLoging = true;
+                // this.global.bus.$emit("login",this.isLoging)
                 console.log("登录成功");
             }else{
-                alert("密码或账号错误");
+                this.$message.error("帐号或密码错误")
             }
         },(res)=>{
             console.log(res.status);
@@ -78,11 +71,10 @@ export default {
         }
       });
     },
-    setCookie:function(c_name, value, expiredays){
-      var exdate = new Date();　
+    setCookie: function(c_name, value, expiredays){
+      var exdate = new Date();　　　　
       exdate.setDate(exdate.getDate() + expiredays);　　　　
       document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
-      console.log("setCookie",document.cookie);
     }
   },
   data:function(){
@@ -100,83 +92,76 @@ export default {
 
 <style lang="less" scoped>
 .login-wrapper{
-    width: 100%;
-    height: 100%;
+    // width: 100%;
+    // height: 100%;
     position: absolute;
     top: 0;
     z-index: 200;
-    background-color: #f7fafc;
-    .mylogin {
-        width: 440px;
-        height: 420px;
-        position: absolute;
-        // background-color: #f7fafc;
-        left: 50%;
-        top: 50%;
-        margin-left: -220px;
-        margin-top: -210px;
-        border-radius: 5px;
-        box-shadow:0px 1px 10px 0px #888;
-        z-index: 401;
-        .title{
-            text-align: center;
-            margin-top: 32px;
-            span{
-                font-size: 28px;
-                color:#1f2d3d;
+    // background-color: #f7fafc;
+  	width: 100%;
+  	height:100%;
+  	font-family: 'Open Sans', sans-serif;
+  	background: #092756;
+  	background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top,  rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg,  #670d10 0%, #092756 100%);
+  	background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+  	background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+  	background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+  	background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg,  #670d10 0%,#092756 100%);
+  	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
+    .btn { display: inline-block; *display: inline; *zoom: 1; padding: 4px 10px 4px; margin-bottom: 0; font-size: 13px; line-height: 18px; color: #333333; text-align: center;text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); vertical-align: middle; background-color: #f5f5f5; background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6); background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6)); background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6); background-image: -o-linear-gradient(top, #ffffff, #e6e6e6); background-image: linear-gradient(top, #ffffff, #e6e6e6); background-repeat: repeat-x; filter: progid:dximagetransform.microsoft.gradient(startColorstr=#ffffff, endColorstr=#e6e6e6, GradientType=0); border-color: #e6e6e6 #e6e6e6 #e6e6e6; border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); border: 1px solid #e6e6e6; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); cursor: pointer; *margin-left: .3em; }
+    .btn:hover, .btn:active, .btn.active, .btn.disabled, .btn[disabled] { background-color: #e6e6e6; }
+    .btn-large { padding: 9px 14px; font-size: 15px; line-height: normal; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
+    .btn:hover { color: #333333; text-decoration: none; background-color: #e6e6e6; background-position: 0 -15px; -webkit-transition: background-position 0.1s linear; -moz-transition: background-position 0.1s linear; -ms-transition: background-position 0.1s linear; -o-transition: background-position 0.1s linear; transition: background-position 0.1s linear; }
+    .btn-primary, .btn-primary:hover { text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); color: #ffffff; }
+    .btn-primary.active { color: rgba(255, 255, 255, 0.75); }
+    .btn-primary { background-color: #4a77d4; background-image: -moz-linear-gradient(top, #6eb6de, #4a77d4); background-image: -ms-linear-gradient(top, #6eb6de, #4a77d4); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6eb6de), to(#4a77d4)); background-image: -webkit-linear-gradient(top, #6eb6de, #4a77d4); background-image: -o-linear-gradient(top, #6eb6de, #4a77d4); background-image: linear-gradient(top, #6eb6de, #4a77d4); background-repeat: repeat-x; filter: progid:dximagetransform.microsoft.gradient(startColorstr=#6eb6de, endColorstr=#4a77d4, GradientType=0);  border: 1px solid #3762bc; text-shadow: 1px 1px 1px rgba(0,0,0,0.4); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.5); }
+    .btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] { filter: none; background-color: #4a77d4; }
+    .btn-block { width: 100%; display:block; }
 
-            }
-        }
-        .login-box{
-            margin-left: 32px;
-            margin-top: 40px;
-            label{
-                font-size: 16px;
-                color: #666;
-            }
-            input{
-                width: 300px;
-                height: 30px;
-                margin: 20px 20px;
-                // background-color: #f2f2f2;
-                background-color: rgba(0, 0, 0, 0);
-                border-bottom: 2px solid #1f364a;
-                font-size: 16px;
-                &:focus{
-                    outline: none;
-                    border-bottom: 2px solid #f44336
-                }
-            }
-        }
-        .button-box{
-            margin-top: 50px;
-            input{
-                width: 120px;
-                height: 36px;
-                display: block;
-                margin:0 auto;
-                background-color: #1f2d3d;
-                color: #fff;
-                border: 0;
-                border-radius: 4px;
-                cursor: pointer;
-                &:focus{
-                    outline: none;
-                    background-color: #4d637d;
-                }
+    * { -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box; }
 
-            }
-        }
+    // html { width: 100%; height:100%; overflow:hidden; }
+
+    .login {
+    	position: absolute;
+    	top: 50%;
+    	left: 50%;
+    	margin: -150px 0 0 -150px;
+    	width:300px;
+    	height:300px;
+      h1{ color: #e8e8e8; text-shadow: 0 0 10px rgba(0,0,0,0.3); letter-spacing:1px; text-align:center; font-size: 32px;margin: 40px 0;}
+      .bottom{
+        margin-top: 20px;
         .register{
-          position: absolute;
-          width: 400px;
-          left: 120px;
-          bottom: 30px;
-          a{
-            margin-right: 100px;
-          }
+          float: left;
+          margin-left: 15px;
         }
+        .forgetPwd{
+          float: right;
+          margin-right: 15px;
+        }
+      }
+    }
+
+    input {
+    	width: 100%;
+    	margin-bottom: 10px;
+    	background: rgba(0,0,0,0.3);
+    	border: none;
+    	outline: none;
+    	padding: 10px;
+    	font-size: 13px;
+    	color: #fff;
+    	text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+    	border: 1px solid rgba(0,0,0,0.3);
+    	border-radius: 4px;
+    	box-shadow: inset 0 -5px 45px rgba(100,100,100,0.2), 0 1px 1px rgba(255,255,255,0.2);
+    	-webkit-transition: box-shadow .5s ease;
+    	-moz-transition: box-shadow .5s ease;
+    	-o-transition: box-shadow .5s ease;
+    	-ms-transition: box-shadow .5s ease;
+    	transition: box-shadow .5s ease;
+      &.focus{ box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgba(255,255,255,0.2); }
     }
 }
-
 </style>

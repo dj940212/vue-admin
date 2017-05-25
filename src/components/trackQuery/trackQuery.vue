@@ -29,23 +29,14 @@
               </el-date-picker>
             </el-popover>
             <el-input
-              placeholder="请输入mac查询"
+              placeholder="请输入车牌号查询"
               icon="search"
               class="el-input"
-              v-model="mac"
+              v-model="carnumber"
               v-popover:popover1
-              :on-icon-click="submit">
+              :on-icon-click="submit"
+              :maxlength="8">
             </el-input>
-            <!-- <el-autocomplete
-              class="inline-input"
-              v-popover:popover1
-              v-model="nameOrTele"
-              :on-icon-click="handleIconClick"
-              :fetch-suggestions="querySearch"
-              placeholder="请输入手机号码查询"
-              :trigger-on-focus="true"
-              @select="handleSelect"
-            ></el-autocomplete> -->
         </div>
         <div class="block" v-show="false">
            <el-date-picker
@@ -136,25 +127,23 @@ export default {
               alert("请选择时间范围")
           }else {
               console.log("getTrack",res.data)
-              if (res.data.data.msg == "success") {
+              if (res.data.lp===0&&res.data.data.msg === "success") {
+                this.$message.success("轨迹获取成功")
                   this.track = res.data.data.list.location;
                   this.tableData = res.data.data.list.location;
-                    // this.addMarker();
                   this.drawRoute(this.track);
                   this.track.forEach((item,index)=>{
                     //高德地址转换
                     var lnglat = new AMap.LngLat(item.longitude,item.latitude);
                     this.global.lonlatToAddr(lnglat,item);
-                    // console.log(item)
                   })
-
                   console.log("初始地址",this.track)
               } else {
-                  alert('找不到该设备，请重新输入！');
+                  this.$message.error('数据请求出现错误');
               }
           }
       }, (res) => {
-        console.log(res.status)
+        this.$message.error('数据请求出现错误');
       })
     },
     //获取用户信息
@@ -172,39 +161,34 @@ export default {
           }
 
         } else {
-          alert('getUserInfo找不到该设备，请重新输入！');
         }
       }, (res) => {
         console.log(res.status)
       })
     },
-    //根据姓名或电话查找定位物
-    searchDeviceByNameOrTele: function(cb){
-      this.$http.post(this.urlSearchDeviceByNameOrTele, {
-        nameOrTele: this.nameOrTele
-      }, {
+    //车牌号查找电动车与个人信息
+    findDeviceByCarNum:function(cb){
+      this.$http.post(this.urlFindDeviceByCarNum,{car_number:this.carnumber},{
         emulateJSON: true
-      }).then((res) => {
-        if (res.data.lp == 0 && res.data.message == "请求成功") {
-            console.log(res.data.data[0].deviceinfo);
-            if (res.data.data[0].deviceinfo) {
-              this.macList = res.data.data[0].deviceinfo;
-              this.macList.forEach((item,index)=>{
-                item.value = item.mac;
-              })
-              cb()
-            }
-
-        } else {
-          console.log('找不到该设备，请重新输入！');
-        }
-      }, (res) => {
-        console.log(res.status)
+      }).then((res)=>{
+          if(res.data.lp==0&&res.data.data.msg=="请求成功"){
+            this.carUserInfo = res.data.data.list;
+            this.mac = this.carUserInfo.mac;
+            cb()
+          }else if (res.data.lp==1&&res.data.data.msg=="无符合的助动车") {
+            this.$message.warning("找不到助动车")
+          }
+      },(res)=>{
+        console.log(res.status);
+        this.$message.error("数据请求出现错误")
       })
     },
     // 提交搜索
     submit: function() {
-      this.getTrack();
+      console.log(this.dateValue1,this.dateValue2)
+      this.findDeviceByCarNum(()=>{
+        this.getTrack();
+      });
       this.getUserInfo();
     },
     //绘制轨迹
@@ -215,12 +199,6 @@ export default {
             var timer = setInterval(() => {
                 if (i >= data.length-1) {
                     clearInterval(timer);
-                    // //显示起终标记
-                    // console.log(document.querySelectorAll(".amap-lib-marker-to"));
-                    // var endMarkers = document.querySelectorAll(".amap-lib-marker-to");
-                    // var startMarkers = document.querySelectorAll(".amap-lib-marker-from")
-                    // endMarkers[endMarkers.length-1].style.display = "block";
-                    // // startMarkers[0].style.display="block";
                 }else {
                     var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
                     console.log("======1111=======",i);
@@ -242,36 +220,24 @@ export default {
             },700)
         })
     },
-    //输入框获取mac
-    querySearch(queryString, cb) {
-        // var restaurants = this.restaurants;
-        this.searchDeviceByNameOrTele(()=>{
-          var results = this.macList
-          cb(results);
-          console.log("results",results);
-        })
-    },
-    //选择建议项
-    handleSelect(item) {
-      console.log(item);
-      this.mac =item.mac;
-      this.getTrack(this.mac);
-     }
   },
   data() {
     return {
-      mac: "3148369587325565",
+      mac:"",
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac2",
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       urlSearchDeviceByNameOrTele: this.global.port+"/langyang/Home/Police/searchDeviceByNameOrTele",
+      urlFindDeviceByCarNum:this.global.port + '/langyang/Home/Police/findDeviceByCarNum',
       user: {},
       track:[],
       amap: {},
       clickData: {},
       mouseoverData: {},
+      carUserInfo:"",
+      carnumber:"",
       allData:[],
-      dateValue1: new Date('Sat Apr 01 2017 19:00:30 GMT+0800'),
-      dateValue2: new Date('Sat Apr 01 2017 19:02:30 GMT+0800'),
+      dateValue1: new Date('Wed May 24 2017 00:00:00 GMT+0800'),
+      dateValue2: new Date('Wed May 24 2017 23:59:59 GMT+0800'),
       tableData: [],
       infoWindow:{},
       tableDataToggle: false,

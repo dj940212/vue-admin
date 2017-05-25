@@ -9,14 +9,15 @@
             <i class="el-icon-plus" v-bind:class="{active:onOffValue}" @click="onOffValue=!onOffValue"></i>
           </el-tooltip>
           <el-input
-            placeholder="请输入手机号查询"
+            placeholder="请输入手机号或车牌号查询"
             icon="search"
-            v-model="idnumber_or_phone"
-            :on-icon-click="searchUser">
+            v-model="carnumber_or_phone"
+            :on-icon-click="submitSearch">
           </el-input>
           <div class="triangle-up" v-show="onOffValue"></div>
         </div>
         <div class="content">
+          <!-- 注册用户表单 -->
           <div class="addUserLocator" v-show="onOffValue">
               <el-col :span="12">
                   <el-form ref="form" :model="addUserPost" label-width="100px">
@@ -24,10 +25,18 @@
                       <el-input v-model="addUserPost.realname"></el-input>
                     </el-form-item>
                     <el-form-item label="性别">
-                      <el-input v-model="addUserPost.sex"></el-input>
+                      <!-- <el-input v-model="addUserPost.sex"></el-input> -->
+                      <el-select v-model="addUserPost.sex" placeholder="请选择">
+                        <el-option
+                          v-for="item in options"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
                     </el-form-item>
                     <el-form-item label="手机号">
-                      <el-input v-model="addUserPost.telephone"></el-input>
+                      <el-input v-model="addUserPost.telephone" :maxlength="11"></el-input>
                     </el-form-item>
                     <el-form-item label="身份证正面">
                         <el-upload
@@ -37,7 +46,7 @@
                           :on-success="handleAvatarSuccessFront"
                           :before-upload="beforeAvatarUpload"
                           style="display:inline-block">
-                          <img v-if="addUserPost.idcard_frontpic" :src="addUserPost.idcard_frontpic" class="avatar">
+                          <img v-if="addUserPost.idcard_frontpic" :src="addUserPost.idcard_frontpic" class="avatar" width="160px" height="100px">
                           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </el-form-item>
@@ -62,7 +71,7 @@
                           :on-success="handleAvatarSuccessBack"
                           :before-upload="beforeAvatarUpload"
                           style="display:inline-block">
-                          <img v-if="addUserPost.idcard_backpic" :src="addUserPost.idcard_backpic" class="avatar">
+                          <img v-if="addUserPost.idcard_backpic" :src="addUserPost.idcard_backpic" class="avatar" width="160px" height="100px">
                           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </el-form-item>
@@ -73,11 +82,13 @@
                   </el-form>
               </el-col>
           </div>
+          <!-- 用户列表 -->
           <div class="table-data" v-show="showUserInfo">
                 <el-table
                     :data="tableData"
                     border
                     style="width: 100%">
+                    <!-- 扩展项 -->
                     <el-table-column type="expand">
                       <template scope="props">
                         <el-form label-position="left" inline class="demo-table-expand">
@@ -94,10 +105,10 @@
                             <span>{{ props.row.idcardnumber }}</span>
                           </el-form-item>
                           <el-form-item label="身份证正面">
-                            <img v-bind:src="props.row.idcard_frontpic" width="100px" height="100px">
+                            <img v-bind:src="props.row.idcard_frontpic" width="160px" height="100px">
                           </el-form-item>
                           <el-form-item label="身份证背面">
-                            <img v-bind:src="props.row.idcard_backpic" width="100px" height="100px">
+                            <img v-bind:src="props.row.idcard_backpic" width="160px" height="100px">
                           </el-form-item>
                         </el-form>
                       </template>
@@ -107,23 +118,25 @@
                       label="用户id">
                     </el-table-column>
                     <el-table-column
-                      prop="username"
-                      label="用户名">
+                      prop="idcardnumber"
+                      label="身份证号">
                     </el-table-column>
                     <el-table-column
                       prop="realname"
-                      label="真实姓名">
+                      label="姓名">
                     </el-table-column>
                     <el-table-column
                       prop="telephone"
                       label="手机号">
                     </el-table-column>
+                    <!-- 编辑删除操作项 -->
                     <el-table-column
                       fixed="right"
                       prop="type"
                       label="操作"
-                      width="150px">
+                      width="140">
                       <template scope="scope">
+                        <!-- 绑定电动车表单 -->
                         <el-popover
                           ref="popover1"
                           placement="bottom-start"
@@ -135,14 +148,11 @@
                                 <el-form-item label="mac">
                                   <el-input v-model="bindDetailDevicePost.mac"></el-input>
                                 </el-form-item>
-                                <el-form-item label="定位物类型">
-                                  <el-input v-model="bindDetailDevicePost.type"></el-input>
-                                </el-form-item>
                                 <el-form-item label="定位物标识">
                                   <el-input v-model="bindDetailDevicePost.lable"></el-input>
                                 </el-form-item>
                                 <el-form-item label="车牌号">
-                                  <el-input v-model="bindDetailDevicePost.car_number"></el-input>
+                                  <el-input v-model="bindDetailDevicePost.car_number" :maxlength="8" :minlength="3"></el-input>
                                 </el-form-item>
                                 <el-form-item label="车辆照片">
                                     <el-upload
@@ -152,7 +162,7 @@
                                       :on-success="handleAvatarSuccessCarPic"
                                       :before-upload="beforeAvatarUpload"
                                       style="display:inline-block">
-                                      <img v-if="bindDetailDevicePost.car_pic" :src="bindDetailDevicePost.car_pic" class="avatar" width="100px" height="100px">
+                                      <img v-if="bindDetailDevicePost.car_pic" :src="bindDetailDevicePost.car_pic" class="avatar" width="160px" height="100px">
                                       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                     </el-upload>
                                 </el-form-item>
@@ -166,16 +176,19 @@
                               <el-form-item label="车辆颜色">
                                 <el-input v-model="bindDetailDevicePost.color"></el-input>
                               </el-form-item>
-                              <el-form-item label="车辆备注">
-                                <el-input v-model="bindDetailDevicePost.remark" type="textarea"></el-input>
-                              </el-form-item>
                               <el-form-item label="车辆昵称">
                                 <el-input v-model="bindDetailDevicePost.nickname"></el-input>
                               </el-form-item>
+                              <el-form-item label="车辆备注">
+                                <el-input v-model="bindDetailDevicePost.remark" type="textarea"></el-input>
+                              </el-form-item>
+
                               <el-button type="primary" @click="openMessageBoxBindDevice(scope.$index)">绑定车辆</el-button>
                               </el-form>
                           </el-col>
+                          <!-- <el-button v-popover:popover1>取消</el-button> -->
                         </el-popover>
+                        <!-- 修改用户信息表单 -->
                         <el-popover
                           ref="popover2"
                           placement="bottom-start"
@@ -184,6 +197,9 @@
                           trigger="click">
                           <el-col :span="12">
                               <el-form ref="form" :model="addUserPost" label-width="100px">
+                                <!-- <el-form-item label="用户id">
+                                  <el-input v-model="addUserPost.id"></el-input>
+                                </el-form-item> -->
                                 <el-form-item label="姓名">
                                   <el-input v-model="addUserPost.realname"></el-input>
                                 </el-form-item>
@@ -201,7 +217,7 @@
                                       :on-success="handleAvatarSuccessFront"
                                       :before-upload="beforeAvatarUpload"
                                       style="display:inline-block">
-                                      <img v-if="addUserPost.idcard_frontpic" :src="addUserPost.idcard_frontpic" class="avatar" width="100px" height="100px">
+                                      <img v-if="addUserPost.idcard_frontpic" :src="addUserPost.idcard_frontpic" class="avatar" width="160px" height="100px">
                                       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                     </el-upload>
                                 </el-form-item>
@@ -226,7 +242,7 @@
                                       :on-success="handleAvatarSuccessBack"
                                       :before-upload="beforeAvatarUpload"
                                       style="display:inline-block">
-                                      <img v-if="addUserPost.idcard_backpic" :src="addUserPost.idcard_backpic" class="avatar" width="100px" height="100px">
+                                      <img v-if="addUserPost.idcard_backpic" :src="addUserPost.idcard_backpic" class="avatar" width="160px" height="100px">
                                       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                     </el-upload>
                                 </el-form-item>
@@ -237,17 +253,20 @@
                               </el-form>
                           </el-col>
                         </el-popover>
-                        <el-button type="text" size="small" v-popover:popover2 @click="getModifyPost(scope.$index)">修改</el-button>
-                        <el-button type="text" size="small" v-popover:popover1>绑定</el-button>
+                        <el-button type="warning" size="small" v-popover:popover2 @click="getModifyPost(scope.$index)">修改</el-button>
+                        <el-button type="info" size="small" v-popover:popover1>绑定</el-button>
                       </template>
                     </el-table-column>
                 </el-table>
             </div>
+            <!-- 助动车列表 -->
+          <!-- 电动车列表 -->
           <div class="table-data" v-show="showCarInfo">
                 <el-table
                     :data="tableDataCar"
                     border
                     style="width: 100%">
+                    <!-- 扩展项 -->
                     <el-table-column type="expand">
                       <template scope="props">
                         <el-form label-position="left" inline class="demo-table-expand">
@@ -270,7 +289,7 @@
                             <span>{{ props.row.color }}</span>
                           </el-form-item>
                           <el-form-item label="车辆照片">
-                            <img v-bind:src="props.row.car_pic" width="100px" height="100px">
+                            <img v-bind:src="props.row.car_pic" width="160px" height="100px">
                           </el-form-item>
                         </el-form>
                       </template>
@@ -285,20 +304,67 @@
                     </el-table-column>
                     <el-table-column
                       prop="mac"
-                      label="定位物mac">
+                      label="mac">
                     </el-table-column>
                     <el-table-column
                       prop="setup_time"
                       label="绑定时间">
                     </el-table-column>
+                    <!-- 编辑删除操作 -->
                     <el-table-column
                       fixed="right"
                       prop="type"
                       label="操作"
-                      width="150">
+                      width="140">
                       <template scope="scope">
-                        <el-button type="text" size="small">修改</el-button>
-                        <el-button type="text" size="small">删除</el-button>
+                        <el-popover
+                          ref="popover5"
+                          placement="bottom-start"
+                          title=" "
+                          width="600"
+                          trigger="click">
+                          <el-col :span="12">
+                              <el-form ref="form" :model="modifyCarInfoPost" label-width="100px">
+                                <el-form-item label="车牌号">
+                                  <el-input v-model="modifyCarInfoPost.car_number"></el-input>
+                                </el-form-item>
+                                <el-form-item label="车辆型号">
+                                  <el-input v-model="modifyCarInfoPost.car_type"></el-input>
+                                </el-form-item>
+                                <el-form-item label="车辆照片">
+                                  <el-upload
+                                    class="avatar-uploader"
+                                    action= "http://121.196.194.14/langyang/Home/Police/uploadCarPic"
+                                    :show-file-list="false"
+                                    :on-success="handleAvatarSuccessModifyCarPic"
+                                    :before-upload="beforeAvatarUpload"
+                                    style="display:inline-block">
+                                    <img v-if="modifyCarInfoPost.car_pic" :src="modifyCarInfoPost.car_pic" class="avatar" width="160px" height="100px">
+                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                  </el-upload>
+                                </el-form-item>
+                              </el-form>
+                          </el-col>
+                          <el-col :span="12">
+                              <el-form ref="form" :model="modifyCarInfoPost" label-width="100px">
+                                <el-form-item label="备注">
+                                  <el-input v-model="modifyCarInfoPost.remark"></el-input>
+                                </el-form-item>
+                                <el-form-item label="车昵称">
+                                  <el-input v-model="modifyCarInfoPost.nickname" placeholder="0000-00-00"></el-input>
+                                </el-form-item>
+                                <el-form-item label="车辆颜色">
+                                  <el-input v-model="modifyCarInfoPost.car_color"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                  <el-button type="primary" @click="openMessageBoxModifyCar">修改车辆</el-button>
+                                  <el-button @click="onOffValue=false">取消</el-button>
+                                </el-form-item>
+                              </el-form>
+                          </el-col>
+                        </el-popover>
+                        <el-button type="warning" size="small" v-popover:popover5 @click="getModifyCarInfoPost(scope.$index)">修改</el-button>
+                        <el-button type="danger" size="small" @click="openMessageBoxDelCar(scope.$index)">删除</el-button>
                       </template>
                     </el-table-column>
                 </el-table>
@@ -321,7 +387,7 @@ export default {
     //查找用户
     searchUser:function(){
       this.$http.post(this.urlSearchUser,{
-        idnumber_or_phone:this.idnumber_or_phone
+        idnumber_or_phone:this.carnumber_or_phone
       },{
         emulateJSON: true
       }).then((res)=>{
@@ -330,6 +396,7 @@ export default {
             this.tableData=[];
             this.tableDataCar=[];
             this.tableData[0]=res.data.data.list;
+            this.showUserInfo = true;
             this.searchDevice();
           }
       },(res)=>{
@@ -339,7 +406,7 @@ export default {
     //查找机动车
     searchDevice:function(){
       this.$http.post(this.urlSearchDevice,{
-        name_or_phone:this.idnumber_or_phone
+        name_or_phone:this.carnumber_or_phone
       },{
         emulateJSON: true
       }).then((res)=>{
@@ -354,6 +421,14 @@ export default {
       },(res)=>{
 
       })
+    },
+    //提交搜索
+    submitSearch:function(){
+      if (this.carnumber_or_phone.length >= 11) {
+        this.searchUser();
+      }else {
+        this.findDeviceByCarNum();
+      }
     },
     //添加用户
     addUser:function(cb1,cb2){
@@ -402,17 +477,81 @@ export default {
         })
       })
     },
+    //删除电动车
+    deleteDeviceAndCar:function(cb1,cb2){
+      this.$http.post(this.urlDeleteDeviceAndCar,{mac:this.mac},{
+        emulateJSON: true
+      }).then((res)=>{
+          if(res.data.lp==0&&res.data.data.msg=="删除成功"){
+            cb1();
+          }else if(res.data.lp==1&&res.data.data.msg=="删除失败"){
+            cb2();
+          }
+      },(res)=>{
+        console.log(res.status);
+      })
+    },
+    //修改电动车信息
+    modifyCarInfo:function(cb1,cb2){
+      this.$http.post(this.urlModifyCarInfo,this.modifyCarInfoPost,{
+        emulateJSON: true
+      }).then((res)=>{
+          if(res.data.lp==0&&res.data.data.msg=="修改成功"){
+            cb1()
+          }else if(res.data.lp==1&&res.data.data.msg=="该助动车不存在"){
+            cb2()
+          }
+      },(res)=>{
+        console.log(res.status);
+        this.$message({
+          type:"error",
+          message:"绑定失败"
+        })
+      })
+    },
     //修改用户信息
     modifyUser:function(cb){
       this.$http.post(this.urlModifyUser,this.addUserPost,{
         emulateJSON: true
       }).then((res)=>{
           if(res.data.lp==0&&res.data.data.msg=="请求成功"){
+            // this.$message.info("修改用户信息成功")
             cb()
           }
       },(res)=>{
         console.log(res.status);
+        this.$message.error("数据请求出现错误")
       })
+    },
+    //车牌号查找电动车与个人信息
+    findDeviceByCarNum:function(){
+      this.$http.post(this.urlFindDeviceByCarNum,{car_number:this.carnumber_or_phone},{
+        emulateJSON: true
+      }).then((res)=>{
+          if(res.data.lp==0&&res.data.data.msg=="请求成功"){
+            this.tableDataCar=[];
+            this.tableDataCar.push(res.data.data.list);
+            this.showCarInfo = true;
+          }else if (res.data.lp==1&&res.data.data.msg=="无符合的助动车") {
+            this.$message.warning("找不到助动车")
+          }
+      },(res)=>{
+        console.log(res.status);
+        this.$message.error("数据请求出现错误")
+      })
+    },
+    //获取修改用户信息提交参数
+    getModifyPost(index){
+      this.addUserPost = this.tableData[index];
+      this.addUserPost.id = this.tableData[index].id;
+      console.log(this.addUserPost)
+    },
+    //获取修改助动车信息
+    getModifyCarInfoPost(index){
+      this.modifyCarInfoPost = this.tableDataCar[index];
+      this.modifyCarInfoPost.car_id = this.tableDataCar[index].carid;
+      this.modifyCarInfoPost.car_color = this.tableDataCar[index].color;
+      console.log(this.modifyCarInfoPost);
     },
     //上传照片正面成功
     handleAvatarSuccessFront(res, file) {
@@ -430,6 +569,12 @@ export default {
     //上传车辆照片成功
     handleAvatarSuccessCarPic(res, file) {
       this.bindDetailDevicePost.car_pic = res.data.list.carpic;
+
+      console.log(res.data.car)
+    },
+    //修改车辆照片成功
+    handleAvatarSuccessModifyCarPic(res, file) {
+      this.modifyCarInfoPost.car_pic = res.data.list.carpic;
 
       console.log(res.data.car)
     },
@@ -472,7 +617,31 @@ export default {
         });
       });
     },
-    //弹出对话框
+    //删除电动车对话框
+    openMessageBoxDelCar(index) {
+      console.log(index)
+      this.$confirm('确定删除该助动车?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(() => {
+        this.mac = this.tableDataCar[index].mac;
+        this.deleteDeviceAndCar(()=>{
+          this.$message.success('删除成功!');
+        },()=>{
+          this.$message({
+            type: 'error',
+            message: '删除失败!'
+          });
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消删除'
+        });
+      });
+    },
+    //注册用户对话框
     openMessageBoxAddUser() {
       this.$confirm('确定添加新用户?', '提示', {
         confirmButtonText: '确定',
@@ -497,14 +666,7 @@ export default {
         });
       });
     },
-    //获取当前id
-    getModifyPost(index){
-      this.addUserPost = this.tableData[index];
-      this.addUserPost.id = this.tableData[index].id;
-      console.log(this.tableData[index].id);
-      console.log(this.addUserPost)
-    },
-    //弹出对话框
+    //修改用户对话框
     openMessageBoxModifyUser() {
       this.$confirm('确定修改用户信息?', '提示', {
         confirmButtonText: '确定',
@@ -523,6 +685,22 @@ export default {
           message: '取消添加'
         });
       });
+    },
+    //修改电动车对话框
+    openMessageBoxModifyCar() {
+      this.$confirm('确定修改用户信息?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(() => {
+        this.modifyCarInfo(()=>{
+          this.$message.success('修改成功!');
+        },()=>{
+          this.$message.warning('该助动车不存在')
+        })
+      }).catch(() => {
+        this.$message.error('修改失败');
+      });
     }
   },
   data:function(){
@@ -533,13 +711,18 @@ export default {
           urlBindDevice:this.global.port + '/langyang/Home/Police/bindDevice',
           urlBindDetailDevice:this.global.port + '/langyang/Home/Police/bindDetailDevice',
           urlModifyUser:this.global.port + '/langyang/Home/Police/modifyUser',
+          urlFindDeviceByCarNum:this.global.port + '/langyang/Home/Police/findDeviceByCarNum',
+          urlDeleteDeviceAndCar:this.global.port + '/langyang/Home/Police/deleteDeviceAndCar',
+          urlModifyCarInfo:this.global.port + '/langyang/Home/Police/modifyCarInfo',
           tableData:[],
-          idnumber_or_phone:"123456789",
+          mac:"",
+          car_id:"",
+          carnumber_or_phone:"15267069998",
           onOffValue:false,
           imageUrlFront:"",
           imageUrlBack:"",
           showCarInfo:false,
-          showUserInfo:true,
+          showUserInfo:false,
           addUserPost:{
             realname:"",
             idcardnumber:"",
@@ -556,11 +739,20 @@ export default {
             userid:"",
             lable:""
           },
+          modifyCarInfoPost:{
+            car_id:"",
+            car_number:"",
+            car_type:"",
+            car_color:"",
+            car_pic:"",
+            remark:"",
+            nickname:""
+          },
           bindDetailDevicePost:{
             userid:"",
             mac:"",
             lable:"",
-            type:"",
+            type:"1",
             car_number:"",
             car_type:"",
             color:"",
@@ -568,16 +760,20 @@ export default {
             remark:"",
             nickname:""
           },
-          modifyUserPost:{
-
-          },
+          modifyUserPost:{},
           urlUserDeviceInfo:this.global.port + '/langyang/Home/Police/searchUserDeviceInfo',
           urlSearchDevice:this.global.port+ '/langyang/Home/Police/searchDevice',
-          urlModifyCar:this.global.port + '/langyang/Home/Police/modifyCar',
-          urlDeleteCar:this.global.port + '/langyang/Home/Police/deleteCar',
           tableDataCar:[],
-          onOffValue:false
-      }
+          onOffValue:false,
+          options: [{
+              value: '1',
+              label: '女'
+            },{
+              value: '0',
+              label: '男'
+          }],
+          sexValue: ''
+        }
   }
 }
 </script>
@@ -689,13 +885,13 @@ export default {
         .avatar-uploader-icon {
           font-size: 28px;
           color: #8c939d;
-          width: 100px;
+          width: 160px;
           height: 100px;
           line-height: 100px;
           text-align: center;
         }
         .avatar {
-          width: 100px;
+          width: 160px;
           height: 100px;
           display: block;
         }

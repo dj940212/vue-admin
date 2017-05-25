@@ -50,13 +50,13 @@
                     </el-table-column>
                     <el-table-column
                       prop="adcode"
-                      label="工作状态">
+                      label="地区编码">
                     </el-table-column>
                     <el-table-column
                       fixed="right"
                       prop="type"
                       label="操作"
-                      width="100">
+                      width="140">
                       <template scope="scope">
                         <el-popover
                           ref="popover4"
@@ -81,8 +81,8 @@
                             <el-button type="success" @click="changeStaion(scope.$index)">确定更改</el-button>
                           </div>
                         </el-popover>
-                        <el-button @click="openMessageBoxDelete(scope.$index)" type="text" size="small">移除</el-button>
-                        <el-button type="text" size="small" v-popover:popover4 @click="getChangeStaionPost(scope.$index)">编辑</el-button>
+                        <el-button @click="openMessageBoxDelete(scope.$index)" type="danger" size="small">移除</el-button>
+                        <el-button type="info" size="small" v-popover:popover4 @click="getChangeStaionPost(scope.$index)">编辑</el-button>
                       </template>
                     </el-table-column>
                 </el-table>
@@ -239,10 +239,10 @@ export default {
               message: '修改成功!'
             });
           }else{
-            console.log("修改基站失败");
+            this.$message.error("修改失败")
           }
         },(res)=>{
-          console.log(res.status);
+          this.$message.error("请求发生错误")
         })
       },
       //请求参数
