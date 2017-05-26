@@ -96,6 +96,7 @@
 </template>
 
 <script>
+import urlIcon  from "../../images/marker.png"
 export default {
   name: 'mapsearch',
   mounted: function() {
@@ -291,13 +292,20 @@ export default {
     handleIconClick:function(){
         this.findDeviceByCarNum(()=>{
           this.mac = this.carUserInfo.mac;
-          let markerIndex = this.devEUIs.indexOf(this.carUserInfo.mac);
-          if (markerIndex===-1) {
-            this.$message.warning("地图上还未显示此标记");
-          }else {
-            this.amap.setCenter(this.markers[markerIndex].getPosition());
-            this.amap.setZoom(16);
+          //开关处在位置
+          if (this.switchValue) {
+            let markerIndex = this.devEUIs.indexOf(this.carUserInfo.mac);
+            if (markerIndex===-1) {
+              this.$message.warning("地图上还未显示此标记");
+            }else {
+              this.amap.setCenter(this.markers[markerIndex].getPosition());
+              // this.markers[markerIndex].setIcon(urlIcon);
+              this.amap.setZoom(18);
+            }
+          }else {          //开关处在轨迹
+            this.amap.clearMap();
           }
+
         });
     },
     //开关切换事件

@@ -9,7 +9,7 @@
             <i class="el-icon-plus" v-bind:class="{active:switchValue}" @click="switchValue=!switchValue"></i>
           </transition>
           <el-input
-            placeholder="请输入关键字查询"
+            placeholder="请输入手机号查询"
             icon="search"
             class="el-input"
             v-model="telephone"
