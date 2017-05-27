@@ -209,7 +209,7 @@ export default {
                         AMap.convertFrom(lnglat2,"gps",(status,result) => {
                             this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
                             console.log(this.newRouteData1,this.newRouteData2);
-                              new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
+                              new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
                                   if (status === "complete") {
                                       i++;
                                   }
@@ -220,6 +220,30 @@ export default {
             },700)
         })
     },
+    //绘制轨迹
+    drawRoute2:function(data){
+        AMap.service(["AMap.Walking"],() => {
+            this.amap.clearMap();
+            for (var i = 0; i < data.length; i++) {
+              var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
+              console.log("======1111=======",i);
+              AMap.convertFrom(lnglat1,"gps",(status,result) => {
+                  this.newRouteData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
+                  var lnglat2 = new AMap.LngLat(data[i+1].longitude,data[i+1].latitude);
+                  console.log("======2222=======",i+1);
+                  AMap.convertFrom(lnglat2,"gps",(status,result) => {
+                      this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
+                      console.log(this.newRouteData1,this.newRouteData2);
+                        new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
+                            if (status === "complete") {
+                                i++;
+                            }
+                        })
+                  })
+              })
+            }
+        })
+    }
   },
   data() {
     return {
@@ -236,8 +260,8 @@ export default {
       carUserInfo:"",
       carnumber:"",
       allData:[],
-      dateValue1: new Date('Wed May 24 2017 00:00:00 GMT+0800'),
-      dateValue2: new Date('Wed May 24 2017 23:59:59 GMT+0800'),
+      dateValue1: new Date('Wed May 27 2017 00:00:00 GMT+0800'),
+      dateValue2: new Date('Wed May 27 2017 23:59:59 GMT+0800'),
       tableData: [],
       infoWindow:{},
       tableDataToggle: false,

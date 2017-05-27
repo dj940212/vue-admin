@@ -135,7 +135,7 @@ export default {
     	margin: -150px 0 0 -150px;
     	width:300px;
     	height:300px;
-      h1{ color: #e8e8e8; text-shadow: 0 0 10px rgba(0,0,0,0.3); letter-spacing:1px; text-align:center; font-size: 32px;margin: 40px 0;}
+      h1{ color: #e8e8e8; text-shadow: 0 0 10px rgba(0,0,0,0.3); letter-spacing:3px; text-align:center; font-size: 32px;margin: 40px 0;}
       .bottom{
         margin-top: 20px;
         .register{

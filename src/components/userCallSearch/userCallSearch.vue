@@ -66,7 +66,7 @@
                     </el-form-item>
                     <el-form-item>
                       <br>
-                      <el-button type="primary" @click="openMessageBox">立即创建</el-button>
+                      <el-button type="primary" @click="openMessageBox">立即报警</el-button>
                       <el-button @click="switchValue=false">取消</el-button>
                     </el-form-item>
                   </el-form>
@@ -168,18 +168,18 @@
                             <el-button type="success" size="small" @click="changeAlarmsStatus(scope.$index)">确定更改</el-button>
                           </div>
                         </el-popover>
-                        <el-button type="info" size="small" @click="showMap(scope.$index)"> 显示 </el-button>
-                        <el-button type="warning" size="small" v-popover:popover1 @click="getAlarmStatusAndId(scope.$index)"> 编辑 </el-button>
+                        <el-button type="info" size="small" @click="showMap(scope.$index)"> 查看 </el-button>
+                        <el-button type="warning" size="small" v-popover:popover1 @click="getAlarmStatusAndId(scope.$index)"> 处理 </el-button>
                       </template>
                     </el-table-column>
                 </el-table>
-            </div>
-            <el-pagination
-               layout="prev, pager, next"
-               :page-count="pageNum"
-               :page-size="18"
-               @current-change="paging">
-             </el-pagination>
+          </div>
+          <el-pagination
+             layout="prev, pager, next"
+             :page-count="pageNum"
+             :page-size="18"
+             @current-change="paging">
+           </el-pagination>
         </div>
     </div>
 </template>
@@ -256,6 +256,7 @@ export default {
           }
         })
       },
+
       //报警记录查询
       searchAlarms:function(){
         this.$http.post(this.urlSearchAlarms,{

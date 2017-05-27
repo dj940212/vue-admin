@@ -3,7 +3,7 @@
         <div class="header">
           <div class="title">
             <i class="icon iconfont">&#xe612;</i>
-            <span>用户设备信息</span>
+            <span>用户信息</span>
           </div>
           <el-tooltip class="item" effect="dark" content="注册用户" placement="bottom">
             <i class="el-icon-plus" v-bind:class="{active:onOffValue}" @click="onOffValue=!onOffValue"></i>
@@ -134,6 +134,17 @@
                       fixed="right"
                       prop="type"
                       label="操作"
+                      width="90">
+                      <template scope="scope">
+                        <!-- <el-button type="success" size="small" @click="searchDevice">设备</el-button> -->
+                        <el-button size="small" v-popover:popover1>车辆</el-button>
+                      </template>
+                    </el-table-column>
+                    <!-- 编辑删除操作项 -->
+                    <el-table-column
+                      fixed="right"
+                      prop="type"
+                      label="操作"
                       width="160">
                       <template scope="scope">
                         <!-- 绑定电动车表单 -->
@@ -253,6 +264,7 @@
                               </el-form>
                           </el-col>
                         </el-popover>
+                        <!-- <el-button type="success" size="small" @click="searchDevice">设备</el-button> -->
                         <el-button type="warning" size="small" v-popover:popover2 @click="getModifyPost(scope.$index)">修改</el-button>
                         <el-button type="info" size="small" v-popover:popover1>绑定</el-button>
                       </template>
@@ -260,6 +272,8 @@
                 </el-table>
             </div>
             <!-- 助动车列表 -->
+            <!-- <div class="d">设备</div> -->
+          <!-- 页码 -->
           <!-- 电动车列表 -->
           <div class="table-data" v-show="showCarInfo">
                 <el-table
@@ -363,12 +377,19 @@
                               </el-form>
                           </el-col>
                         </el-popover>
+                        <!-- <el-button type="success" size="small" @click="searchUser">用户</el-button> -->
                         <el-button type="warning" size="small" v-popover:popover5 @click="getModifyCarInfoPost(scope.$index)">修改</el-button>
                         <el-button type="danger" size="small" @click="openMessageBoxDelCar(scope.$index)">删除</el-button>
                       </template>
                     </el-table-column>
                 </el-table>
-            </div>
+          </div>
+          <el-pagination
+             layout="prev, pager, next"
+             :page-count="pageNum"
+             :page-size="18"
+             @current-change="paging">
+           </el-pagination>
         </div>
     </div>
 </template>
@@ -382,6 +403,7 @@ export default {
       // image
   },
   mounted:function(){
+    this.getUserList(1);
   },
   methods:{
     //查找用户
@@ -396,8 +418,8 @@ export default {
             this.tableData=[];
             this.tableDataCar=[];
             this.tableData[0]=res.data.data.list;
-            this.showUserInfo = true;
-            this.searchDevice();
+            // this.showUserInfo = true;
+            // this.searchDevice();
           }
       },(res)=>{
         console.log(res.status);
@@ -421,6 +443,32 @@ export default {
       },(res)=>{
 
       })
+    },
+    //获取用户列表
+    getUserList:function(page=1){
+      this.$http.post(this.urlGetUserList,{
+        page:page
+      },{
+        emulateJSON:true
+      }).then((res)=>{
+        if (res.data.lp===0&&res.data.data.msg==="请求成功") {
+          this.tableData = res.data.data.list;
+          this.pageNum = res.data.data.page;
+        }
+      },(res)=>{
+        console.log(res.status)
+      })
+    },
+    //翻页
+    paging:function(currentPage){
+      this.getUserList(currentPage)
+    },
+    //给指定行
+    tableRowClassName(row, index) {
+        if (index === 0) {
+          return 'positive-row';
+        }
+        return '';
     },
     //提交搜索
     submitSearch:function(){
@@ -714,15 +762,17 @@ export default {
           urlFindDeviceByCarNum:this.global.port + '/langyang/Home/Police/findDeviceByCarNum',
           urlDeleteDeviceAndCar:this.global.port + '/langyang/Home/Police/deleteDeviceAndCar',
           urlModifyCarInfo:this.global.port + '/langyang/Home/Police/modifyCarInfo',
+          urlGetUserList:this.global.port+"/langyang/Home/Police/getUserList",
           tableData:[],
           mac:"",
           car_id:"",
+          pageNum:1,
           carnumber_or_phone:"15267069998",
           onOffValue:false,
           imageUrlFront:"",
           imageUrlBack:"",
           showCarInfo:false,
-          showUserInfo:false,
+          showUserInfo:true,
           addUserPost:{
             realname:"",
             idcardnumber:"",
@@ -857,6 +907,9 @@ export default {
                         padding-top: 30px;
                     }
             }
+            .el-pagination{
+              text-align: center;
+            }
 
         }
         .demo-table-expand {
@@ -894,6 +947,9 @@ export default {
           width: 160px;
           height: 100px;
           display: block;
+        }
+        .el-table .positive-row {
+          background: #e2f0e4;
         }
     }
 </style>

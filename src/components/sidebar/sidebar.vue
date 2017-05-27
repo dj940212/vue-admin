@@ -28,7 +28,8 @@
                           <!-- <li class="submenu-item"><router-link to="/userInfoManage">用户与设备信息</router-link></li> -->
                           <li class="submenu-item"><router-link to="/eleFence">用户电子围栏</router-link></li>
                           <li class="submenu-item"><router-link to="/mapsearch">实时地图查询</router-link></li>
-                          <li class="submenu-item"><router-link to="/userManage">用户设备信息</router-link></li>
+                          <li class="submenu-item"><router-link to="/userManage">用户信息</router-link></li>
+                          <li class="submenu-item"><router-link to="/userInfoManage">车辆信息</router-link></li>
                       </ul>
                   </transition>
               </li>
@@ -109,7 +110,7 @@ export default {
           if (!this.submenuActive1) {
               event.currentTarget.nextSibling.nextSibling.style.height=0+"px";
           }else {
-              event.currentTarget.nextSibling.nextSibling.style.height=111+"px";
+              event.currentTarget.nextSibling.nextSibling.style.height=148+"px";
           }
 
       },

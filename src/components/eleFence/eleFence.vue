@@ -9,7 +9,7 @@
   <div class="content">
     <div class="base-station-map" id="base-station-map">
         <el-input
-          placeholder="请输入基站mac"
+          placeholder="请输入用户id查询"
           icon="search"
           class="el-input"
           v-model="id"

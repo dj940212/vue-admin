@@ -101,8 +101,8 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    this.keepsocket();
-    // this.testSocket();
+    // this.keepsocket();
+    this.testSocket();
     this.global.bus.$on("arrIndex",(index) => {
         // this.mac = this.tableData[index].mac;
         // console.log(this.tableData[index].mac);
@@ -193,6 +193,7 @@ export default {
         }else{
             console.log("绘制轨迹")
             this.drawRoute(this.mac,data);
+
         }
       });
     },
@@ -204,10 +205,13 @@ export default {
       });
       socket.on('testData',(testdata)=>{
         console.log("testData",testdata)
+        testdata.time = this.global.formatDate(new Date());
+        console.log("data.time",testdata.time);
         if (this.switchValue) {
            this.addMarker(testdata);
         }else {
-            this.drawRoute(this.mac,testdata)
+            this.drawRoute(this.mac,testdata);
+
         }
 
       })
@@ -216,14 +220,16 @@ export default {
     drawRoute:function(mac,data){
       if (data.devEUI === mac) {
         console.log(data.devEUI,mac);
+
         AMap.service(["AMap.Walking"],() => {
             var lnglat = new AMap.LngLat(data.longitude,data.latitude);
             AMap.convertFrom(lnglat,"gps",(status,result) => {
                 if (this.routeData1.length === 0) {
+                    this.addNewMarker(data);
                     this.routeData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
                 }else {
                   this.routeData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                  new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.routeData1,this.routeData2,()=>{
+                  new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.routeData1,this.routeData2,()=>{
                       this.routeData1 = this.routeData2;
                   })
                 }
@@ -254,31 +260,40 @@ export default {
             AMap.event.addListener(_this.marker, 'click',(e) => {
                 _this.amap.setCenter(e.target.getPosition());
                 _this.amap.setZoom(16);
-                _this.getUserInfo(data.devEUI);
+                // _this.getUserInfo(data.devEUI);
+                // _this.mouseOverCarInfo(data.devEUI,function(){
+                //    _this.carnumber = _this.carInfo.car_number;
+                //    _this.findDeviceByCarNum(()=>{});
+                // });
              });
              //划过事件
             AMap.event.addListener(_this.marker,'mouseover',(e) => {
                   _this.global.lonlatToAddr(result.locations[0],_this.mouseoverData);
                   _this.mouseoverData.latitude =data.latitude;
                   _this.mouseoverData.longitude = data.longitude;
-                  _this.getUserInfo(data.devEUI);
-                 setTimeout(() => {
-                     AMap.plugin('AMap.AdvancedInfoWindow',() => {
-                         //实例化信息窗体
-                        var title = 'mac : '+data.devEUI,
-                        content = [];
-                        // content.push('<span class="info-span" style="font-weight:bold">海拔：</span>'+data.altitude);
-                        content.push('<span class="info-span" style="font-weight:bold">经度：</span>'+data.latitude);
-                        content.push('<span class="info-span" style="font-weight:bold">纬度：</span>'+data.longitude);
-                        content.push('<span class="info-span" style="font-weight:bold">位置：</span>'+_this.mouseoverData.address)
-                        var infoWindow = new AMap.InfoWindow({
-                            isCustom: true,  //使用自定义窗体
-                            content: _this.global.createInfoWindow(title, content.join("<br/>")),
-                            offset: new AMap.Pixel(16, -45)
-                        });
-                        infoWindow.open(_this.amap,e.target.getPosition())
-                    });
-                },200);
+                  // _this.getUserInfo(data.devEUI);
+                  _this.mouseOverCarInfo(data.devEUI,function(){
+                    setTimeout(() => {
+                        AMap.plugin('AMap.AdvancedInfoWindow',() => {
+                            //实例化信息窗体
+                           var title = '车牌号: '+_this.carInfo.car_number,
+                           content = [];
+                           content.push('<span class="info-span" style="font-weight:bold">颜色：</span>'+_this.carInfo.color);
+                           content.push('<span class="info-span" style="font-weight:bold">类型：</span>'+_this.carInfo.car_type);
+                           content.push('<span class="info-span" style="font-weight:bold">时间：</span>'+data.time);
+                           content.push('<span class="info-span" style="font-weight:bold">位置：</span>'+_this.mouseoverData.address)
+                           var infoWindow = new AMap.InfoWindow({
+                               isCustom: true,  //使用自定义窗体
+                               content: _this.global.createInfoWindow(title, content.join("<br/>")),
+                               offset: new AMap.Pixel(16, -45)
+                           });
+                           infoWindow.open(_this.amap,e.target.getPosition())
+                       });
+                     },200);
+                     _this.carnumber = _this.carInfo.car_number;
+                     _this.findDeviceByCarNum(()=>{});
+                  });
+
 
              });
              //划出事件
@@ -345,6 +360,20 @@ export default {
          }
        }
     },
+    //鼠标划过显示车辆信息
+    mouseOverCarInfo:function(Mac,cb){
+      this.$http.post(this.urlSearchCarByMac,{mac:Mac},{
+        emulateJSON: true
+      }).then((res)=>{
+          if(res.data.lp==0&&res.data.data.msg=="请求成功"){
+            this.carInfo = res.data.data.list;
+            cb();
+          }
+      },(res)=>{
+        console.log(res.status);
+        this.$message.error("数据请求出现错误")
+      })
+    },
     //更新地图覆盖物的位置
     update : function (data,i) {
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
@@ -363,7 +392,9 @@ export default {
       urlTrack: this.global.port+"/langyang/Home/Police/getRouteByMac",
       urlSearchDeviceByNameOrTele:this.global.port+"/langyang/Home/Police/searchDeviceByNameOrTele",
       urlFindDeviceByCarNum:this.global.port + '/langyang/Home/Police/findDeviceByCarNum',
+      urlSearchCarByMac:this.global.port + '/langyang/Home/Police/searchCarByMac',
       mac:"",
+      carInfo:{},//用于显示鼠标划过车辆信息
       carUserInfo: {},
       switchValue:true,
       toggleInfoBoxValue:false,
