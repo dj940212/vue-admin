@@ -166,6 +166,59 @@ export default {
         console.log(res.status)
       })
     },
+    //添加新标记
+    addNewMarker:function(data){
+        var lnglat = new AMap.LngLat(data.longitude,data.latitude);
+        var _this = this;
+        //闭包
+        (function(){
+          AMap.convertFrom(lnglat,"gps",(status,result)=>{
+            //创建标记
+            _this.marker = new AMap.Marker({
+              position: result.locations[0],
+              title: data.mac,
+              map: _this.amap
+            });
+            _this.marker.mac = data.devEUI;
+            _this.markers.push(_this.marker);
+            console.log(_this.marker)
+            //点击事件
+            AMap.event.addListener(_this.marker, 'click',(e) => {
+                _this.amap.setCenter(e.target.getPosition());
+                _this.amap.setZoom(16);
+             });
+             //划过事件
+            AMap.event.addListener(_this.marker,'mouseover',(e) => {
+                  _this.global.lonlatToAddr(result.locations[0],_this.mouseoverData);
+                  _this.mouseoverData.latitude =data.latitude;
+                  _this.mouseoverData.longitude = data.longitude;
+                  _this.mouseoverData.time = data.time;
+                  // _this.getUserInfo(data.devEUI);
+                  setTimeout(() => {
+                          AMap.plugin('AMap.AdvancedInfoWindow',() => {
+                              //实例化信息窗体
+                             var title = '车牌号: '+_this.carUserInfo.car_number,
+                             content = [];
+                             content.push('<span class="info-span" style="font-weight:bold">颜色：</span>'+_this.carUserInfo.car_color);
+                             content.push('<span class="info-span" style="font-weight:bold">类型：</span>'+_this.carUserInfo.car_type);
+                             content.push('<span class="info-span" style="font-weight:bold">时间：</span>'+_this.mouseoverData.time);
+                             content.push('<span class="info-span" style="font-weight:bold">位置：</span>'+_this.mouseoverData.address)
+                             var infoWindow = new AMap.InfoWindow({
+                                 isCustom: true,  //使用自定义窗体
+                                 content: _this.global.createInfoWindow(title, content.join("<br/>")),
+                                 offset: new AMap.Pixel(16, -45)
+                             });
+                             infoWindow.open(_this.amap,e.target.getPosition())
+                         });
+                       },200);
+             });
+             //划出事件
+            AMap.event.addListener(_this.marker,'mouseout',()=>{
+                _this.amap.clearInfoWindow();
+            })
+          });
+        }());
+    },
     //车牌号查找电动车与个人信息
     findDeviceByCarNum:function(cb){
       this.$http.post(this.urlFindDeviceByCarNum,{car_number:this.carnumber},{
@@ -203,21 +256,25 @@ export default {
                     var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
                     console.log("======1111=======",i);
                     AMap.convertFrom(lnglat1,"gps",(status,result) => {
+
                         this.newRouteData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
                         var lnglat2 = new AMap.LngLat(data[i+1].longitude,data[i+1].latitude);
                         console.log("======2222=======",i+1);
                         AMap.convertFrom(lnglat2,"gps",(status,result) => {
                             this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
+                            //添加标记
+                            this.addNewMarker(data[i]);
                             console.log(this.newRouteData1,this.newRouteData2);
-                              new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
+                              new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
                                   if (status === "complete") {
                                       i++;
+
                                   }
                               })
                         })
                     })
                 }
-            },700)
+            },1000)
         })
     },
     //绘制轨迹
@@ -252,16 +309,20 @@ export default {
       urlUser: this.global.port+"/langyang/Home/Police/searchUserDeviceInfo",
       urlSearchDeviceByNameOrTele: this.global.port+"/langyang/Home/Police/searchDeviceByNameOrTele",
       urlFindDeviceByCarNum:this.global.port + '/langyang/Home/Police/findDeviceByCarNum',
+      urlSearchCarByMac:this.global.port + '/langyang/Home/Police/searchCarByMac',
       user: {},
       track:[],
+      marker:{},
+      markers:[],
       amap: {},
       clickData: {},
       mouseoverData: {},
       carUserInfo:"",
-      carnumber:"",
+      carnumber:"HZ000006",
+      carInfo:{},
       allData:[],
-      dateValue1: new Date('Wed May 27 2017 00:00:00 GMT+0800'),
-      dateValue2: new Date('Wed May 27 2017 23:59:59 GMT+0800'),
+      dateValue1: new Date('Wed May 24 2017 00:00:00 GMT+0800'),
+      dateValue2: new Date('Wed May 24 2017 23:59:59 GMT+0800'),
       tableData: [],
       infoWindow:{},
       tableDataToggle: false,

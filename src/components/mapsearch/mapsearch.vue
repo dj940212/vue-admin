@@ -211,7 +211,6 @@ export default {
            this.addMarker(testdata);
         }else {
             this.drawRoute(this.mac,testdata);
-
         }
 
       })
@@ -220,7 +219,7 @@ export default {
     drawRoute:function(mac,data){
       if (data.devEUI === mac) {
         console.log(data.devEUI,mac);
-
+        this.addNewMarker(data);
         AMap.service(["AMap.Walking"],() => {
             var lnglat = new AMap.LngLat(data.longitude,data.latitude);
             AMap.convertFrom(lnglat,"gps",(status,result) => {
@@ -229,7 +228,7 @@ export default {
                     this.routeData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
                 }else {
                   this.routeData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                  new AMap.Walking({map:this.amap,hideMarkers:false}).search(this.routeData1,this.routeData2,()=>{
+                  new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.routeData1,this.routeData2,()=>{
                       this.routeData1 = this.routeData2;
                   })
                 }
@@ -254,6 +253,7 @@ export default {
               map: _this.amap
             });
             _this.marker.mac = data.devEUI;
+            _this.marker.time = data.time;
             _this.markers.push(_this.marker);
             console.log(_this.marker)
             //点击事件
@@ -280,7 +280,7 @@ export default {
                            content = [];
                            content.push('<span class="info-span" style="font-weight:bold">颜色：</span>'+_this.carInfo.color);
                            content.push('<span class="info-span" style="font-weight:bold">类型：</span>'+_this.carInfo.car_type);
-                           content.push('<span class="info-span" style="font-weight:bold">时间：</span>'+data.time);
+                           content.push('<span class="info-span" style="font-weight:bold">时间：</span>'+_this.marker.time);
                            content.push('<span class="info-span" style="font-weight:bold">位置：</span>'+_this.mouseoverData.address)
                            var infoWindow = new AMap.InfoWindow({
                                isCustom: true,  //使用自定义窗体
@@ -343,6 +343,7 @@ export default {
     },
     //添加标记
     addMarker:function(data){
+        // this.mouseoverData = data.time;
         //添加覆盖物
       console.log(!this.devEUIs.length);
        if (!this.devEUIs.length) {
@@ -382,6 +383,7 @@ export default {
           this.markers[i].setPosition(result.locations[0]);
           this.markers[i].setTitle(data.devEUI);
           this.markers[i].setMap(this.amap);
+          this.markers[i].time=data.time;
           console.log("更新位置完成")
         });
     },
