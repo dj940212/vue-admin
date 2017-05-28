@@ -14,7 +14,8 @@
           icon="search"
           class="el-input"
           v-model="mac"
-          :on-icon-click="handleIconClick">
+          :on-icon-click="handleIconClick"
+          @keyup.enter.native="handleIconClick">
         </el-input>
     </div>
     <div class="table-data" v-show="toggleValue">
@@ -167,6 +168,7 @@ export default {
               title: data.mac,
               map: _this.amap
             });
+            _this.marker.isOnline = true;
             _this.markers[index]= _this.marker;
             //点击事件
             AMap.event.addListener(_this.marker, 'click',(e) => {

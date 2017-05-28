@@ -13,7 +13,8 @@
           icon="search"
           class="el-input"
           v-model="id"
-          :on-icon-click="searchEleFence">
+          :on-icon-click="searchEleFence"
+          @keyup.enter.native="searchEleFence">
         </el-input>
     </div>
   </div>

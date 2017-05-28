@@ -13,7 +13,8 @@
             icon="search"
             class="el-input"
             v-model="telephone"
-            :on-icon-click="searchAlarms">
+            :on-icon-click="searchAlarms"
+            @keyup.enter.native="searchAlarms">
           </el-input>
           <div class="triangle-up" v-show="switchValue"></div>
         </div>

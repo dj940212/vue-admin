@@ -12,7 +12,8 @@
             placeholder="请输入手机号或车牌号查询"
             icon="search"
             v-model="carnumber_or_phone"
-            :on-icon-click="submitSearch">
+            :on-icon-click="submitSearch"
+            @keyup.enter.native="submitSearch">
           </el-input>
           <div class="triangle-up" v-show="onOffValue"></div>
         </div>
@@ -130,16 +131,6 @@
                       label="手机号">
                     </el-table-column>
                     <!-- 编辑删除操作项 -->
-                    <el-table-column
-                      fixed="right"
-                      prop="type"
-                      label="操作"
-                      width="90">
-                      <template scope="scope">
-                        <!-- <el-button type="success" size="small" @click="searchDevice">设备</el-button> -->
-                        <el-button size="small" v-popover:popover1>车辆</el-button>
-                      </template>
-                    </el-table-column>
                     <!-- 编辑删除操作项 -->
                     <el-table-column
                       fixed="right"

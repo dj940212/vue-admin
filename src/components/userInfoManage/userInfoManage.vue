@@ -12,7 +12,8 @@
             placeholder="请输入手机号或车牌号查询"
             icon="search"
             v-model="carnumber_or_phone"
-            :on-icon-click="submitSearch">
+            :on-icon-click="submitSearch"
+            @keyup.enter.native="submitSearch">
           </el-input>
           <div class="triangle-up" v-show="onOffValue"></div>
         </div>
@@ -318,62 +319,6 @@
                       label="绑定时间">
                     </el-table-column>
                     <!-- 用户 -->
-                    <el-table-column
-                      fixed="right"
-                      prop="type"
-                      label="用户"
-                      width="90">
-                      <template scope="scope">
-                        <el-popover
-                          ref="popover5"
-                          placement="bottom-start"
-                          title=" "
-                          width="600"
-                          trigger="click">
-                          <el-col :span="12">
-                              <el-form ref="form" :model="modifyCarInfoPost" label-width="100px">
-                                <el-form-item label="车牌号">
-                                  <el-input v-model="modifyCarInfoPost.car_number"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车辆型号">
-                                  <el-input v-model="modifyCarInfoPost.car_type"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车辆照片">
-                                  <el-upload
-                                    class="avatar-uploader"
-                                    action= "http://121.196.194.14/langyang/Home/Police/uploadCarPic"
-                                    :show-file-list="false"
-                                    :on-success="handleAvatarSuccessModifyCarPic"
-                                    :before-upload="beforeAvatarUpload"
-                                    style="display:inline-block">
-                                    <img v-if="modifyCarInfoPost.car_pic" :src="modifyCarInfoPost.car_pic" class="avatar" width="160px" height="100px">
-                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                  </el-upload>
-                                </el-form-item>
-                              </el-form>
-                          </el-col>
-                          <el-col :span="12">
-                              <el-form ref="form" :model="modifyCarInfoPost" label-width="100px">
-                                <el-form-item label="备注">
-                                  <el-input v-model="modifyCarInfoPost.remark"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车昵称">
-                                  <el-input v-model="modifyCarInfoPost.nickname" placeholder="0000-00-00"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车辆颜色">
-                                  <el-input v-model="modifyCarInfoPost.car_color"></el-input>
-                                </el-form-item>
-                                <el-form-item>
-                                  <el-button type="primary" @click="openMessageBoxModifyCar">修改车辆</el-button>
-                                  <el-button @click="onOffValue=false">取消</el-button>
-                                </el-form-item>
-                              </el-form>
-                          </el-col>
-                        </el-popover>
-                        <!-- <el-button type="success" size="small" @click="searchUser">用户</el-button> -->
-                        <el-button size="small" v-popover:popover5 @click="getModifyCarInfoPost(scope.$index)">{{username}}</el-button>
-                      </template>
-                    </el-table-column>
                     <!-- 编辑删除操作 -->
                     <el-table-column
                       fixed="right"
@@ -469,7 +414,7 @@ export default {
             this.tableData=[];
             this.tableDataCar=[];
             this.tableData[0]=res.data.data.list;
-            this.showUserInfo = true;
+            // this.showUserInfo = true;
             this.searchDevice();
           }
       },(res)=>{
@@ -835,7 +780,7 @@ export default {
           username:"王小虎",
           car_id:"",
           pageNum:1,
-          carnumber_or_phone:"15267069998",
+          carnumber_or_phone:"HZ000001",
           onOffValue:false,
           imageUrlFront:"",
           imageUrlBack:"",

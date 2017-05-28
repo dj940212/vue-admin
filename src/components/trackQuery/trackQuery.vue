@@ -5,6 +5,7 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>行驶轨迹查询</span>
     </div>
+    <button type="button" name="button" @click="showMarker">显示所有标记</button>
     <span class="tableDataOnOff" @click="tableDataToggle = !tableDataToggle"><i class="icon iconfont" >&#xe742;</i>查看数据</span>
   </div>
   <div class="content">
@@ -34,6 +35,7 @@
               class="el-input"
               v-model="carnumber"
               v-popover:popover1
+              @keyup.enter.native="submit"
               :on-icon-click="submit"
               :maxlength="8">
             </el-input>
@@ -91,6 +93,8 @@
 </template>
 
 <script>
+import startMarker from "../../images/startMarker.png"
+import endMarker from "../../images/endMarker.png"
 export default {
   name: 'trackQuery',
   mounted: function() {
@@ -114,6 +118,18 @@ export default {
       });
 
     },
+
+    //显示所有标记
+    showMarker:function(){
+      var showMarkerValue = true;
+      if (showMarkerValue) {
+        this.track.forEach((item,index)=>{
+          if (index!==0&&index!==this.track.length-1) {
+            this.addNewMarker(item);
+          }
+        })
+      }
+    },
     //获取轨迹信息
     getTrack: function() {
       this.$http.post(this.urlTrack, {
@@ -128,9 +144,11 @@ export default {
           }else {
               console.log("getTrack",res.data)
               if (res.data.lp===0&&res.data.data.msg === "success") {
-                this.$message.success("轨迹获取成功")
-                  this.track = res.data.data.list.location;
+                  this.$message.success("轨迹获取成功");
+                  console.log(res.data.data.list.location);
+                  this.track = this.unique(res.data.data.list.location);
                   this.tableData = res.data.data.list.location;
+                  this.addNewMarker(this.track[0],startMarker)
                   this.drawRoute(this.track);
                   this.track.forEach((item,index)=>{
                     //高德地址转换
@@ -145,6 +163,17 @@ export default {
       }, (res) => {
         this.$message.error('数据请求出现错误');
       })
+    },
+    //删除数组重复的点
+    unique:function(array){
+      var newArr = [];
+      newArr.push(array[0])
+      for (var i = 1; i < array.length; i++) {
+        if (array[i].latitude!==array[i-1].latitude && array[i].longitude!==array[i-1].longitude) {
+          newArr.push(array[i])
+        }
+      }
+      return newArr;
     },
     //获取用户信息
     getUserInfo: function() {
@@ -167,18 +196,30 @@ export default {
       })
     },
     //添加新标记
-    addNewMarker:function(data){
+    addNewMarker:function(data,urlIcon){
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
         var _this = this;
         //闭包
         (function(){
           AMap.convertFrom(lnglat,"gps",(status,result)=>{
-            //创建标记
-            _this.marker = new AMap.Marker({
-              position: result.locations[0],
-              title: data.mac,
-              map: _this.amap
-            });
+            if (urlIcon) {
+              //创建标记
+              _this.marker = new AMap.Marker({
+                position: result.locations[0],
+                title: data.mac,
+                map: _this.amap,
+                offset:new AMap.Pixel(-18,-44),
+                icon: urlIcon
+              });
+            }else {
+              //创建标记
+              _this.marker = new AMap.Marker({
+                position: result.locations[0],
+                title: data.mac,
+                map: _this.amap
+              });
+            }
+
             _this.marker.mac = data.devEUI;
             _this.markers.push(_this.marker);
             console.log(_this.marker)
@@ -252,19 +293,17 @@ export default {
             var timer = setInterval(() => {
                 if (i >= data.length-1) {
                     clearInterval(timer);
+                    this.addNewMarker(data[data.length-1],endMarker);
                 }else {
-                    //添加标记
-                    this.addNewMarker(data[i]);
                     var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
-                    console.log("======1111=======",i);
+                    // console.log("=======>",i);
                     AMap.convertFrom(lnglat1,"gps",(status,result) => {
                         this.newRouteData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
                         var lnglat2 = new AMap.LngLat(data[i+1].longitude,data[i+1].latitude);
-                        console.log("======2222=======",i+1);
+                        console.log("=======>",i+1);
                         AMap.convertFrom(lnglat2,"gps",(status,result) => {
                             this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-
-                            console.log(this.newRouteData1,this.newRouteData2);
+                            // console.log(this.newRouteData1,this.newRouteData2);
                               new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
                                   if (status === "complete") {
                                       i++;
@@ -320,8 +359,8 @@ export default {
       carnumber:"HZ000006",
       carInfo:{},
       allData:[],
-      dateValue1: new Date('Wed May 24 2017 00:00:00 GMT+0800'),
-      dateValue2: new Date('Wed May 24 2017 23:59:59 GMT+0800'),
+      dateValue1: new Date('Wed May 27 2017 15:30:00 GMT+0800'),
+      dateValue2: new Date('Wed May 27 2017 16:00:00 GMT+0800'),
       tableData: [],
       infoWindow:{},
       tableDataToggle: false,

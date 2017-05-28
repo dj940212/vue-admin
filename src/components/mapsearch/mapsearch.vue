@@ -23,7 +23,8 @@
           icon="search"
           v-model="carnumber"
           :on-icon-click="handleIconClick"
-          :maxlength="8">
+          :maxlength="8"
+          @keyup.enter.native="handleIconClick">
         </el-input>
         <i class="el-icon-d-arrow-left" @click="toggleInfoBox" ref="elIcon"></i>
     </div>
@@ -103,7 +104,6 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    // this.keepsocket();
     this.testSocket();
     this.global.bus.$on("arrIndex",(index) => {
         // this.mac = this.tableData[index].mac;
@@ -223,14 +223,16 @@ export default {
     drawRoute:function(mac,data){
       if (data.devEUI === mac) {
         console.log(data.devEUI,mac);
-        this.addNewMarker(data);
+        // this.addNewMarker(data);
         AMap.service(["AMap.Walking"],() => {
             var lnglat = new AMap.LngLat(data.longitude,data.latitude);
             AMap.convertFrom(lnglat,"gps",(status,result) => {
                 if (this.routeData1.length === 0) {
-                    this.addNewMarker(data);
+                    this.addNewMarker(data,startMarker);
+                    console.log("起始坐标",this.marker);
                     this.routeData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
                 }else {
+                  this.addNewMarker(data);
                   this.routeData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
                   new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.routeData1,this.routeData2,()=>{
                       this.routeData1 = this.routeData2;
@@ -244,20 +246,31 @@ export default {
       }
     },
     //添加新标记
-    addNewMarker:function(data){
+    addNewMarker:function(data,urlIcon){
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
         var _this = this;
         //闭包
         (function(){
           AMap.convertFrom(lnglat,"gps",(status,result)=>{
+            var offset=new AMap.Pixel(0,0);
             //创建标记
-            _this.marker = new AMap.Marker({
-              position: result.locations[0],
-              title: data.mac,
-              map: _this.amap
-            });
+            if (urlIcon) {
+              _this.marker = new AMap.Marker({
+                position: result.locations[0],
+                title: data.mac,
+                map: _this.amap,
+                offset:new AMap.Pixel(-18,-44),
+                icon: urlIcon
+              });
+            }else{
+              _this.marker = new AMap.Marker({
+                position: result.locations[0],
+                title: data.mac,
+                map: _this.amap,
+              });
+            }
             _this.marker.mac = data.devEUI;
-            // _this.marker.time = data.time;
+            _this.marker.time = data.time;
             _this.markers.push(_this.marker);
             console.log("markers",_this.markers)
             //点击事件
@@ -319,6 +332,7 @@ export default {
             }
           }else {          //开关处在轨迹
             this.amap.clearMap();
+            this.markers = [];
             this.$message.info("正在显示轨迹")
           }
 
@@ -413,7 +427,7 @@ export default {
       macList:[],
       input5:"",
       select:'',
-      carnumber:""
+      carnumber:"HZ000001"
     }
   }
 }
