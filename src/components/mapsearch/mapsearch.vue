@@ -189,7 +189,7 @@ export default {
       });
       socket.on('message', (data) => {
         console.log("收到数据", data);
-        testdata.time = this.global.formatDate(new Date());
+        data.time = this.global.formatDate(new Date());
         console.log("data.time",testdata.time);
         if (this.switchValue) {
             console.log("添加标记")
@@ -395,7 +395,9 @@ export default {
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
         AMap.convertFrom(lnglat,"gps",(status,result) => {
           console.log("marker",i);
-          this.markers[i].setPosition(result.locations[0]);
+          var lnglatMove = new AMap.LngLat(result.locations[0].getLng(),result.locations[0].getLat());
+          // this.markers[i].setPosition(result.locations[0]);
+          this.markers[i].moveTo(lnglatMove,2000);
           this.markers[i].setTitle(data.devEUI);
           this.markers[i].setMap(this.amap);
           this.markers[i].time=data.time;

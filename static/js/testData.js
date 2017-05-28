@@ -22,7 +22,7 @@ io.on("connection",function(socket){
         }
         socket.emit("testData",testData[i])
         i++;
-    },5000)
+    },2000)
 
 })
 
