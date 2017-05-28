@@ -97,6 +97,8 @@
 
 <script>
 import urlIcon  from "../../images/marker.png"
+import startMarker from "../../images/startMarker.png"
+import endMarker from "../../images/endMarker.png"
 export default {
   name: 'mapsearch',
   mounted: function() {
@@ -187,6 +189,8 @@ export default {
       });
       socket.on('message', (data) => {
         console.log("收到数据", data);
+        testdata.time = this.global.formatDate(new Date());
+        console.log("data.time",testdata.time);
         if (this.switchValue) {
             console.log("添加标记")
             this.addMarker(data);
@@ -253,18 +257,13 @@ export default {
               map: _this.amap
             });
             _this.marker.mac = data.devEUI;
-            _this.marker.time = data.time;
+            // _this.marker.time = data.time;
             _this.markers.push(_this.marker);
-            console.log(_this.marker)
+            console.log("markers",_this.markers)
             //点击事件
             AMap.event.addListener(_this.marker, 'click',(e) => {
                 _this.amap.setCenter(e.target.getPosition());
                 _this.amap.setZoom(16);
-                // _this.getUserInfo(data.devEUI);
-                // _this.mouseOverCarInfo(data.devEUI,function(){
-                //    _this.carnumber = _this.carInfo.car_number;
-                //    _this.findDeviceByCarNum(()=>{});
-                // });
              });
              //划过事件
             AMap.event.addListener(_this.marker,'mouseover',(e) => {
@@ -272,6 +271,7 @@ export default {
                   _this.mouseoverData.latitude =data.latitude;
                   _this.mouseoverData.longitude = data.longitude;
                   // _this.getUserInfo(data.devEUI);
+                  _this.mouseoverData.time = data.time;
                   _this.mouseOverCarInfo(data.devEUI,function(){
                     setTimeout(() => {
                         AMap.plugin('AMap.AdvancedInfoWindow',() => {
@@ -280,7 +280,7 @@ export default {
                            content = [];
                            content.push('<span class="info-span" style="font-weight:bold">颜色：</span>'+_this.carInfo.color);
                            content.push('<span class="info-span" style="font-weight:bold">类型：</span>'+_this.carInfo.car_type);
-                           content.push('<span class="info-span" style="font-weight:bold">时间：</span>'+_this.marker.time);
+                           content.push('<span class="info-span" style="font-weight:bold">时间：</span>'+_this.mouseoverData.time);
                            content.push('<span class="info-span" style="font-weight:bold">位置：</span>'+_this.mouseoverData.address)
                            var infoWindow = new AMap.InfoWindow({
                                isCustom: true,  //使用自定义窗体
@@ -319,6 +319,7 @@ export default {
             }
           }else {          //开关处在轨迹
             this.amap.clearMap();
+            this.$message.info("正在显示轨迹")
           }
 
         });

@@ -253,22 +253,21 @@ export default {
                 if (i >= data.length-1) {
                     clearInterval(timer);
                 }else {
+                    //添加标记
+                    this.addNewMarker(data[i]);
                     var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
                     console.log("======1111=======",i);
                     AMap.convertFrom(lnglat1,"gps",(status,result) => {
-
                         this.newRouteData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
                         var lnglat2 = new AMap.LngLat(data[i+1].longitude,data[i+1].latitude);
                         console.log("======2222=======",i+1);
                         AMap.convertFrom(lnglat2,"gps",(status,result) => {
                             this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                            //添加标记
-                            this.addNewMarker(data[i]);
+
                             console.log(this.newRouteData1,this.newRouteData2);
                               new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
                                   if (status === "complete") {
                                       i++;
-
                                   }
                               })
                         })
