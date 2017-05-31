@@ -2,12 +2,12 @@
     <div class="userInfoManage">
         <div class="header">
           <div class="title">
-            <i class="icon iconfont">&#xe612;</i>
+            <!-- <i class="icon iconfont">&#xe612;</i> -->
             <span>车辆信息</span>
           </div>
-          <el-tooltip class="item" effect="dark" content="注册用户" placement="bottom">
+          <!-- <el-tooltip class="item" effect="dark" content="注册用户" placement="bottom">
             <i class="el-icon-plus" v-bind:class="{active:onOffValue}" @click="onOffValue=!onOffValue"></i>
-          </el-tooltip>
+          </el-tooltip> -->
           <el-input
             placeholder="请输入手机号或车牌号查询"
             icon="search"

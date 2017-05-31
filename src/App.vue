@@ -14,42 +14,31 @@
 <script>
 import header from './components/header/header'
 import sidebar from './components/sidebar/sidebar'
-import breadcrumb from './components/breadcrumb/breadcrumb'
 export default {
   name: 'app',
   //进入页面时
   created: function(){
-      this.checkLogin();
+      // this.checkLogin();
+      this.localCheckLogin();
   },
   mounted:function(){
 
   },
   //监听路由变化
   watch:{
-      '$route':'checkLogin'
+      '$route':'localCheckLogin'
   },
   components:{
       "vHeader":header,
-      sidebar,
-      breadcrumb
+      sidebar
   },
   methods:{
-      getCookie:function(name) {
-        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-        if (arr = document.cookie.match(reg))
-          return (arr[2]);
-        else
-          return false;
-      },
-      checkLogin:function(){
-        //检查是否存在session
-        console.log("getCookie",this.getCookie('session'))
-        if(!this.getCookie('session')){
+      localCheckLogin:function(){
+        if (localStorage.getItem("langyang_telephone")&&localStorage.getItem("langyang_password")) {
+          console.log("存在local信息")
+        }else {
           this.$router.push('/');
-          console.log("-> login")
-        }else{
-          // this.$router.push('/mapsearch');
-          console.log("-> mapsearch")
+          console.log("没有lcoal信息")
         }
       }
   }

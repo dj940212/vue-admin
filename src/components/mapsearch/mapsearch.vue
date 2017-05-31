@@ -104,7 +104,8 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    this.testSocket();
+    // this.testSocket();
+    this.keepsocket();
     this.global.bus.$on("arrIndex",(index) => {
         // this.mac = this.tableData[index].mac;
         // console.log(this.tableData[index].mac);
@@ -197,7 +198,6 @@ export default {
         }else{
             console.log("绘制轨迹")
             this.drawRoute(this.mac,data);
-
         }
       });
     },
@@ -208,7 +208,7 @@ export default {
         console.log('连接成功！');
       });
       socket.on('testData',(testdata)=>{
-        console.log("testData",testdata)
+        console.log("testData数据接收")
         testdata.time = this.global.formatDate(new Date());
         console.log("data.time",testdata.time);
         if (this.switchValue) {
@@ -397,7 +397,7 @@ export default {
           console.log("marker",i);
           var lnglatMove = new AMap.LngLat(result.locations[0].getLng(),result.locations[0].getLat());
           // this.markers[i].setPosition(result.locations[0]);
-          this.markers[i].moveTo(lnglatMove,2000);
+          this.markers[i].moveTo(lnglatMove,3000);
           this.markers[i].setTitle(data.devEUI);
           this.markers[i].setMap(this.amap);
           this.markers[i].time=data.time;

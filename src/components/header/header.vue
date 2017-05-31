@@ -39,32 +39,11 @@ export default {
       location.reload(true)
     },
     logout(){
-      //删除cookie并跳到登录页
-      // this.isLogouting = true;
-      //请求后端，比如logout.php
-      // this.$http.post('eaxmple.com/logout.php')...
-      //成功后删除cookie
-      this.delCookie('session');
-      //重置loding状态
-      // this.isLogouting = false;
+      localStorage.removeItem("langyang_telephone");
+      localStorage.removeItem("langyang_password")
       //跳转到登录页
-      this.$router.push('/login');
-    },
-    delCookie:function(name){
-        var exp = new Date();
-        exp.setTime(exp.getTime() - 1);
-        var cval = this.getCookie(name);
-        if (cval != null)
-          document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
-    },
-    getCookie:function(name) {
-      var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-      if (arr = document.cookie.match(reg))
-        return (arr[2]);
-      else
-        return false;
-    },
-
+      this.$router.push('/');
+    }
   },
   data:function(){
     return{

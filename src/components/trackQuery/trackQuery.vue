@@ -5,8 +5,8 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>行驶轨迹查询</span>
     </div>
-    <button type="button" name="button" @click="showMarker">显示所有标记</button>
-    <span class="tableDataOnOff" @click="tableDataToggle = !tableDataToggle"><i class="icon iconfont" >&#xe742;</i>查看数据</span>
+    <button type="button" name="button" @click="showMarker">显示标记</button>
+    <span class="tableDataOnOff" @click="tableDataToggle = !tableDataToggle"><i class="icon iconfont" >&#xe742;</i>数据</span>
   </div>
   <div class="content">
     <div class="trackQuery-map" id="trackQuery-map">
@@ -150,7 +150,7 @@ export default {
                   this.tableData = res.data.data.list.location;
                   this.addNewMarker(this.track[0],startMarker)
                   this.drawRoute(this.track);
-                  this.track.forEach((item,index)=>{
+                  this.tableData.forEach((item,index)=>{
                     //高德地址转换
                     var lnglat = new AMap.LngLat(item.longitude,item.latitude);
                     this.global.lonlatToAddr(lnglat,item);
@@ -312,7 +312,7 @@ export default {
                         })
                     })
                 }
-            },1000)
+            },700)
         })
     },
     //绘制轨迹
