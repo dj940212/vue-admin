@@ -3,13 +3,13 @@
         <div class="header">
           <div class="title">
             <i class="icon iconfont">&#xe612;</i>
-            <span>用户信息</span>
+            <span>用户信息管理</span>
           </div>
           <el-tooltip class="item" effect="dark" content="注册用户" placement="bottom">
             <i class="el-icon-plus" v-bind:class="{active:onOffValue}" @click="onOffValue=!onOffValue"></i>
           </el-tooltip>
           <el-input
-            placeholder="请输入手机号或车牌号查询"
+            placeholder="请输入手机号查询"
             icon="search"
             v-model="carnumber_or_phone"
             :on-icon-click="submitSearch"
@@ -130,7 +130,16 @@
                       prop="telephone"
                       label="手机号">
                     </el-table-column>
-                    <!-- 编辑删除操作项 -->
+                    <!-- 已绑定的助动车 -->
+                    <el-table-column
+                      fixed="right"
+                      prop="type"
+                      label="已绑车辆">
+                      <template scope="scope">
+                          <el-button size="small">HZ000006</el-button>
+                          <el-button size="small">HZ000006</el-button>
+                      </template>
+                    </el-table-column>
                     <!-- 编辑删除操作项 -->
                     <el-table-column
                       fixed="right"
@@ -427,6 +436,7 @@ export default {
           if (res.data.lp===0&&res.data.data.msg==="请求成功") {
             this.tableDataCar = res.data.data.list;
             this.showCarInfo = true;
+            this.showUserInfo = false;
           }else if (res.data.lp===1&&res.data.data.msg==="该用户未绑定设备") {
             this.$message.warning("该用户未绑定设备")
           }

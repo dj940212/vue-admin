@@ -9,12 +9,12 @@
             <i class="el-icon-plus" v-bind:class="{active:switchValue}" @click="switchValue=!switchValue"></i>
           </transition>
           <el-input
-            placeholder="请输入手机号查询"
+            placeholder="请输入手机号或姓名"
             icon="search"
             class="el-input"
-            v-model="telephone"
-            :on-icon-click="searchAlarms"
-            @keyup.enter.native="searchAlarms">
+            v-model="telephone_or_realname"
+            :on-icon-click="submit"
+            @keyup.enter.native="submit">
           </el-input>
           <div class="triangle-up" v-show="switchValue"></div>
         </div>
@@ -148,7 +148,16 @@
                     </el-table-column>
                     <el-table-column
                       prop="status"
-                      label="报警状态">
+                      label="报警状态"
+                      width="120"
+                      :filters="[{ text: '待处理', value: '待处理' }, { text: '处理中', value: '处理中' },{ text: '已完成', value: '已完成' }]"
+                      :filter-method="filterTag"
+                      filter-placement="bottom-end">
+                      <template scope="scope">
+                        <el-tag
+                          :type="scope.row.status === '待处理' ? 'danger' : 'success'"
+                          close-transition>{{scope.row.status}}</el-tag>
+                      </template>
                     </el-table-column>
                     <el-table-column
                       fixed="right"
@@ -257,12 +266,15 @@ export default {
           }
         })
       },
-
+      formatter(row, column) {
+        return row.address;
+      },
+      filterTag(value, row) {
+        return row.status === value;
+      },
       //报警记录查询
-      searchAlarms:function(){
-        this.$http.post(this.urlSearchAlarms,{
-            telephone:this.telephone
-          },{
+      searchAlarms:function(searchAlarmsPost){
+        this.$http.post(this.urlSearchAlarms,searchAlarmsPost,{
             emulateJSON: true
         }).then((res) => {
             if(res.data.lp==0&&res.data.data.msg=="请求成功"){
@@ -275,6 +287,14 @@ export default {
         }, (res) => {
             this.$message.error("数据请求出现错误");
         })
+      },
+      //提交搜索
+      submit:function(){
+        if (this.telephone_or_realname.length>=11) {
+          this.searchAlarms({telephone:this.telephone_or_realname});
+        }else {
+          this.searchAlarms({realname:this.telephone_or_realname});
+        }
       },
       //翻页
       paging:function(currentPage){
@@ -362,7 +382,7 @@ export default {
           imageUrl: '',
           switchValue:false,
           pageNum:1,
-          telephone:""
+          telephone_or_realname:""
       }
   }
 }

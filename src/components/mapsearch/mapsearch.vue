@@ -104,8 +104,8 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    // this.testSocket();
-    this.keepsocket();
+    this.testSocket();
+    // this.keepsocket();
     this.global.bus.$on("arrIndex",(index) => {
         // this.mac = this.tableData[index].mac;
         // console.log(this.tableData[index].mac);
@@ -239,7 +239,6 @@ export default {
                   })
                 }
             })
-
         })
       }else {
         console.log("mac不匹配")

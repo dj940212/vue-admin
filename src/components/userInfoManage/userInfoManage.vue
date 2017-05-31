@@ -3,7 +3,7 @@
         <div class="header">
           <div class="title">
             <!-- <i class="icon iconfont">&#xe612;</i> -->
-            <span>车辆信息</span>
+            <span>车辆信息管理</span>
           </div>
           <!-- <el-tooltip class="item" effect="dark" content="注册用户" placement="bottom">
             <i class="el-icon-plus" v-bind:class="{active:onOffValue}" @click="onOffValue=!onOffValue"></i>

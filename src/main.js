@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import store from './store/'
 import Resource from 'vue-resource'
-import { TimePicker, Radio, Option, Select, RadioGroup, RadioButton, Badge, DatePicker, Pagination, Message, MessageBox, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon, Form, FormItem, Upload, Row, Col, Autocomplete, Card} from 'element-ui'
+import { TimePicker, Tag, Radio, Option, Select, RadioGroup, RadioButton, Badge, DatePicker, Pagination, Message, MessageBox, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon, Form, FormItem, Upload, Row, Col, Autocomplete, Card} from 'element-ui'
 import global_ from './common/vue/global.vue'
 Vue.prototype.global = global_
 
@@ -36,6 +36,7 @@ Vue.use(RadioGroup)
 Vue.use(RadioButton)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Tag)
 
 Vue.prototype.$message = Message
 Vue.prototype.$msgbox = MessageBox
