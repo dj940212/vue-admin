@@ -6,7 +6,9 @@
             <span>报警记录查询</span>
           </div>
           <transition name="rotate">
-            <i class="el-icon-plus" v-bind:class="{active:switchValue}" @click="switchValue=!switchValue"></i>
+            <el-tooltip class="item" effect="dark" content="添加报警记录" placement="top">
+              <i class="el-icon-plus" v-bind:class="{active:switchValue}" @click="switchValue=!switchValue"></i>
+            </el-tooltip>
           </transition>
           <el-input
             placeholder="请输入手机号或姓名"
@@ -179,8 +181,12 @@
                             <el-button type="success" size="small" @click="changeAlarmsStatus(scope.$index)">确定更改</el-button>
                           </div>
                         </el-popover>
-                        <el-button type="info" size="small" @click="showMap(scope.$index)"> 查看 </el-button>
-                        <el-button type="warning" size="small" v-popover:popover1 @click="getAlarmStatusAndId(scope.$index)"> 处理 </el-button>
+                        <el-tooltip class="item" effect="dark" content="查看报警车辆位置" placement="top">
+                          <el-button type="info" size="small" icon="search" @click="showMap(scope.$index)"></el-button>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="处理报警" placement="top">
+                          <el-button type="warning" size="small" icon="edit" v-popover:popover1 @click="getAlarmStatusAndId(scope.$index)">处理</el-button>
+                        </el-tooltip>
                       </template>
                     </el-table-column>
                 </el-table>
@@ -460,7 +466,7 @@ export default {
             height: 91%;
             position: relative;
             .el-pagination{
-              margin:0 auto;
+              text-align: center;
             }
             .table-map{
               width: 100px;

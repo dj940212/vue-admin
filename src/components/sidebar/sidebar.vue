@@ -26,8 +26,8 @@
                       <ul class="submenu">
                           <li class="submenu-item"><router-link to="/eleFence">用户电子围栏</router-link></li>
                           <li class="submenu-item"><router-link to="/mapsearch">实时地图查询</router-link></li>
-                          <li class="submenu-item"><router-link to="/userManage">用户信息管理</router-link></li>
-                          <li class="submenu-item"><router-link to="/userInfoManage">车辆信息管理</router-link></li>
+                          <li class="submenu-item"><router-link to="/user">用户信息管理</router-link></li>
+                          <li class="submenu-item"><router-link to="/car">车辆信息管理</router-link></li>
                       </ul>
                   </transition>
               </li>

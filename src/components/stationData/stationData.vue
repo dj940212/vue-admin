@@ -6,7 +6,9 @@
             <span>基站数据</span>
           </div>
           <div class="addStation" >
-            <i class="el-icon-plus" v-bind:class="{active:addValue}" @click="addValue=!addValue"></i>
+            <el-tooltip class="item" effect="dark" content="添加基站" placement="top">
+              <i class="el-icon-plus" v-bind:class="{active:addValue}" @click="addValue=!addValue"></i>
+            </el-tooltip>
           </div>
           <el-input
             placeholder="请输入关键字查询"
@@ -82,8 +84,12 @@
                             <el-button type="success" @click="changeStaion(scope.$index)">确定更改</el-button>
                           </div>
                         </el-popover>
-                        <el-button @click="openMessageBoxDelete(scope.$index)" type="danger" icon="delete" size="small"></el-button>
-                        <el-button type="warning" size="small" icon="edit" v-popover:popover4 @click="getChangeStaionPost(scope.$index)"></el-button>
+                        <el-tooltip class="item" effect="dark" content="删除基站" placement="top">
+                          <el-button @click="openMessageBoxDelete(scope.$index)" type="danger" icon="delete" size="small"></el-button>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="修改基站" placement="top">
+                          <el-button type="warning" size="small" icon="edit" v-popover:popover4 @click="getChangeStaionPost(scope.$index)"></el-button>
+                        </el-tooltip>
                       </template>
                     </el-table-column>
                 </el-table>

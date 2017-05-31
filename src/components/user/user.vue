@@ -3,13 +3,13 @@
         <div class="header">
           <div class="title">
             <i class="icon iconfont">&#xe612;</i>
-            <span>车辆信息管理</span>
+            <span>用户信息管理</span>
           </div>
-          <!-- <el-tooltip class="item" effect="dark" content="注册用户" placement="bottom">
+          <el-tooltip class="item" effect="dark" content="注册用户" placement="bottom">
             <i class="el-icon-plus" v-bind:class="{active:onOffValue}" @click="onOffValue=!onOffValue"></i>
-          </el-tooltip> -->
+          </el-tooltip>
           <el-input
-            placeholder="请输入手机号或车牌号查询"
+            placeholder="请输入手机号查询"
             icon="search"
             v-model="carnumber_or_phone"
             :on-icon-click="submitSearch"
@@ -116,26 +116,36 @@
                     </el-table-column>
                     <el-table-column
                       prop="id"
-                      label="用户id">
+                      label="用户id"
+                      width="100">
+                    </el-table-column>
+                    <el-table-column
+                      prop="realname"
+                      label="姓名"
+                      width="100">
                     </el-table-column>
                     <el-table-column
                       prop="idcardnumber"
                       label="身份证号">
                     </el-table-column>
                     <el-table-column
-                      prop="realname"
-                      label="姓名">
-                    </el-table-column>
-                    <el-table-column
                       prop="telephone"
                       label="手机号">
+                    </el-table-column>
+                    <!-- 已绑定的助动车 -->
+                    <el-table-column
+                      prop="type"
+                      label="已绑车辆">
+                      <template scope="scope">
+                          <el-button v-for="item in tableData[scope.$index].carlist" v-if="tableData[scope.$index].carlist" size="small">{{item.car_number}}</el-button>
+                      </template>
                     </el-table-column>
                     <!-- 编辑删除操作项 -->
                     <el-table-column
                       fixed="right"
                       prop="type"
                       label="操作"
-                      width="160">
+                      width="120">
                       <template scope="scope">
                         <!-- 绑定电动车表单 -->
                         <el-popover
@@ -249,14 +259,17 @@
                                 </el-form-item>
                                 <el-form-item>
                                   <el-button type="primary" @click="openMessageBoxModifyUser">修改用户</el-button>
-                                  <el-button @click="onOffValue=false">取消</el-button>
                                 </el-form-item>
                               </el-form>
                           </el-col>
                         </el-popover>
                         <!-- <el-button type="success" size="small" @click="searchDevice">设备</el-button> -->
-                        <el-button type="warning" size="small" v-popover:popover2 @click="getModifyPost(scope.$index)">修改</el-button>
-                        <el-button type="info" size="small" v-popover:popover1>绑定</el-button>
+                        <el-tooltip class="item" effect="dark" content="修改用户信息" placement="top">
+                          <el-button type="warning" icon="edit" size="small" v-popover:popover2 @click="getModifyPost(scope.$index)"></el-button>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="绑定车辆" placement="top">
+                          <el-button type="info" icon="share" size="small" v-popover:popover1></el-button>
+                        </el-tooltip>
                       </template>
                     </el-table-column>
                 </el-table>
@@ -280,9 +293,9 @@
                           <el-form-item label="车辆类型">
                             <span>{{ props.row.car_type }}</span>
                           </el-form-item>
-                          <!-- <el-form-item label="定位物类型">
+                          <el-form-item label="定位物类型">
                             <span>{{ props.row.device_type }}</span>
-                          </el-form-item> -->
+                          </el-form-item>
                           <el-form-item label="备注">
                             <span>{{ props.row.remark }}</span>
                           </el-form-item>
@@ -302,37 +315,24 @@
                       prop="car_number"
                       label="车牌号">
                     </el-table-column>
-                    <!-- <el-table-column
-                      prop="id"
+                    <el-table-column
+                      prop="device_id"
                       label="车辆id">
-                    </el-table-column> -->
+                    </el-table-column>
                     <el-table-column
                       prop="mac"
                       label="mac">
                     </el-table-column>
                     <el-table-column
-                      prop="color"
-                      label="颜色">
-                    </el-table-column>
-                    <el-table-column
                       prop="setup_time"
                       label="绑定时间">
-                    </el-table-column>
-                    <!-- 用户 -->
-                    <el-table-column
-                      prop="type"
-                      label="用户"
-                      width="100">
-                      <template scope="scope">
-                        <el-button size="small" @click="searchUser">{{tableDataCar[scope.$index].realname}}</el-button>
-                      </template>
                     </el-table-column>
                     <!-- 编辑删除操作 -->
                     <el-table-column
                       fixed="right"
                       prop="type"
                       label="操作"
-                      width="120">
+                      width="160">
                       <template scope="scope">
                         <el-popover
                           ref="popover5"
@@ -381,13 +381,12 @@
                           </el-col>
                         </el-popover>
                         <!-- <el-button type="success" size="small" @click="searchUser">用户</el-button> -->
-                        <el-button type="warning" icon="edit" size="small" v-popover:popover5 @click="getModifyCarInfoPost(scope.$index)"></el-button>
-                        <el-button type="danger" icon="delete" size="small" @click="openMessageBoxDelCar(scope.$index)"> </el-button>
+                        <el-button type="warning" size="small" v-popover:popover5 @click="getModifyCarInfoPost(scope.$index)">修改</el-button>
+                        <el-button type="danger" size="small" @click="openMessageBoxDelCar(scope.$index)">删除</el-button>
                       </template>
                     </el-table-column>
                 </el-table>
-            </div>
-          <!-- 翻页 -->
+          </div>
           <el-pagination
              layout="prev, pager, next"
              :page-count="pageNum"
@@ -407,7 +406,7 @@ export default {
       // image
   },
   mounted:function(){
-    this.getCarList(1);
+    this.getUserList(1);
   },
   methods:{
     //查找用户
@@ -423,7 +422,7 @@ export default {
             this.tableDataCar=[];
             this.tableData[0]=res.data.data.list;
             // this.showUserInfo = true;
-            this.searchDevice();
+            // this.searchDevice();
           }
       },(res)=>{
         console.log(res.status);
@@ -440,6 +439,7 @@ export default {
           if (res.data.lp===0&&res.data.data.msg==="请求成功") {
             this.tableDataCar = res.data.data.list;
             this.showCarInfo = true;
+            this.showUserInfo = false;
           }else if (res.data.lp===1&&res.data.data.msg==="该用户未绑定设备") {
             this.$message.warning("该用户未绑定设备")
           }
@@ -463,24 +463,9 @@ export default {
         console.log(res.status)
       })
     },
-    //获取车辆列表
-    getCarList:function(page=1){
-      this.$http.post(this.urlGetCarList,{
-        page:page
-      },{
-        emulateJSON:true
-      }).then((res)=>{
-        if (res.data.lp===0&&res.data.data.msg==="请求成功") {
-          this.tableDataCar = res.data.data.list;
-          this.pageNum = res.data.data.page;
-        }
-      },(res)=>{
-        console.log(res.status)
-      })
-    },
     //翻页
     paging:function(currentPage){
-      this.getCarList(currentPage)
+      this.getUserList(currentPage)
     },
     //给指定行
     tableRowClassName(row, index) {
@@ -782,18 +767,16 @@ export default {
           urlDeleteDeviceAndCar:this.global.port + '/langyang/Home/Police/deleteDeviceAndCar',
           urlModifyCarInfo:this.global.port + '/langyang/Home/Police/modifyCarInfo',
           urlGetUserList:this.global.port+"/langyang/Home/Police/getUserList",
-          urlGetCarList:this.global.port+"/langyang/Home/Police/getCarList",
           tableData:[],
           mac:"",
-          username:"王小虎",
           car_id:"",
           pageNum:1,
-          carnumber_or_phone:"HZ000001",
+          carnumber_or_phone:"15267069998",
           onOffValue:false,
           imageUrlFront:"",
           imageUrlBack:"",
-          showCarInfo:true,
-          showUserInfo:false,
+          showCarInfo:false,
+          showUserInfo:true,
           addUserPost:{
             realname:"",
             idcardnumber:"",
@@ -942,7 +925,7 @@ export default {
           .el-form-item{
             margin-right: 0;
             margin-bottom: 0;
-            width: 50%;
+            width: 30%;
           }
         }
         // upload style
