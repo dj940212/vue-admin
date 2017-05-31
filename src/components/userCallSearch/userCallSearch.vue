@@ -153,12 +153,12 @@
                       prop="status"
                       label="报警状态"
                       width="120"
-                      :filters="[{ text: '待处理', value: '待处理' }, { text: '处理中', value: '处理中' },{ text: '已完成', value: '已完成' }]"
+                      :filters="[{ text: '未处理', value: '未处理' }, { text: '处理中', value: '处理中' },{ text: '已完成', value: '已完成' }]"
                       :filter-method="filterTag"
                       filter-placement="bottom-end">
                       <template scope="scope">
                         <el-tag
-                          :type="scope.row.status === '待处理' ? 'danger' : scope.row.status === '处理中' ? 'warning':'success'"
+                          :type="scope.row.status === '未处理' ? 'danger' : scope.row.status === '处理中' ? 'warning':'success'"
                           close-transition>{{scope.row.status}}</el-tag>
                       </template>
                     </el-table-column>

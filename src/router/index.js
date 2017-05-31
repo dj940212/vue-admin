@@ -6,6 +6,7 @@ import userinfo from '@/components/userinfo/userinfo'
 import mapsearch from '@/components/mapsearch/mapsearch'
 import stationmap from '@/components/stationmap/stationmap'
 import car from '@/components/car/car'
+import carItem from '@/components/car/carItem'
 import user from '@/components/user/user'
 import userItem from '@/components/user/userItem'
 import userCallReg from '@/components/userCallReg/userCallReg'
@@ -50,6 +51,10 @@ export default new Router({
       path: '/car',
       name: 'car',
       component: car
+  },{
+      path: '/car/:id',
+      name: 'carItem',
+      component: carItem
   },{
       path: '/user',
       name: 'user',

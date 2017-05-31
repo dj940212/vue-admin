@@ -137,7 +137,7 @@
                       prop="type"
                       label="已绑车辆">
                       <template scope="scope">
-                          <el-button v-for="item in tableData[scope.$index].carlist" v-if="tableData[scope.$index].carlist" size="small">{{item.car_number}}</el-button>
+                          <el-button v-for="item in tableData[scope.$index].carlist" v-if="tableData[scope.$index].carlist" size="small"><router-link :to="{ name: 'carItem', params: {id:item.car_number}}">{{item.car_number}}</router-link></el-button>
                       </template>
                     </el-table-column>
                     <!-- 编辑删除操作项 -->
