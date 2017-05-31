@@ -247,14 +247,13 @@ export default {
     //添加新标记
     addNewMarker:function(data,urlIcon){
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
-
         var _this = this;
         //闭包
         (function(){
           AMap.convertFrom(lnglat,"gps",(status,result)=>{
             //创建标记
             if (urlIcon) {
-              _this.marker = new AMap.Marker({
+              var marker = new AMap.Marker({
                 position: result.locations[0],
                 title: data.mac,
                 map: _this.amap,
@@ -262,26 +261,25 @@ export default {
                 icon: urlIcon
               });
             }else{
-              _this.mouseOverCarInfo(data.devEUI,function(){
-                _this.marker = new AMap.Marker({
-                  position: result.locations[0],
-                  title: data.mac,
-                  map: _this.amap,
-                  label:{content:_this.carInfo.car_number,offset:new AMap.Pixel(-25,-25)}
-                });
+              var marker = new AMap.Marker({
+                position: result.locations[0],
+                title: data.mac,
+                map: _this.amap,
+                // label:{content:data.car_number,offset:new AMap.Pixel(-25,-25)}
               });
+
             }
-            _this.marker.mac = data.devEUI;
-            _this.marker.time = data.time;
-            _this.markers.push(_this.marker);
+            marker.time = data.time;
+            _this.markers.push(marker);
+            // _this.marker.mac = data.devEUI;
             console.log("markers",_this.markers)
             //点击事件
-            AMap.event.addListener(_this.marker, 'click',(e) => {
+            AMap.event.addListener(marker, 'click',(e) => {
                 _this.amap.setCenter(e.target.getPosition());
                 _this.amap.setZoom(16);
              });
              //划过事件
-            AMap.event.addListener(_this.marker,'mouseover',(e) => {
+            AMap.event.addListener(marker,'mouseover',(e) => {
                   _this.global.lonlatToAddr(result.locations[0],_this.mouseoverData);
                   _this.mouseoverData.latitude =data.latitude;
                   _this.mouseoverData.longitude = data.longitude;
@@ -295,7 +293,7 @@ export default {
                            content = [];
                            content.push('<span class="info-span" style="font-weight:bold">颜色：</span>'+_this.carInfo.color);
                            content.push('<span class="info-span" style="font-weight:bold">类型：</span>'+_this.carInfo.car_type);
-                           content.push('<span class="info-span" style="font-weight:bold">时间：</span>'+_this.mouseoverData.time);
+                           content.push('<span class="info-span" style="font-weight:bold">时间：</span>'+marker.time);
                            content.push('<span class="info-span" style="font-weight:bold">位置：</span>'+_this.mouseoverData.address)
                            var infoWindow = new AMap.InfoWindow({
                                isCustom: true,  //使用自定义窗体
@@ -312,11 +310,12 @@ export default {
 
              });
              //划出事件
-            AMap.event.addListener(_this.marker,'mouseout',()=>{
+            AMap.event.addListener(marker,'mouseout',()=>{
                 _this.amap.clearInfoWindow();
             })
           });
         }());
+        return this.marker;
     },
     //输入框搜索
     handleIconClick:function(){
@@ -393,7 +392,7 @@ export default {
       })
     },
     //更新地图覆盖物的位置
-    update : function (data,i) {
+    update:function (data,i) {
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
         AMap.convertFrom(lnglat,"gps",(status,result) => {
           console.log("marker",i);
@@ -403,7 +402,6 @@ export default {
           this.markers[i].setTitle(data.devEUI);
           this.markers[i].setMap(this.amap);
           this.markers[i].time=data.time;
-          console.log("更新位置完成")
         });
     },
   },
