@@ -137,8 +137,7 @@
                       prop="type"
                       label="已绑车辆">
                       <template scope="scope">
-                          <el-button size="small">HZ000006</el-button>
-                          <el-button size="small">HZ000006</el-button>
+                          <el-button v-for="item in tableData[scope.$index].carlist" v-if="tableData[scope.$index].carlist" size="small">{{item.car_number}}</el-button>
                       </template>
                     </el-table-column>
                     <!-- 编辑删除操作项 -->
@@ -146,7 +145,7 @@
                       fixed="right"
                       prop="type"
                       label="操作"
-                      width="160">
+                      width="120">
                       <template scope="scope">
                         <!-- 绑定电动车表单 -->
                         <el-popover
@@ -266,8 +265,12 @@
                           </el-col>
                         </el-popover>
                         <!-- <el-button type="success" size="small" @click="searchDevice">设备</el-button> -->
-                        <el-button type="warning" size="small" v-popover:popover2 @click="getModifyPost(scope.$index)">修改</el-button>
-                        <el-button type="info" size="small" v-popover:popover1>绑定</el-button>
+                        <el-tooltip class="item" effect="dark" content="修改用户信息" placement="top">
+                          <el-button type="warning" icon="edit" size="small" v-popover:popover2 @click="getModifyPost(scope.$index)"></el-button>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="绑定车辆" placement="top">
+                          <el-button type="info" icon="share" size="small" v-popover:popover1></el-button>
+                        </el-tooltip>
                       </template>
                     </el-table-column>
                 </el-table>

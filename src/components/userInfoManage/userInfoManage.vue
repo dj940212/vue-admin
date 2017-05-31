@@ -2,7 +2,7 @@
     <div class="userInfoManage">
         <div class="header">
           <div class="title">
-            <!-- <i class="icon iconfont">&#xe612;</i> -->
+            <i class="icon iconfont">&#xe612;</i>
             <span>车辆信息管理</span>
           </div>
           <!-- <el-tooltip class="item" effect="dark" content="注册用户" placement="bottom">
@@ -319,6 +319,14 @@
                       label="绑定时间">
                     </el-table-column>
                     <!-- 用户 -->
+                    <el-table-column
+                      prop="type"
+                      label="用户"
+                      width="100">
+                      <template scope="scope">
+                        <el-button size="small" @click="searchUser">{{tableDataCar[scope.$index].realname}}</el-button>
+                      </template>
+                    </el-table-column>
                     <!-- 编辑删除操作 -->
                     <el-table-column
                       fixed="right"

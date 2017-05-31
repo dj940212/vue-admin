@@ -156,7 +156,7 @@
                       filter-placement="bottom-end">
                       <template scope="scope">
                         <el-tag
-                          :type="scope.row.status === '待处理' ? 'danger' : 'success'"
+                          :type="scope.row.status === '待处理' ? 'danger' : scope.row.status === '处理中' ? 'warning':'success'"
                           close-transition>{{scope.row.status}}</el-tag>
                       </template>
                     </el-table-column>

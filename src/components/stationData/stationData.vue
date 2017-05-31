@@ -26,7 +26,8 @@
                     style="width: 100%">
                     <el-table-column
                       prop="id"
-                      label="id">
+                      label="id"
+                      width="90">
                     </el-table-column>
                     <el-table-column
                       prop="mac"
@@ -56,7 +57,7 @@
                       fixed="right"
                       prop="type"
                       label="操作"
-                      width="160">
+                      width="120">
                       <template scope="scope">
                         <el-popover
                           ref="popover4"
@@ -81,8 +82,8 @@
                             <el-button type="success" @click="changeStaion(scope.$index)">确定更改</el-button>
                           </div>
                         </el-popover>
-                        <el-button @click="openMessageBoxDelete(scope.$index)" type="danger" size="small">移除</el-button>
-                        <el-button type="info" size="small" v-popover:popover4 @click="getChangeStaionPost(scope.$index)">编辑</el-button>
+                        <el-button @click="openMessageBoxDelete(scope.$index)" type="danger" icon="delete" size="small"></el-button>
+                        <el-button type="warning" size="small" icon="edit" v-popover:popover4 @click="getChangeStaionPost(scope.$index)"></el-button>
                       </template>
                     </el-table-column>
                 </el-table>
