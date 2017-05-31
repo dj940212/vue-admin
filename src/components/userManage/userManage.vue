@@ -116,15 +116,17 @@
                     </el-table-column>
                     <el-table-column
                       prop="id"
-                      label="用户id">
+                      label="用户id"
+                      width="100">
+                    </el-table-column>
+                    <el-table-column
+                      prop="realname"
+                      label="姓名"
+                      width="100">
                     </el-table-column>
                     <el-table-column
                       prop="idcardnumber"
                       label="身份证号">
-                    </el-table-column>
-                    <el-table-column
-                      prop="realname"
-                      label="姓名">
                     </el-table-column>
                     <el-table-column
                       prop="telephone"
@@ -132,7 +134,6 @@
                     </el-table-column>
                     <!-- 已绑定的助动车 -->
                     <el-table-column
-                      fixed="right"
                       prop="type"
                       label="已绑车辆">
                       <template scope="scope">
@@ -922,7 +923,7 @@ export default {
           .el-form-item{
             margin-right: 0;
             margin-bottom: 0;
-            width: 50%;
+            width: 30%;
           }
         }
         // upload style

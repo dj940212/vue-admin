@@ -247,11 +247,11 @@ export default {
     //添加新标记
     addNewMarker:function(data,urlIcon){
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
+
         var _this = this;
         //闭包
         (function(){
           AMap.convertFrom(lnglat,"gps",(status,result)=>{
-            var offset=new AMap.Pixel(0,0);
             //创建标记
             if (urlIcon) {
               _this.marker = new AMap.Marker({
@@ -262,10 +262,13 @@ export default {
                 icon: urlIcon
               });
             }else{
-              _this.marker = new AMap.Marker({
-                position: result.locations[0],
-                title: data.mac,
-                map: _this.amap,
+              _this.mouseOverCarInfo(data.devEUI,function(){
+                _this.marker = new AMap.Marker({
+                  position: result.locations[0],
+                  title: data.mac,
+                  map: _this.amap,
+                  label:{content:_this.carInfo.car_number,offset:new AMap.Pixel(-25,-25)}
+                });
               });
             }
             _this.marker.mac = data.devEUI;

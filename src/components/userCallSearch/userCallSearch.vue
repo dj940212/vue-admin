@@ -128,7 +128,8 @@
                     </el-table-column>
                     <el-table-column
                       prop="id"
-                      label="id">
+                      label="id"
+                      width="100">
                     </el-table-column>
                     <el-table-column
                       prop="realname"
@@ -522,7 +523,7 @@ export default {
           .demo-table-expand .el-form-item {
             margin-right: 0;
             margin-bottom: 0;
-            width: 50%;
+            width: 30%;
           }
     }
 </style>
