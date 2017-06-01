@@ -210,7 +210,6 @@ export default {
       socket.on('testData',(testdata)=>{
         console.log("testData数据接收")
         testdata.time = this.global.formatDate(new Date());
-        console.log("data.time",testdata.time);
         if (this.switchValue) {
            this.addMarker(testdata);
         }else {
@@ -267,10 +266,16 @@ export default {
                 map: _this.amap,
                 // label:{content:data.car_number,offset:new AMap.Pixel(-25,-25)}
               });
-
             }
             marker.time = data.time;
-            _this.markers.push(marker);
+            if (_this.switchValue) {
+              _this.mouseOverCarInfo(data.devEUI,function(res){
+                marker.setLabel({content:res.data.data.list.car_number,offset:new AMap.Pixel(-25,-22)})
+              })
+              _this.markers.push(marker);
+            }else {
+              _this.routeMarkers.push(marker);
+            }
             // _this.marker.mac = data.devEUI;
             console.log("markers",_this.markers)
             //点击事件
@@ -285,7 +290,7 @@ export default {
                   _this.mouseoverData.longitude = data.longitude;
                   // _this.getUserInfo(data.devEUI);
                   _this.mouseoverData.time = data.time;
-                  _this.mouseOverCarInfo(data.devEUI,function(){
+                  _this.mouseOverCarInfo(data.devEUI,function(res){
                     setTimeout(() => {
                         AMap.plugin('AMap.AdvancedInfoWindow',() => {
                             //实例化信息窗体
@@ -306,8 +311,6 @@ export default {
                      _this.carnumber = _this.carInfo.car_number;
                      _this.findDeviceByCarNum(()=>{});
                   });
-
-
              });
              //划出事件
             AMap.event.addListener(marker,'mouseout',()=>{
@@ -342,6 +345,9 @@ export default {
     //开关切换事件
     switchChange:function() {
         this.amap.clearMap();
+        this.devEUIs=[];
+        this.markers=[];
+        this.routeData1=[];
         console.log("开关切换")
     },
     //信息表格
@@ -384,7 +390,7 @@ export default {
       }).then((res)=>{
           if(res.data.lp==0&&res.data.data.msg=="请求成功"){
             this.carInfo = res.data.data.list;
-            cb();
+            cb(res);
           }
       },(res)=>{
         console.log(res.status);
@@ -419,6 +425,7 @@ export default {
       toggleInfoBoxValue:false,
       amap:{},
       markers:[],
+      routeMarkers:[],
       routeData1:[],
       routeData2:[],
       devEUIs:[],

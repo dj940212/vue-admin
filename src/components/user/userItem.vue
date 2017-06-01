@@ -3,38 +3,44 @@
       <div class="info-left">
           <div class="header">
               <div class="title">
-                  <i class="icon iconfont">&#xe630;</i>
-                  <span>用户{{$route.params.id}}</span>
+                  <!-- <i class="icon iconfont">&#xe630;</i> -->
+                  <span>用户  {{userinfo.realname}}</span>
               </div>
           </div>
           <div class="content">
-              <div class="photo"></div>
+              <div class="photo">
+                <img class="front" :src="userinfo.idcard_backpic"/>
+                <img class="back" :src="userinfo.idcard_frontpic"/>
+              </div>
               <table>
                   <tr>
                       <th>姓名 :</th>
-                      <td>张三</td>
+                      <td>{{userinfo.realname}}</td>
                   </tr>
                   <tr>
-                      <th>警号 :</th>
-                      <td>003204</td>
+                      <th>性别 :</th>
+                      <td>{{userinfo.sex===0 ? "男":"女"}}</td>
                   </tr>
                   <tr>
-                      <th>权限级别 :</th>
-                      <td>一级</td>
+                      <th>手机号 :</th>
+                      <td>{{userinfo.telephone}}</td>
                   </tr>
                   <tr>
-                      <th>所在单位 :</th>
-                      <td>杭州市公安局余杭分局仓前派出所</td>
+                      <th>身份证号 :</th>
+                      <td>{{userinfo.idcardnumber}}</td>
+                  </tr>
+                  <tr>
+                      <th>生日 :</th>
+                      <td>{{userinfo.birthday}}</td>
                   </tr>
                   <tr>
                       <th>地址 :</th>
-                      <td>杭州市余杭区仓前镇仓兴街348号</td>
-                  </tr>
-                  <tr>
-                      <th>联系电话 :</th>
-                      <td>15244565678</td>
+                      <td>{{userinfo.address}}</td>
                   </tr>
               </table>
+              <!-- <div class="car">
+                <h1>已绑车辆</h1>
+              </div> -->
           </div>
       </div>
   </div>
@@ -42,15 +48,38 @@
 
 <script>
 export default {
-  name: 'userinfo'
+  name: 'userinfo',
+  mounted(){
+    this.searchUser()
+  },
+  methods:{
+    //查找用户
+    searchUser:function(){
+      this.$http.post(this.urlSearchUser,{
+        idnumber_or_phone:this.$route.params.id
+      },{
+        emulateJSON: true
+      }).then((res)=>{
+          if(res.data.lp==0&&res.data.data.msg=="请求成功"){
+            this.userinfo=res.data.data.list;
+          }
+      },(res)=>{
+        console.log(res.status);
+      })
+    }
+  },
+  data(){
+    return{
+      urlSearchUser:this.global.port + '/langyang/Home/Police/searchUser',
+      userinfo:"",
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
 .userinfo {
     .info-left{
-        display: inline-block;
-
         width: 100%;
         .header{
             height: 64px;
@@ -77,16 +106,21 @@ export default {
             margin-left: 22px;
             margin-right:22px;
             .photo{
-                height: 150px;
-                width: 230px;
+                img{
+                  // height: 150px;
+                  width: 230px;
+                  margin-bottom: 20px;
+                  // border: 1px solid #000;
+                  display: block;
+                  border-radius: 5px;
+                }
                 display: inline-block;
-                border: 1px solid #000;
-                margin:40px;
                 vertical-align: top;
+                margin: 40px;
             }
             table{
                 display: inline-block;
-                font-size: 16px;
+                font-size: 18px;
                 line-height: 50px;
                 margin-bottom: 90px;
                 margin-left: 40px;
@@ -94,12 +128,15 @@ export default {
                 th{
                     text-align: right;
                     padding-right: 15px;
-                    // font-weight:400;
                 }
                 td{
                     color: #828282;
-                    font-size: 14px;
+                    font-size: 16px;
                 }
+            }
+            .car{
+              display: inline-block;
+              vertical-align: top;
             }
         }
     }
