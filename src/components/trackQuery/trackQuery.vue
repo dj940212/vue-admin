@@ -6,7 +6,8 @@
       <span>行驶轨迹查询</span>
     </div>
     <button type="button" name="button" @click="showMarker">显示标记</button>
-    <span class="tableDataOnOff" @click="tableDataToggle = !tableDataToggle"><i class="icon iconfont" >&#xe742;</i>数据</span>
+    <button type="button" name="button" @click="hideMarker">隐藏标记</button>
+    <span class="tableDataOnOff" @click="tableDataToggle = !tableDataToggle"><i class="icon iconfont" >&#xe742;</i></span>
   </div>
   <div class="content">
     <div class="trackQuery-map" id="trackQuery-map">
@@ -100,8 +101,6 @@ export default {
   mounted: function() {
     this.initMap();
   },
-  created:function(){
-  },
   methods: {
     // 初始化地图
     initMap: function() {
@@ -118,7 +117,6 @@ export default {
       });
 
     },
-
     //显示所有标记
     showMarker:function(){
       var showMarkerValue = true;
@@ -129,6 +127,16 @@ export default {
           }
         })
       }
+    },
+    hideMarker:function(){
+      this.markers && this.markers.forEach((item,index)=>{
+        if (index>1) {
+          item.hide();
+        }
+      })
+    },
+    toggleMarkers:function(){
+
     },
     //获取轨迹信息
     getTrack: function() {

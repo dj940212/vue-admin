@@ -34,7 +34,7 @@ export default {
   },
   methods:{
       localCheckLogin:function(){
-        if (localStorage.getItem("langyang_telephone")&&localStorage.getItem("langyang_password")) {
+        if (sessionStorage.getItem("langyang_telephone")&&sessionStorage.getItem("langyang_password")) {
           console.log("存在local信息")
         }else {
           this.$router.push('/');

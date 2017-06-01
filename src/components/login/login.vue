@@ -33,8 +33,8 @@ export default {
                 this.username = this.telephone;
                 this.global.bus.$emit("username",this.telephone);
                 console.log("登录成功");
-                localStorage.setItem("langyang_telephone",this.telephone);
-                localStorage.setItem("langyang_password",this.pwd);
+                sessionStorage.setItem("langyang_telephone",this.telephone);
+                sessionStorage.setItem("langyang_password",this.pwd);
             }else{
                 this.$message.error("帐号或密码错误")
             }
@@ -55,7 +55,6 @@ export default {
       socket.on('message',(data) => {
         console.log("建立连接:station====>login");
         var strData = JSON.stringify(data)
-        console.log("strData",strData)
         console.log("this.stationDatas",this.stationDatas)
         console.log("基站====>",data.mac.slice(12),data);
         localStorage.setItem("stationDatas", JSON.stringify(this.stationDatas));

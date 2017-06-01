@@ -374,15 +374,18 @@
                                   <el-input v-model="modifyCarInfoPost.car_color"></el-input>
                                 </el-form-item>
                                 <el-form-item>
-                                  <el-button type="primary" @click="openMessageBoxModifyCar">修改车辆</el-button>
-                                  <el-button @click="onOffValue=false">取消</el-button>
+                                  <el-button type="primary" @click="openMessageBoxModifyCar">修改车辆信息</el-button>
                                 </el-form-item>
                               </el-form>
                           </el-col>
                         </el-popover>
                         <!-- <el-button type="success" size="small" @click="searchUser">用户</el-button> -->
-                        <el-button type="warning" icon="edit" size="small" v-popover:popover5 @click="getModifyCarInfoPost(scope.$index)"></el-button>
-                        <el-button type="danger" icon="delete" size="small" @click="openMessageBoxDelCar(scope.$index)"> </el-button>
+                        <el-tooltip class="item" effect="dark" content="修改车辆信息" placement="top">
+                          <el-button type="warning" icon="edit" size="small" v-popover:popover5 @click="getModifyCarInfoPost(scope.$index)"></el-button>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="删除车辆信息" placement="top">
+                          <el-button type="danger" icon="delete" size="small" @click="openMessageBoxDelCar(scope.$index)"> </el-button>
+                        </el-tooltip>
                       </template>
                     </el-table-column>
                 </el-table>

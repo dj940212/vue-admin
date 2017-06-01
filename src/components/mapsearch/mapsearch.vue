@@ -331,15 +331,14 @@ export default {
               this.$message.warning("地图上还未显示此标记");
             }else {
               this.amap.setCenter(this.markers[markerIndex].getPosition());
-              // this.markers[markerIndex].setIcon(urlIcon);
               this.amap.setZoom(18);
             }
           }else {          //开关处在轨迹
             this.amap.clearMap();
             this.markers = [];
+            this.routeData1 =[];
             this.$message.info("正在显示轨迹")
           }
-
         });
     },
     //开关切换事件

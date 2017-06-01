@@ -104,20 +104,6 @@ export default {
         console.log(res.status)
       })
     },
-    checkOnline:function(data){
-      setInterval(()=>{
-        data.forEach((item,index)=>{
-          if (!item.time) {
-            var time = Date.now() - new Date(item.time).getTime();
-            if (time > 1000*60) {
-              this.markers(index).setIcon(imgOffUrl)
-            }
-          }else {
-            console.log("没有时间信息")
-          }
-        })
-      },2000)
-    },
     //localStorage
     drawLocalStorage:function(){
       this.getLocalStation().forEach((item,index) => {

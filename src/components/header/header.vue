@@ -39,8 +39,8 @@ export default {
       location.reload(true)
     },
     logout(){
-      localStorage.removeItem("langyang_telephone");
-      localStorage.removeItem("langyang_password")
+      sessionStorage.removeItem("langyang_telephone");
+      sessionStorage.removeItem("langyang_password")
       //跳转到登录页
       this.$router.push('/');
     }

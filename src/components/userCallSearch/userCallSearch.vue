@@ -165,7 +165,7 @@
                     <el-table-column
                       fixed="right"
                       label="操作"
-                      width="160">
+                      width="180">
                       <template scope="scope">
                         <el-popover
                           ref="popover1"
@@ -185,7 +185,10 @@
                           <el-button type="info" size="small" icon="search" @click="showMap(scope.$index)"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="处理报警" placement="top">
-                          <el-button type="warning" size="small" icon="edit" v-popover:popover1 @click="getAlarmStatusAndId(scope.$index)">处理</el-button>
+                          <el-button type="warning" size="small" icon="edit" v-popover:popover1 @click="getAlarmStatusAndId(scope.$index)"></el-button>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="删除报警记录" placement="top">
+                          <el-button type="danger" size="small" icon="delete" @click="openMessageBox2(scope.$index)"></el-button>
                         </el-tooltip>
                       </template>
                     </el-table-column>
@@ -239,6 +242,18 @@ export default {
           console.log(res.status)
         })
       },
+      //删除报警记录
+      deleteAlarm:function(nowAlarmId,cb){
+        this.$http.post(this.urlDeleteAlarm,{alarmid:nowAlarmId},{
+          emulateJSON:true
+        }).then((res)=>{
+          if (res.data.lp===0&&res.data.data.msg==="请求成功") {
+            cb(res)
+          }
+        },(res)=>{
+          this.$message.error("删除失败")
+        })
+      },
       //修改报警状态
       changeAlarmsStatus:function(index){
         this.$http.post(this.urlChangeAlarmsStatus,{
@@ -273,6 +288,7 @@ export default {
           }
         })
       },
+      //筛选
       formatter(row, column) {
         return row.address;
       },
@@ -340,23 +356,24 @@ export default {
           });
         });
       },
-      //更改报警状态对话框
-      openMessageBox2() {
-        this.$confirm('确定添加基站?', '提示', {
+      //删除报警记录对话框
+      openMessageBox2(index) {
+        this.$confirm('确定删除该报警记录?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'info'
+          type: 'danger'
         }).then(() => {
-          this.addStation(()=>{
+          this.deleteAlarm(this.tableData[index].id,()=>{
             this.$message({
               type: 'success',
-              message: '添加成功!'
+              message: '删除成功!'
             });
           })
+          this.tableData.splice(index,1);
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '取消添加'
+            message: '取消删除'
           });
         });
       }
@@ -367,6 +384,7 @@ export default {
           urlAddAlarm:this.global.port+"/langyang/Home/Police/giveAlarm",
           urlChangeAlarmsStatus:this.global.port+"/langyang/Home/Police/changeAlarmsStatus",
           urlSearchAlarms:this.global.port+"/langyang/Home/Police/searchAlarms",
+          urlDeleteAlarm:this.global.port+"/langyang/Home/Police/deleteAlarm",
           tableData:[],
           alarmsData:[],
           mac:"",
