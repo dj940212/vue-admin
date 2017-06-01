@@ -365,22 +365,14 @@ export default {
     },
     //添加标记
     addMarker:function(data){
-        // this.mouseoverData = data.time;
         //添加覆盖物
-      console.log(!this.devEUIs.length);
-       if (!this.devEUIs.length) {
+      var arrIndex = this.devEUIs.indexOf(data.devEUI);
+       if (!this.devEUIs.length || arrIndex === -1) {
           this.addNewMarker(data);
           this.devEUIs.push(data.devEUI);
           console.log("this.devEUIs",this.devEUIs)
        }else {
-         var arrIndex = this.devEUIs.indexOf(data.devEUI);
-         if(arrIndex !== -1){
-              this.update(data,arrIndex);
-         }else {
-           this.addNewMarker(data);
-           this.devEUIs.push(data.devEUI);
-           console.log("this.devEUIs",this.devEUIs)
-         }
+         this.update(data,arrIndex);
        }
     },
     //鼠标划过显示车辆信息
