@@ -5,8 +5,7 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>行驶轨迹查询</span>
     </div>
-    <button type="button" name="button" @click="showMarker">显示标记</button>
-    <button type="button" name="button" @click="hideMarker">隐藏标记</button>
+    <el-button type="button" name="button" @click="toggleMarkers">显示标记</el-button>
     <span class="tableDataOnOff" @click="tableDataToggle = !tableDataToggle"><i class="icon iconfont" >&#xe742;</i></span>
   </div>
   <div class="content">
@@ -41,6 +40,9 @@
               :maxlength="8">
             </el-input>
         </div>
+        <el-tooltip class="item" effect="dark" content="测距工具" placement="top">
+          <i class="el-icon-search my-el-icon-search" @click="rangingTool"></i>
+        </el-tooltip>
         <div class="block" v-show="false">
            <el-date-picker
              v-model="dateValue1"
@@ -136,7 +138,20 @@ export default {
       })
     },
     toggleMarkers:function(){
-
+      this.showMarkerValue=!this.showMarkerValue;
+      if (this.showMarkerValue) {
+        this.track.forEach((item,index)=>{
+          if (index!==0&&index!==this.track.length-1) {
+            this.addNewMarker(item);
+          }
+        })
+      }else {
+        this.markers && this.markers.forEach((item,index)=>{
+          if (index>1) {
+            item.hide();
+          }
+        })
+      }
     },
     //获取轨迹信息
     getTrack: function() {
@@ -285,6 +300,17 @@ export default {
         this.$message.error("数据请求出现错误")
       })
     },
+    //地图测距工具
+    rangingTool:function(){
+      var ruler1,ruler2;
+      this.amap.plugin(["AMap.RangingTool"], ()=>{
+         ruler1 = new AMap.RangingTool(this.amap);
+         AMap.event.addListener(ruler1, "end", function(e) {
+             ruler1.turnOff();
+         });
+       })
+      ruler1.turnOn();
+    },
     // 提交搜索
     submit: function() {
       console.log(this.dateValue1,this.dateValue2)
@@ -292,6 +318,8 @@ export default {
         this.getTrack();
       });
       this.getUserInfo();
+      this.showMarkerValue=false;
+      this.markers=[];
     },
     //绘制轨迹
     drawRoute:function(data){
@@ -363,6 +391,7 @@ export default {
       amap: {},
       clickData: {},
       mouseoverData: {},
+      showMarkerValue:false,
       carUserInfo:"",
       carnumber:"HZ000006",
       carInfo:{},
@@ -455,6 +484,20 @@ export default {
                     z-index: 110;
                     display: block;
                 }
+            }
+            .my-el-icon-search{
+              z-index: 120;
+              color: #4d4d4d;
+              font-size: 20px;
+              font-weight: bold;
+              position: absolute;
+              right: 20px;
+              bottom: 15px;
+              background-color: rgba(255, 255, 255, 0.42);
+              padding: 6px;
+              box-shadow: 3px 4px 3px 0px silver;
+              border-radius: 4px;
+              cursor: pointer;
             }
         }
         .tableData{

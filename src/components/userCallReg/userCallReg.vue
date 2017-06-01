@@ -172,7 +172,7 @@ export default {
                 margin-top: 10px;
                 span{
                     // display: block;
-                    font-size: 20px;
+                    font-size: 18px;
                     border-bottom: 3px solid #03003a;
                     padding-bottom: 5px;
 

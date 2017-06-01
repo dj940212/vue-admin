@@ -17,6 +17,9 @@
           :on-icon-click="handleIconClick"
           @keyup.enter.native="handleIconClick">
         </el-input>
+        <el-tooltip class="item" effect="dark" content="测距工具" placement="top">
+          <i class="el-icon-search my-el-icon-search" @click="rangingTool"></i>
+        </el-tooltip>
     </div>
     <div class="table-data" v-show="toggleValue">
         <el-table
@@ -215,7 +218,18 @@ export default {
           }
         }
 
-    }
+    },
+    //地图测距工具
+    rangingTool:function(){
+      var ruler1,ruler2;
+      this.amap.plugin(["AMap.RangingTool"], ()=>{
+         ruler1 = new AMap.RangingTool(this.amap);
+         AMap.event.addListener(ruler1, "end", function(e) {
+             ruler1.turnOff();
+         });
+       })
+      ruler1.turnOn();
+    },
   },
   data() {
     return {
@@ -299,6 +313,20 @@ export default {
                 margin-right: 20px;
                 margin-top: 10px;
                 box-shadow: 3px 4px 3px 0px silver;
+            }
+            .my-el-icon-search{
+              z-index: 120;
+              color: #4d4d4d;
+              font-size: 20px;
+              font-weight: bold;
+              position: absolute;
+              right: 20px;
+              bottom: 15px;
+              background-color: rgba(255, 255, 255, 0.42);
+              padding: 6px;
+              box-shadow: 3px 4px 3px 0px silver;
+              border-radius: 4px;
+              cursor: pointer;
             }
         }
         .table-data{

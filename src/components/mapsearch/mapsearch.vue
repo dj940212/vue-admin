@@ -27,6 +27,9 @@
           @keyup.enter.native="handleIconClick">
         </el-input>
         <i class="el-icon-d-arrow-left" @click="toggleInfoBox" ref="elIcon"></i>
+        <el-tooltip class="item" effect="dark" content="测距工具" placement="top">
+          <i class="el-icon-search" @click="rangingTool"></i>
+        </el-tooltip>
     </div>
     <div class="info-box" v-show="toggleInfoBoxValue">
       <div class="user-info">
@@ -104,8 +107,8 @@ export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    this.testSocket();
-    // this.keepsocket();
+    // this.testSocket();
+    this.keepsocket();
     this.global.bus.$on("arrIndex",(index) => {
         // this.mac = this.tableData[index].mac;
         // console.log(this.tableData[index].mac);
@@ -182,6 +185,17 @@ export default {
         console.log(res.status)
       })
     },
+    //地图测距工具
+    rangingTool:function(){
+      var ruler1,ruler2;
+      this.amap.plugin(["AMap.RangingTool"], ()=>{
+         ruler1 = new AMap.RangingTool(this.amap);
+         AMap.event.addListener(ruler1, "end", function(e) {
+             ruler1.turnOff();
+         });
+       })
+      ruler1.turnOn();
+    },
     //建立websocket链接
     keepsocket: function() {
       var socket = io('ws://121.196.194.14:3002'); //121.196.194.14:3002
@@ -191,7 +205,7 @@ export default {
       socket.on('message', (data) => {
         console.log("收到数据", data);
         data.time = this.global.formatDate(new Date());
-        console.log("data.time",testdata.time);
+        console.log("data.time",data.time);
         if (this.switchValue) {
             console.log("添加标记")
             this.addMarker(data);
@@ -514,6 +528,20 @@ export default {
                 cursor: pointer;
                 // transition: all 1s;
             }
+            .el-icon-search{
+              z-index: 120;
+              color: #4d4d4d;
+              font-size: 20px;
+              font-weight: bold;
+              position: absolute;
+              right: 20px;
+              bottom: 15px;
+              background-color: rgba(255, 255, 255, 0.42);
+              padding: 6px;
+              box-shadow: 3px 4px 3px 0px silver;
+              border-radius: 4px;
+              cursor: pointer;
+            }
             .el-input{
                 z-index: 110;
                 width: 200px;
@@ -522,8 +550,6 @@ export default {
                 margin-top: 10px;
                 box-shadow: 3px 4px 3px 0px silver;
             }
-
-
         }
         .info-box {
             width: 24%;
