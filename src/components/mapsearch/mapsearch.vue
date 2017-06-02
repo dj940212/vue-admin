@@ -113,9 +113,6 @@ export default {
     this.initMap();
     this.testSocket();
     // this.keepsocket();
-    this.localRouteData.forEach((item,index)=>{
-      this.addMarker(item)
-    })
     this.global.bus.$on("arrIndex",(index) => {
         // this.mac = this.tableData[index].mac;
         // console.log(this.tableData[index].mac);
@@ -132,6 +129,7 @@ export default {
       'fullScreen',
       'toggleSidebar'
     ]),
+    //地图全屏
     myFullScreen:function(){
       if (this.isSidebarOpen&&!this.isFullScreen) {
         this.toggleSidebar();
@@ -417,7 +415,6 @@ export default {
     //开关切换事件
     switchChange:function() {
         this.amap.clearMap();
-        this.devEUIs=[];
         this.markers=[];
         this.devEUIs=[];
         this.routeMarkers=[];

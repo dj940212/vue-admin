@@ -64,7 +64,7 @@
     <div class="tableData" v-show="tableDataToggle">
         <el-table
             :data="tableData"
-            height="400"
+            height="460"
             empty-text="请先输入mac查询"
             :default-sort = "{prop: 'time', order: 'descending'}">
             <el-table-column
@@ -145,23 +145,6 @@ export default {
 
     },
     //显示所有标记
-    showMarker:function(){
-      var showMarkerValue = true;
-      if (showMarkerValue) {
-        this.track.forEach((item,index)=>{
-          if (index!==0&&index!==this.track.length-1) {
-            this.addNewMarker(item);
-          }
-        })
-      }
-    },
-    hideMarker:function(){
-      this.markers && this.markers.forEach((item,index)=>{
-        if (index>1) {
-          item.hide();
-        }
-      })
-    },
     toggleMarkers:function(){
       this.showMarkerValue=!this.showMarkerValue;
       if (this.showMarkerValue) {
@@ -197,7 +180,7 @@ export default {
                   this.track = this.unique(res.data.data.list.location);
                   this.tableData = res.data.data.list.location;
                   this.addNewMarker(this.track[0],startMarker)
-                  this.drawRoute(this.track);
+                  this.newDrawRoute(this.track);
                   this.tableData.forEach((item,index)=>{
                     //高德地址转换
                     var lnglat = new AMap.LngLat(item.longitude,item.latitude);
@@ -377,28 +360,37 @@ export default {
         })
     },
     //绘制轨迹
-    drawRoute2:function(data){
+    newDrawRoute:function(data){
         AMap.service(["AMap.Walking"],() => {
             this.amap.clearMap();
-            for (var i = 0; i < data.length; i++) {
-              var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
-              console.log("======1111=======",i);
-              AMap.convertFrom(lnglat1,"gps",(status,result) => {
-                  this.newRouteData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                  var lnglat2 = new AMap.LngLat(data[i+1].longitude,data[i+1].latitude);
-                  console.log("======2222=======",i+1);
-                  AMap.convertFrom(lnglat2,"gps",(status,result) => {
-                      this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                      console.log(this.newRouteData1,this.newRouteData2);
-                        new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
-                            if (status === "complete") {
-                                i++;
-                            }
-                        })
-                  })
-              })
-            }
+            var value=0;
+            this.circulationRoute(data,value)
+
         })
+    },
+    //递归函数
+    circulationRoute:function(data,i){
+      if (i >= data.length-1) {
+          this.addNewMarker(data[data.length-1],endMarker);
+      }else {
+        var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
+        console.log("======1111=======",i);
+        AMap.convertFrom(lnglat1,"gps",(status,result) => {
+            this.newRouteData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
+            var lnglat2 = new AMap.LngLat(data[i+1].longitude,data[i+1].latitude);
+            console.log("======2222=======",i+1);
+            AMap.convertFrom(lnglat2,"gps",(status,result) => {
+                this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
+                console.log(this.newRouteData1,this.newRouteData2);
+                  new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
+                      if (status === "complete") {
+                          i++;
+                          return this.circulationRoute(data,i);
+                      }
+                  })
+            })
+        })
+      }
     }
   },
   data() {
