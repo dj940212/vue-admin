@@ -107,14 +107,27 @@ export default {
   mounted: function() {
     this.initMap();
   },
+  computed:{
+    ...mapGetters([
+      'isSidebarOpen',
+      'isFullScreen'
+    ])
+  },
   methods: {
     ...mapActions([
       'fullScreen',
       'toggleSidebar'
     ]),
     myFullScreen:function(){
-      this.fullScreen();
-      this.toggleSidebar();
+      if (this.isSidebarOpen&&!this.isFullScreen) {
+        this.toggleSidebar();
+        this.fullScreen();
+      }else if(!this.isSidebarOpen&&!this.isFullScreen){
+        this.fullScreen();
+      }else if (!this.isSidebarOpen&&this.isFullScreen) {
+        this.toggleSidebar();
+        this.fullScreen();
+      }
     },
     // 初始化地图
     initMap: function() {

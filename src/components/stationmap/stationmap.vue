@@ -5,7 +5,6 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>基站状态查询</span>
     </div>
-    <button class="button-stationData" type="button" name="button" @click="searchData">基站数据</button>
   </div>
   <div class="content" id="map-content">
     <div class="base-station-map" id="base-station-map">
@@ -72,14 +71,27 @@ export default {
     this.keepsocket();
     // this.drawLocalStorage();
   },
+  computed:{
+    ...mapGetters([
+      'isSidebarOpen',
+      'isFullScreen'
+    ])
+  },
   methods: {
     ...mapActions([
       'fullScreen',
       'toggleSidebar'
     ]),
     myFullScreen:function(){
-      this.fullScreen();
-      this.toggleSidebar();
+      if (this.isSidebarOpen&&!this.isFullScreen) {
+        this.toggleSidebar();
+        this.fullScreen();
+      }else if(!this.isSidebarOpen&&!this.isFullScreen){
+        this.fullScreen();
+      }else if (!this.isSidebarOpen&&this.isFullScreen) {
+        this.toggleSidebar();
+        this.fullScreen();
+      }
     },
     //初始化地图
     initMap: function() {
@@ -143,7 +155,7 @@ export default {
         });
         socket.on('message',(data) => {
           console.log("基站====>",data.mac.slice(12),data);
-          console.log("markerIndex",this.markers[this.stationMac.indexOf(data.mac)]);
+          // console.log("markerIndex",this.markers[this.stationMac.indexOf(data.mac)]);
           if (this.stationMac.indexOf(data.mac) === -1) {
               this.addNewMarker(data,this.markers.length)
           }else{
@@ -152,7 +164,6 @@ export default {
               },100)
 
           }
-          // console.log(this.stationMac)
         });
     },
     //添加新标记
