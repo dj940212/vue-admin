@@ -113,6 +113,9 @@ export default {
     this.initMap();
     this.testSocket();
     // this.keepsocket();
+    this.localRouteData.forEach((item,index)=>{
+      this.addMarker(item)
+    })
     this.global.bus.$on("arrIndex",(index) => {
         // this.mac = this.tableData[index].mac;
         // console.log(this.tableData[index].mac);
@@ -231,6 +234,15 @@ export default {
         console.log("收到数据", data);
         data.time = this.global.formatDate(new Date());
         console.log("data.time",data.time);
+        let localIndex = this.localRouteDataMac.indexOf(data.devEUI);
+        if (localIndex===-1) {
+          this.localRouteData.push(data);
+          this.localRouteDataMac.push(data.devEUI);
+        }else {
+          this.localRouteData.splice(localIndex,1,data)
+        }
+        console.log("本地保存数据",this.localRouteData,this.localRouteDataMac);
+
         if (this.switchValue) {
             console.log("添加标记")
             this.addMarker(data);
@@ -249,6 +261,7 @@ export default {
       socket.on('testData',(testdata)=>{
         console.log("testData数据接收")
         testdata.time = this.global.formatDate(new Date());
+        //保存数据
         let localIndex = this.localRouteDataMac.indexOf(testdata.devEUI);
         if (localIndex===-1) {
           this.localRouteData.push(testdata);
@@ -409,7 +422,14 @@ export default {
         this.devEUIs=[];
         this.routeMarkers=[];
         this.routeData1=[];
-        console.log("开关切换")
+        console.log("开关切换");
+        //在地图上显示本地数据
+        if (this.switchValue) {
+          this.localRouteData.forEach((item,index)=>{
+            this.addMarker(item)
+          })
+        }
+
     },
     //信息表格
     toggleInfoBox:function(){
