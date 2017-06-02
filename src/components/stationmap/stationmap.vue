@@ -119,8 +119,12 @@ export default {
           this.stationsInfo = res.data.data.list;
           console.log(this.stationsInfo)
           this.stationsInfo.forEach((item,arrIndex) => {
-              this.addNewMarker(item,arrIndex);
               this.stationMac.push(item.mac);
+              if (localStorage.getItem(item.mac)) {
+                this.addNewMarker(item,arrIndex,imgOnUrl);
+              }else {
+                this.addNewMarker(item,arrIndex,imgOffUrl);
+              }
           });
           console.log(this.markers)
 
@@ -154,20 +158,19 @@ export default {
           console.log('建立链接');
         });
         socket.on('message',(data) => {
-          console.log("基站====>",data.mac.slice(12),data);
-          // console.log("markerIndex",this.markers[this.stationMac.indexOf(data.mac)]);
+          console.log("基站====>",data.mac.slice(12));
+          localStorage.setItem(data.mac,1);
           if (this.stationMac.indexOf(data.mac) === -1) {
-              this.addNewMarker(data,this.markers.length)
+              this.addNewMarker(data,this.markers.length,imgOffUrl);
           }else{
               setTimeout(() => {
                 this.markers[this.stationMac.indexOf(data.mac)].setIcon(imgOnUrl)
               },100)
-
           }
         });
     },
     //添加新标记
-    addNewMarker:function(data,index){
+    addNewMarker:function(data,index,stationIcon){
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
         var _this = this;
         //闭包
@@ -175,7 +178,7 @@ export default {
           AMap.convertFrom(lnglat,"gps",(status,result)=>{
             //创建标记
             _this.marker = new AMap.Marker({
-              icon: imgOffUrl,
+              icon: stationIcon,
               position: result.locations[0],
               title: data.mac,
               map: _this.amap

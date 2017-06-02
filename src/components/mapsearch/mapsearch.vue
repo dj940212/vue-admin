@@ -249,6 +249,15 @@ export default {
       socket.on('testData',(testdata)=>{
         console.log("testData数据接收")
         testdata.time = this.global.formatDate(new Date());
+        let localIndex = this.localRouteDataMac.indexOf(testdata.devEUI);
+        if (localIndex===-1) {
+          this.localRouteData.push(testdata);
+          this.localRouteDataMac.push(testdata.devEUI);
+        }else {
+          this.localRouteData.splice(localIndex,1,testdata)
+        }
+        console.log("本地保存数据",this.localRouteData,this.localRouteDataMac);
+
         if (this.switchValue) {
            this.addMarker(testdata);
         }else {
@@ -375,8 +384,20 @@ export default {
           }else {          //开关处在轨迹
             this.amap.clearMap();
             this.markers = [];
-            this.routeData1 =[];
-            this.$message.info("正在显示轨迹")
+            this.routeData1 = [];
+            this.routeMarkers=[];
+            let localRouteIndex = this.localRouteDataMac.indexOf(this.mac);
+
+            if (localRouteIndex!==-1) {
+              this.drawRoute(this.mac,this.localRouteData[localRouteIndex]);
+              setTimeout(()=>{
+                this.amap.setCenter(this.routeMarkers[0].getPosition());
+                this.amap.setZoom(18);
+              },500)
+
+            }else {
+              this.$message.info("正在显示轨迹");
+            }
           }
         });
     },
@@ -385,6 +406,7 @@ export default {
         this.amap.clearMap();
         this.devEUIs=[];
         this.markers=[];
+        this.routeMarkers=[];
         this.routeData1=[];
         console.log("开关切换")
     },
@@ -453,6 +475,8 @@ export default {
       carUserInfo: {},
       switchValue:true,
       toggleInfoBoxValue:false,
+      localRouteData:[],
+      localRouteDataMac:[],
       amap:{},
       markers:[],
       routeMarkers:[],
