@@ -406,6 +406,7 @@ export default {
         this.amap.clearMap();
         this.devEUIs=[];
         this.markers=[];
+        this.devEUIs=[];
         this.routeMarkers=[];
         this.routeData1=[];
         console.log("开关切换")
@@ -455,7 +456,6 @@ export default {
         AMap.convertFrom(lnglat,"gps",(status,result) => {
           console.log("marker",i);
           var lnglatMove = new AMap.LngLat(result.locations[0].getLng(),result.locations[0].getLat());
-          // this.markers[i].setPosition(result.locations[0]);
           this.markers[i].moveTo(lnglatMove,3000);
           this.markers[i].setTitle(data.devEUI);
           this.markers[i].setMap(this.amap);

@@ -120,7 +120,7 @@ export default {
           console.log(this.stationsInfo)
           this.stationsInfo.forEach((item,arrIndex) => {
               this.stationMac.push(item.mac);
-              if (localStorage.getItem(item.mac)) {
+              if (sessionStorage.getItem(item.mac)) {
                 this.addNewMarker(item,arrIndex,imgOnUrl);
               }else {
                 this.addNewMarker(item,arrIndex,imgOffUrl);
@@ -135,21 +135,6 @@ export default {
         console.log(res.status)
       })
     },
-    //localStorage
-    drawLocalStorage:function(){
-      this.getLocalStation().forEach((item,index) => {
-        this.addNewMarker(item,this.markers.length);
-      })
-    },
-    //获取本地数据
-    getLocalStation:function(){
-      var arrData = JSON.parse(localStorage.getItem("stationDatas"));
-      for(var i = 0; i < arrData.length; i++){
-        arrData[i] = JSON.parse(arrData[i]);
-      }
-      console.log(arrData);
-      return arrData;
-    },
     //建立websocket链接
     keepsocket: function() {
         var socket = io('ws://121.196.194.14:3003');  //121.196.194.14
@@ -159,7 +144,7 @@ export default {
         });
         socket.on('message',(data) => {
           console.log("基站====>",data.mac.slice(12));
-          localStorage.setItem(data.mac,1);
+          sessionStorage.setItem(data.mac,1);
           if (this.stationMac.indexOf(data.mac) === -1) {
               this.addNewMarker(data,this.markers.length,imgOffUrl);
           }else{
