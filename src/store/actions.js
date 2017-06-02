@@ -10,5 +10,10 @@ export default {
     commit
   })=>{
     commit(types.TOGGLESIDEBAR)
+  },
+  fullScreen:({
+    commit
+  })=>{
+    commit(types.FULLSCREEN)
   }
 }

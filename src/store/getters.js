@@ -4,5 +4,8 @@ export default {
   },
   isSidebarOpen:(state) => {
     return state.isSidebarOpen
+  },
+  isFullScreen:(state) => {
+    return state.isFullScreen
   }
 }

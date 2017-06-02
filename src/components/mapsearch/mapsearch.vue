@@ -1,6 +1,6 @@
 <template>
 <div class="mapsearch">
-  <div class="header">
+  <div class="header" id="map-header">
     <div class="title">
       <i class="icon iconfont">&#xe612;</i>
       <span>实时地图查询</span>
@@ -16,7 +16,7 @@
         </el-switch>
     </div>
   </div>
-  <div class="content">
+  <div class="content" id="map-content">
     <div class="real-time-map" id="real-time-map" ref="realtimeMap">
         <el-input
           placeholder="请输入车牌号查询"
@@ -29,6 +29,9 @@
         <i class="el-icon-d-arrow-left" @click="toggleInfoBox" ref="elIcon"></i>
         <el-tooltip class="item" effect="dark" content="测距工具" placement="top">
           <i class="el-icon-search" @click="rangingTool"></i>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="全屏地图" placement="top">
+          <i class="el-icon-more" @click="myFullScreen"></i>
         </el-tooltip>
     </div>
     <div class="info-box" v-show="toggleInfoBoxValue">
@@ -103,18 +106,27 @@
 import urlIcon  from "../../images/marker.png"
 import startMarker from "../../images/startMarker.png"
 import endMarker from "../../images/endMarker.png"
+import {mapGetters,mapActions} from 'vuex'
 export default {
   name: 'mapsearch',
   mounted: function() {
     this.initMap();
-    // this.testSocket();
-    this.keepsocket();
+    this.testSocket();
+    // this.keepsocket();
     this.global.bus.$on("arrIndex",(index) => {
         // this.mac = this.tableData[index].mac;
         // console.log(this.tableData[index].mac);
     })
   },
   methods: {
+    ...mapActions([
+      'fullScreen',
+      'toggleSidebar'
+    ]),
+    myFullScreen:function(){
+      this.fullScreen();
+      this.toggleSidebar();
+    },
     //   初始化地图
     initMap: function() {
       var mapOptions = {
@@ -536,6 +548,20 @@ export default {
               position: absolute;
               right: 20px;
               bottom: 15px;
+              background-color: rgba(255, 255, 255, 0.42);
+              padding: 6px;
+              box-shadow: 3px 4px 3px 0px silver;
+              border-radius: 4px;
+              cursor: pointer;
+            }
+            .el-icon-more{
+              z-index: 120;
+              color: #4d4d4d;
+              font-size: 20px;
+              font-weight: bold;
+              position: absolute;
+              right: 20px;
+              bottom: 65px;
               background-color: rgba(255, 255, 255, 0.42);
               padding: 6px;
               box-shadow: 3px 4px 3px 0px silver;

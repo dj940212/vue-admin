@@ -1,6 +1,5 @@
 window.onload = function(){
   var sidebarWidth = document.getElementById('sidebar').clientWidth;
-  console.log(sidebarWidth);
   document.getElementById('routerView').style.width = (window.innerWidth-sidebarWidth)+"px";
   document.getElementById('routerView').style.height = (window.innerHeight-56)+"px";
 

@@ -1,6 +1,6 @@
 <template>
 <div class="trackQuery">
-  <div class="header">
+  <div class="header" id="map-header">
     <div class="title">
       <i class="icon iconfont">&#xe612;</i>
       <span>行驶轨迹查询</span>
@@ -8,7 +8,7 @@
     <el-button type="button" name="button" @click="toggleMarkers">显示标记</el-button>
     <span class="tableDataOnOff" @click="tableDataToggle = !tableDataToggle"><i class="icon iconfont" >&#xe742;</i></span>
   </div>
-  <div class="content">
+  <div class="content" id="map-content">
     <div class="trackQuery-map" id="trackQuery-map">
         <div class="element-input">
             <el-popover
@@ -40,6 +40,9 @@
               :maxlength="8">
             </el-input>
         </div>
+        <el-tooltip class="item" effect="dark" content="全屏地图" placement="top">
+          <i class="el-icon-more" @click="myFullScreen"></i>
+        </el-tooltip>
         <el-tooltip class="item" effect="dark" content="测距工具" placement="top">
           <i class="el-icon-search my-el-icon-search" @click="rangingTool"></i>
         </el-tooltip>
@@ -98,12 +101,21 @@
 <script>
 import startMarker from "../../images/startMarker.png"
 import endMarker from "../../images/endMarker.png"
+import {mapGetters,mapActions} from 'vuex'
 export default {
   name: 'trackQuery',
   mounted: function() {
     this.initMap();
   },
   methods: {
+    ...mapActions([
+      'fullScreen',
+      'toggleSidebar'
+    ]),
+    myFullScreen:function(){
+      this.fullScreen();
+      this.toggleSidebar();
+    },
     // 初始化地图
     initMap: function() {
       var mapOptions = {
@@ -493,6 +505,20 @@ export default {
               position: absolute;
               right: 20px;
               bottom: 15px;
+              background-color: rgba(255, 255, 255, 0.42);
+              padding: 6px;
+              box-shadow: 3px 4px 3px 0px silver;
+              border-radius: 4px;
+              cursor: pointer;
+            }
+            .el-icon-more{
+              z-index: 120;
+              color: #4d4d4d;
+              font-size: 20px;
+              font-weight: bold;
+              position: absolute;
+              right: 20px;
+              bottom: 65px;
               background-color: rgba(255, 255, 255, 0.42);
               padding: 6px;
               box-shadow: 3px 4px 3px 0px silver;

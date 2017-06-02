@@ -257,12 +257,12 @@ export default {
                 width: 180px;
                 background-color:#4e4c75;
                 color: #fff;
-                line-height: 45px;
-                margin-top: 15px;
+                line-height: 40px;
+                margin-top: 10px;
                 .menu-item-title{
                     border-top:1px solid #4e4c75;
                     border-bottom: 1px solid #4e4c75;
-                    font-size: 14px;
+                    font-size: 13px;
                     cursor: pointer;
                     .iconfont{
                         margin-right: 10px;

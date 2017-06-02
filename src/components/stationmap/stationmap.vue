@@ -1,13 +1,13 @@
 <template>
 <div class="stationmap">
-  <div class="header">
+  <div class="header" id="map-header">
     <div class="title">
       <i class="icon iconfont">&#xe612;</i>
       <span>基站状态查询</span>
     </div>
     <button class="button-stationData" type="button" name="button" @click="searchData">基站数据</button>
   </div>
-  <div class="content">
+  <div class="content" id="map-content">
     <div class="base-station-map" id="base-station-map">
         <el-input
           placeholder="请输入基站mac"
@@ -19,6 +19,9 @@
         </el-input>
         <el-tooltip class="item" effect="dark" content="测距工具" placement="top">
           <i class="el-icon-search my-el-icon-search" @click="rangingTool"></i>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="全屏地图" placement="top">
+          <i class="el-icon-more" @click="myFullScreen"></i>
         </el-tooltip>
     </div>
     <div class="table-data" v-show="toggleValue">
@@ -60,6 +63,7 @@
 <script>
 import imgOffUrl from "@/components/stationmap/station_off.png"
 import imgOnUrl from "@/components/stationmap/station.png"
+import {mapGetters,mapActions} from 'vuex'
 export default {
   name: 'stationmap',
   mounted: function() {
@@ -69,6 +73,14 @@ export default {
     // this.drawLocalStorage();
   },
   methods: {
+    ...mapActions([
+      'fullScreen',
+      'toggleSidebar'
+    ]),
+    myFullScreen:function(){
+      this.fullScreen();
+      this.toggleSidebar();
+    },
     //初始化地图
     initMap: function() {
       var mapOptions = {
@@ -322,6 +334,20 @@ export default {
               position: absolute;
               right: 20px;
               bottom: 15px;
+              background-color: rgba(255, 255, 255, 0.42);
+              padding: 6px;
+              box-shadow: 3px 4px 3px 0px silver;
+              border-radius: 4px;
+              cursor: pointer;
+            }
+            .el-icon-more{
+              z-index: 120;
+              color: #4d4d4d;
+              font-size: 20px;
+              font-weight: bold;
+              position: absolute;
+              right: 20px;
+              bottom: 65px;
               background-color: rgba(255, 255, 255, 0.42);
               padding: 6px;
               box-shadow: 3px 4px 3px 0px silver;
