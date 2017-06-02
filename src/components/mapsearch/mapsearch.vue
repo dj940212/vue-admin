@@ -28,10 +28,10 @@
         </el-input>
         <i class="el-icon-d-arrow-left" @click="toggleInfoBox" ref="elIcon"></i>
         <el-tooltip class="item" effect="dark" content="测距工具" placement="top">
-          <i class="el-icon-search" @click="rangingTool"></i>
+          <i class="fa fa-arrows-h" @click="rangingTool"></i>
         </el-tooltip>
         <el-tooltip class="item" effect="dark" content="全屏地图" placement="top">
-          <i class="el-icon-more" @click="myFullScreen"></i>
+          <i class="fa fa-arrows-alt" @click="myFullScreen"></i>
         </el-tooltip>
     </div>
     <div class="info-box" v-show="toggleInfoBoxValue">
@@ -553,7 +553,7 @@ export default {
                 cursor: pointer;
                 // transition: all 1s;
             }
-            .el-icon-search{
+            .fa-arrows-h{
               z-index: 120;
               color: #4d4d4d;
               font-size: 20px;
@@ -567,14 +567,14 @@ export default {
               border-radius: 4px;
               cursor: pointer;
             }
-            .el-icon-more{
+            .fa-arrows-alt{
               z-index: 120;
               color: #4d4d4d;
               font-size: 20px;
               font-weight: bold;
               position: absolute;
               right: 20px;
-              bottom: 65px;
+              bottom: 55px;
               background-color: rgba(255, 255, 255, 0.42);
               padding: 6px;
               box-shadow: 3px 4px 3px 0px silver;
