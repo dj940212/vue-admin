@@ -144,13 +144,13 @@ export default {
       });
 
     },
-    //显示所有标记
-    toggleMarkers:function(){
+      //显示所有标记
+     toggleMarkers:function(){
       this.showMarkerValue=!this.showMarkerValue;
       if (this.showMarkerValue) {
         this.track.forEach((item,index)=>{
           if (index!==0&&index!==this.track.length-1) {
-            this.addNewMarker(item);
+            this.addNewMarker(item,index);
           }
         })
       }else {
@@ -179,7 +179,7 @@ export default {
                   console.log(res.data.data.list.location);
                   this.track = this.unique(res.data.data.list.location);
                   this.tableData = res.data.data.list.location;
-                  this.addNewMarker(this.track[0],startMarker)
+                  this.addNewMarker(this.track[0],0,startMarker)
                   this.newDrawRoute(this.track);
                   this.tableData.forEach((item,index)=>{
                     //高德地址转换
@@ -195,7 +195,7 @@ export default {
         this.$message.error('数据请求出现错误');
       })
     },
-    //删除数组重复的点
+    //删除数组连续重复的点
     unique:function(array){
       var newArr = [];
       newArr.push(array[0])
@@ -227,7 +227,7 @@ export default {
       })
     },
     //添加新标记
-    addNewMarker:function(data,urlIcon){
+    addNewMarker:function(data,number,urlIcon){
         var lnglat = new AMap.LngLat(data.longitude,data.latitude);
         var _this = this;
         //闭包
@@ -240,20 +240,34 @@ export default {
                 title: data.mac,
                 map: _this.amap,
                 offset:new AMap.Pixel(-18,-44),
-                icon: urlIcon
+                icon: urlIcon,
               });
             }else {
               //创建标记
               _this.marker = new AMap.Marker({
                 position: result.locations[0],
                 title: data.mac,
-                map: _this.amap
+                map: _this.amap,
+                label:{content:number,offset:new AMap.Pixel(0,-22)}
               });
+              // AMapUI.loadUI(['overlay/SimpleMarker'], (SimpleMarker) => {
+              //     _this.marker = new SimpleMarker({
+              //         iconLabel: label ? label :1,
+              //         //自定义图标地址
+              //         iconStyle: 'http://webapi.amap.com/theme/v1.3/markers/b/mark_r.png',
+              //         //设置基点偏移
+              //         offset: new AMap.Pixel(-19, -60),
+              //         map: _this.amap,
+              //         showPositionPoint: true,
+              //         position: result.locations[0],
+              //         zIndex: 100,
+              //         title: data.time,
+              //     });
+              // });
             }
 
             _this.marker.mac = data.devEUI;
             _this.markers.push(_this.marker);
-            console.log(_this.marker)
             //点击事件
             AMap.event.addListener(_this.marker, 'click',(e) => {
                 _this.amap.setCenter(e.target.getPosition());
@@ -365,13 +379,12 @@ export default {
             this.amap.clearMap();
             var value=0;
             this.circulationRoute(data,value)
-
         })
     },
     //递归函数
     circulationRoute:function(data,i){
       if (i >= data.length-1) {
-          this.addNewMarker(data[data.length-1],endMarker);
+          this.addNewMarker(data[data.length-1],data.length-1,endMarker);
       }else {
         var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
         console.log("======1111=======",i);
@@ -540,6 +553,14 @@ export default {
             z-index: 200;
         }
     }
+    .amap-simple-marker{
+
+    }
+    .amap-simple-marker-label {
+     color: #fff;
+     font-size: 16px;
+     margin-top: 10px;
+   }
 
 }
 </style>

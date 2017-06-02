@@ -231,7 +231,7 @@ export default {
       socket.on('message', (data) => {
         console.log("收到数据", data);
         data.time = this.global.formatDate(new Date());
-        console.log("data.time",data.time);
+
         let localIndex = this.localRouteDataMac.indexOf(data.devEUI);
         if (localIndex===-1) {
           this.localRouteData.push(data);
