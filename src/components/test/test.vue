@@ -13,6 +13,10 @@
 import {mapGetters,mapActions} from 'vuex'
 export default {
   name:'test',
+  mounted:function(){
+    this.openFullScreen()
+    console.log("加载",this.$loading({text:"拼命加载中",target:"#routerView",lock:this.fullscreenLoading}))
+  },
   computed:{
     ...mapGetters([
       'count'
@@ -21,13 +25,20 @@ export default {
   methods:{
     ...mapActions([
       'increment'
-    ])
+    ]),
+    openFullScreen() {
+      this.fullscreenLoading = true;
+      setTimeout(() => {
+        this.fullscreenLoading = false;
+      }, 3000);
+    }
   },
   data(){
     return{
       visible2:false,
       input5:"",
-      select: ''
+      select: '',
+      fullscreenLoading:true
     }
   }
 }

@@ -516,13 +516,13 @@ export default {
 <style lang="less" scoped>
 .mapsearch {
     width: 100%;
-    height: 97%;
-    padding-top: 15px;
+    height: 96%;
+    padding-top: 10px;
     position: relative;
     .header {
         height: 64px;
-        margin-left: 15px;
-        margin-right: 15px;
+        margin-left: 10px;
+        margin-right: 10px;
         background-color: #e6e6eb;
         line-height: 64px;
         font-size: 24px;
@@ -565,8 +565,8 @@ export default {
 
     }
     .content {
-        margin-left: 15px;
-        margin-right: 15px;
+        margin-left: 10px;
+        margin-right: 10px;
         padding-top: 5px;
         padding-bottom: 5px;
         padding-right: 9px;

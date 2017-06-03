@@ -100,12 +100,7 @@ export default {
         center: [119.9404736224, 30.2667629326], //定位到海创园
         resizeEnable: true,
       }
-
       this.amap = new AMap.Map('base-station-map', mapOptions);
-      AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], () => {
-        this.amap.addControl(new AMap.ToolBar());
-        this.amap.addControl(new AMap.Scale());
-      });
     },
     //获取基站信息
     getBaseStation: function() {
@@ -265,13 +260,13 @@ export default {
 <style lang="less" scoped>
 .stationmap {
     width: 100%;
-    height: 95%;
-    padding-top: 15px;
+    height: 96%;
+    padding-top: 10px;
     position: relative;
     .header {
         height: 64px;
-        margin-left: 15px;
-        margin-right: 15px;
+        margin-left: 10px;
+        margin-right: 10px;
         background-color: #e6e6eb;
         line-height: 64px;
         font-size: 24px;
@@ -304,8 +299,8 @@ export default {
         }
     }
     .content {
-        margin-left: 15px;
-        margin-right: 15px;
+        margin-left: 10px;
+        margin-right: 10px;
         padding-top: 5px;
         padding-right: 10px;
         padding-bottom: 5px;

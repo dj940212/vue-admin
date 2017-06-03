@@ -177,6 +177,7 @@ export default {
               if (res.data.lp===0&&res.data.data.msg === "success") {
                   this.$message.success("轨迹获取成功");
                   console.log(res.data.data.list.location);
+                  this.loader = this.$loading({text:"正在为您加载轨迹",target:"#trackQuery-map",customClass:"loadingClass"})
                   this.track = this.unique(res.data.data.list.location);
                   this.tableData = res.data.data.list.location;
                   this.addNewMarker(this.track[0],0,startMarker)
@@ -344,36 +345,6 @@ export default {
       this.markers=[];
     },
     //绘制轨迹
-    drawRoute:function(data){
-        AMap.service(["AMap.Walking"],() => {
-            this.amap.clearMap();
-            var i = 0;
-            var timer = setInterval(() => {
-                if (i >= data.length-1) {
-                    clearInterval(timer);
-                    this.addNewMarker(data[data.length-1],endMarker);
-                }else {
-                    var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
-                    // console.log("=======>",i);
-                    AMap.convertFrom(lnglat1,"gps",(status,result) => {
-                        this.newRouteData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                        var lnglat2 = new AMap.LngLat(data[i+1].longitude,data[i+1].latitude);
-                        console.log("=======>",i+1);
-                        AMap.convertFrom(lnglat2,"gps",(status,result) => {
-                            this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                            // console.log(this.newRouteData1,this.newRouteData2);
-                              new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
-                                  if (status === "complete") {
-                                      i++;
-                                  }
-                              })
-                        })
-                    })
-                }
-            },700)
-        })
-    },
-    //绘制轨迹
     newDrawRoute:function(data){
         AMap.service(["AMap.Walking"],() => {
             this.amap.clearMap();
@@ -384,23 +355,24 @@ export default {
     //递归函数
     circulationRoute:function(data,i){
       if (i >= data.length-1) {
+          this.loading =false;
           this.addNewMarker(data[data.length-1],data.length-1,endMarker);
+          this.loader.close();
       }else {
         var lnglat1 = new AMap.LngLat(data[i].longitude,data[i].latitude);
-        console.log("======1111=======",i);
+        console.log("===起点====>",i);
         AMap.convertFrom(lnglat1,"gps",(status,result) => {
             this.newRouteData1 = [result.locations[0].getLng(),result.locations[0].getLat()];
             var lnglat2 = new AMap.LngLat(data[i+1].longitude,data[i+1].latitude);
-            console.log("======2222=======",i+1);
+            console.log("===终点====>",i+1);
             AMap.convertFrom(lnglat2,"gps",(status,result) => {
                 this.newRouteData2 = [result.locations[0].getLng(),result.locations[0].getLat()];
-                console.log(this.newRouteData1,this.newRouteData2);
-                  new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
-                      if (status === "complete") {
-                          i++;
-                          return this.circulationRoute(data,i);
-                      }
-                  })
+                new AMap.Walking({map:this.amap,hideMarkers:true}).search(this.newRouteData1,this.newRouteData2,(status,result)=>{
+                    if (status === "complete") {
+                        i++;
+                        return this.circulationRoute(data,i);
+                    }
+                })
             })
         })
       }
@@ -418,6 +390,8 @@ export default {
       track:[],
       marker:{},
       markers:[],
+      loading:true,
+      loader:{},
       amap: {},
       clickData: {},
       mouseoverData: {},
@@ -445,12 +419,12 @@ export default {
 .trackQuery {
     width: 100%;
     height: 95%;
-    padding-top: 15px;
+    padding-top: 10px;
     position: relative;
     .header {
         height: 64px;
-        margin-left: 15px;
-        margin-right: 15px;
+        margin-left: 10px;
+        margin-right: 10px;
         background-color: #e6e6eb;
         line-height: 64px;
         font-size: 24px;
@@ -483,8 +457,8 @@ export default {
         }
     }
     .content {
-        margin-left: 15px;
-        margin-right: 15px;
+        margin-left: 10px;
+        margin-right: 10px;
         padding: 5px;
         padding-right: 5px;
         background-color: #fff;
@@ -553,14 +527,8 @@ export default {
             z-index: 200;
         }
     }
-    .amap-simple-marker{
-
+    .loadingClass{
+      background-color: #FFF;
     }
-    .amap-simple-marker-label {
-     color: #fff;
-     font-size: 16px;
-     margin-top: 10px;
-   }
-
 }
 </style>

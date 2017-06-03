@@ -137,6 +137,7 @@ export default {
           latitude:"",
           altitude:"",
           mac:"",
+          loading:true,
           addValue:false,
           addStationPost:{
             id:"66",
