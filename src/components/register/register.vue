@@ -60,14 +60,6 @@ export default {
             this.login()
         }
     },
-    particles:function(){
-      /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
-        particlesJS.load('particles-js', particlesJSON, function() {
-          console.log('callback - particles.js config loaded');
-         });
-         console.log(particlesJS);
-         console.log(this.particlesJSON);
-    },
     stationSocket:function(){
       var socket = io('ws://127.0.0.1:3003');
       socket.on('connect',function () {
