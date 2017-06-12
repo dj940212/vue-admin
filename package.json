@@ -5,7 +5,7 @@
   "author": "dingjian",
   "private": true,
   "scripts": {
-    "dev": "node build/dev-server.js",
+    "dev": "node build/dev-server.js && node static/js/testData.js",
     "build": "node build/build.js"
   },
   "dependencies": {
