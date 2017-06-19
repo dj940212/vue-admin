@@ -6,7 +6,9 @@
       <sidebar></sidebar>
     </div>
     <div class="routerView" id="routerView">
+      <keep-alive>
         <router-view></router-view>
+      </keep-alive>
     </div>
   </div>
 </template>

@@ -858,15 +858,15 @@ export default {
         position: relative;
         .header {
             height: 64px;
-            margin-left: 15px;
-            margin-right: 15px;
+            margin-left: 10px;
+            margin-right: 10px;
             background-color: #e6e6eb;
             line-height: 64px;
             font-size: 24px;
-            margin-top: 15px;
+            margin-top: 10px;
             position: relative;
             .title {
-                margin-left: 15px;
+                margin-left: 10px;
                 display: inline-block;
                 .icon {
                     font-size: 28px;
@@ -909,8 +909,8 @@ export default {
             }
         }
         .content{
-            margin-left: 15px;
-            margin-right: 15px;
+            margin-left: 10px;
+            margin-right: 10px;
             padding: 0px;
             background-color: #fff;
             position: relative;

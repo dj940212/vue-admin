@@ -4,7 +4,7 @@
         <div class="text">
           <img class="brand" src="./brand.png" alt="" width="38" height="38">
           <span class="company">朗阳科技</span>
-          <span class="title">助动车管理系统</span>
+          <!-- <span class="title">助动车管理系统</span> -->
         </div>
       </div>
       <div class="avatar">
@@ -37,7 +37,7 @@
                       <span>报警管理</span>
                   </div>
                   <ul class="submenu">
-                      <li class="submenu-item"><router-link to="/userCallReg">用户报警登记</router-link></li>
+                      <!-- <li class="submenu-item"><router-link to="/userCallReg">用户报警登记</router-link></li> -->
                       <li class="submenu-item"><router-link to="/userCallSearch">报警记录管理</router-link></li>
                   </ul>
               </li>
@@ -119,7 +119,7 @@ export default {
           if (!this.submenuActive2) {
               event.currentTarget.nextSibling.nextSibling.style.height=0+"px";
           }else {
-              event.currentTarget.nextSibling.nextSibling.style.height=74+"px";
+              event.currentTarget.nextSibling.nextSibling.style.height=37+"px";
           }
       },
       toggleSidebar3: function(event){
@@ -162,7 +162,7 @@ export default {
     float: left;
     width: 181px;
     height: 100%;
-    background-color: #4e4c75;
+    background-color: #424f63;
     z-index: 20;
     // overflow: hidden;
     .top-left {
@@ -189,9 +189,10 @@ export default {
         .company{
           display: block;
           position: absolute;
-          top: 9px;
-          left: 62px;
-          font-size: 15px;
+          top: 14px;
+          left: 66px;
+          font-size: 18px;
+          letter-spacing:2px;
         }
         .brand{
           position: absolute;

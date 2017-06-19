@@ -23,11 +23,11 @@
               <el-col :span="12">
                   <el-form ref="form" :model="addUserPost" label-width="100px">
                     <el-form-item label="姓名">
-                      <el-input v-model="addUserPost.realname"></el-input>
+                      <el-input v-model="addUserPost.realname" placeholder="真实姓名"></el-input>
                     </el-form-item>
                     <el-form-item label="性别">
                       <!-- <el-input v-model="addUserPost.sex"></el-input> -->
-                      <el-select v-model="addUserPost.sex" placeholder="请选择">
+                      <el-select v-model="addUserPost.sex" placeholder="请选择性别">
                         <el-option
                           v-for="item in options"
                           :key="item.value"
@@ -838,15 +838,15 @@ export default {
         position: relative;
         .header {
             height: 64px;
-            margin-left: 15px;
-            margin-right: 15px;
+            margin-left: 10px;
+            margin-right: 10px;
             background-color: #e6e6eb;
             line-height: 64px;
             font-size: 24px;
-            margin-top: 15px;
+            margin-top: 10px;
             position: relative;
             .title {
-                margin-left: 15px;
+                margin-left: 10px;
                 display: inline-block;
                 .icon {
                     font-size: 28px;
@@ -889,8 +889,8 @@ export default {
             }
         }
         .content{
-            margin-left: 15px;
-            margin-right: 15px;
+            margin-left: 10px;
+            margin-right: 10px;
             padding: 0px;
             background-color: #fff;
             position: relative;

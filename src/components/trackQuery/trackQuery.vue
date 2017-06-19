@@ -5,7 +5,7 @@
       <i class="icon iconfont">&#xe612;</i>
       <span>行驶轨迹查询</span>
     </div>
-    <el-button type="button" name="button" @click="toggleMarkers">标记</el-button>
+    <i class="fa fa-map-marker" aria-hidden="true" @click="toggleMarkers"></i>
     <span class="tableDataOnOff" @click="tableDataToggle = !tableDataToggle"><i class="icon iconfont" >&#xe742;</i></span>
   </div>
   <div class="content" id="map-content">
@@ -445,7 +445,7 @@ export default {
             margin-right: 20px;
             font-size: 17px;
             cursor: pointer;
-            color: #4e4c75;
+            // color: #4e4c75;
             &:hover{
                 color: #red;
             }
@@ -454,6 +454,13 @@ export default {
                 // float: right;
                 margin-right: 5px;
             }
+        }
+        .fa-map-marker{
+          cursor: pointer;
+          position: absolute;
+          font-size:30px;
+          right: 80px;
+          top: 26px;
         }
     }
     .content {
@@ -517,6 +524,7 @@ export default {
               border-radius: 4px;
               cursor: pointer;
             }
+
         }
         .tableData{
             position: absolute;
