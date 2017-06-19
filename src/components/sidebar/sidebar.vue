@@ -329,7 +329,7 @@ export default {
                 text-align: center;
                 margin-top: 8px;
                 font-size: 10px;
-                color: #fff;
+                color: #eee;
             }
         }
 

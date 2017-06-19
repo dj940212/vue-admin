@@ -914,6 +914,10 @@ export default {
             }
             .el-pagination{
               text-align: center;
+              .active{
+                border-color: #65CEA7 !important;
+                background-color: #65CEA7 !important;
+              }
             }
 
         }
