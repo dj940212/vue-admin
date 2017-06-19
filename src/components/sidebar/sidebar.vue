@@ -24,10 +24,10 @@
                   </div>
                   <transition name="slide">
                       <ul class="submenu">
-                          <li class="submenu-item"><router-link to="/eleFence">用户电子围栏</router-link></li>
-                          <li class="submenu-item"><router-link to="/mapsearch">实时地图查询</router-link></li>
-                          <li class="submenu-item"><router-link to="/user">用户信息管理</router-link></li>
-                          <li class="submenu-item"><router-link to="/car">车辆信息管理</router-link></li>
+                          <router-link to="/eleFence"><li class="submenu-item">用户电子围栏</li></router-link>
+                          <router-link to="/mapsearch"><li class="submenu-item">实时地图查询</li></router-link>
+                          <router-link to="/user"><li class="submenu-item">用户信息管理</li></router-link>
+                          <router-link to="/car"><li class="submenu-item">车辆信息管理</li></router-link>
                       </ul>
                   </transition>
               </li>
@@ -38,7 +38,7 @@
                   </div>
                   <ul class="submenu">
                       <!-- <li class="submenu-item"><router-link to="/userCallReg">用户报警登记</router-link></li> -->
-                      <li class="submenu-item"><router-link to="/userCallSearch">报警记录管理</router-link></li>
+                      <router-link to="/userCallSearch"><li class="submenu-item">报警记录管理</li></router-link>
                   </ul>
               </li>
               <li class="menu-item">
@@ -47,8 +47,8 @@
                       <span>基站管理</span>
                   </div>
                   <ul class="submenu">
-                      <li class="submenu-item"><router-link to="/stationData">基站数据</router-link></li>
-                      <li class="submenu-item"><router-link to="/stationmap">基站状态查询</router-link></li>
+                      <router-link to="/stationData"><li class="submenu-item">基站数据</li></router-link>
+                      <router-link to="/stationmap"><li class="submenu-item">基站状态查询</li></router-link>
                   </ul>
               </li>
               <li class="menu-item">
@@ -57,7 +57,7 @@
                       <span>历史纪录查询</span>
                   </div>
                   <ul class="submenu">
-                      <li class="submenu-item"><router-link to="/trackQuery">助动车行驶轨迹查询</router-link></li>
+                      <router-link to="/trackQuery"><li class="submenu-item">助动车行驶轨迹查询</li></router-link>
                       <li class="submenu-item">相关视频调用</li>
                       <li class="submenu-item">低电量电子车牌查询</li>
                       <li class="submenu-item">操作日志查询</li>
@@ -92,7 +92,7 @@ export default {
       submenuActive3: false,
       sidebarActive4: false,
       submenuActive4: false,
-      username:"police"
+      username:"police",
     }
   },
   computed:{
@@ -168,7 +168,7 @@ export default {
     .top-left {
       display: inline-block;
       width: 181px;
-      background-color: #1f2d3d;
+      background-color: #424f63;
       height:50px;
       color: #fff;
       border-right: 1px solid #fff;
@@ -206,7 +206,7 @@ export default {
         position: relative;
         width: 180px;
         height: 158px;
-        background-color: #4e4c75;
+        background-color: #424f63;
         img{
             position: absolute;
             top: 50%;
@@ -230,7 +230,7 @@ export default {
             .name{
               display: inline-block;
               width: 50px;
-              background-color: #4e4c75;
+              background-color: #424f63;
               color: #fff;
             }
         }
@@ -245,69 +245,69 @@ export default {
         // margin: 3px 0;
         overflow: hidden;
         width: 180px;
-        background-color: #4e4c75;
+        background-color: #424f63;
     }
     .tab{
         width: 180px;
-        background-color:#4e4c75;
+        background-color:#424f63;
         overflow-x: hidden;
         .menu{
             width: 180px;
             .menu-item{
                 display: block;
                 width: 180px;
-                background-color:#4e4c75;
+                background-color:#424f63;
                 color: #fff;
                 line-height: 40px;
                 margin-top: 10px;
                 .menu-item-title{
-                    border-top:1px solid #4e4c75;
-                    border-bottom: 1px solid #4e4c75;
                     font-size: 13px;
                     cursor: pointer;
+                    letter-spacing:1px;
                     .iconfont{
                         margin-right: 10px;
-                        margin-left: 20px;
+                        margin-left: 15px;
                         font-size: 20px;
                     }
                     &:hover{
-                        border-top:1px solid #fff;
-                        border-bottom: 1px solid #fff;
+                      background-color:#353f4f;
+                      color:#65CEA7;
                     }
                     &.active{
+                      background-color:#353f4f;
+                      color:#65CEA7;
                     }
                 }
                 .submenu{
-                    background-color: #1f2d3d;
+                    background-color: #353f4f;
                     height: 0;
                     overflow: hidden;
                     transition: height 0.4s;
                     &.active{
                         display: block;
                     }
-                    &.slide-enter-active, &.slide-leave-active{
+                    a{
+                      color: #fff;
                     }
-                    &.slide-enter, &.slide-leave-active{
+                    a.router-link-active{
+                      display: block;
+                      color:#65CEA7;
+                      background-color:#2a323f;
                     }
                     .submenu-item{
                         width: 176px;
                         height: 35px;
                         line-height: 35px;
-                        padding-left: 45px;
-                        border-top: 1px solid #1f2d3d;
-                        border-bottom: 1px solid #1f2d3d;
-                        font-size: 12px;
+                        padding-left: 50px;
+                        font-size: 13px;
+                        letter-spacing:1px;
                         cursor: pointer;
                         &:hover{
-                            border-top: 1px solid #fff;
-                            border-bottom: 1px solid #fff;
-                            border-left: 4px solid #fff;
+                          background-color:#2a323f;
+                          color:#65CEA7;
                         }
-                        a{
-                            color: #fff;
-                        }
-                        .router-link-active{
-                            color: #b3acac;
+                        &.active{
+                          background-color:#2a323f;
                         }
                     }
 
@@ -319,7 +319,7 @@ export default {
         width: 181px;
         height: 80px;
         position: fixed;
-        background-color: #3e465e;
+        background-color: #424f63;
         bottom: 0;
         .messBox{
             margin-top: 15px;
