@@ -183,23 +183,25 @@ export default {
 <style lang="less" scoped>
 .eleFence {
     width: 100%;
-    height: 95%;
-    padding-top: 15px;
+    height: 100%;
+    // padding-top: 10px;
     position: relative;
     .header {
-        height: 64px;
-        margin-left: 15px;
-        margin-right: 15px;
-        background-color: #e6e6eb;
-        line-height: 64px;
-        font-size: 24px;
+        height: 50px;
+        margin-left: 10px;
+        margin-right: 10px;
+        background-color: #f2f2f2;
+        line-height: 50px;
+        font-size: 20px;
+        color: #444;
+        letter-spacing: 1px;
         .title {
-            margin-left: 15px;
+            margin-left: 10px;
             display: inline-block;
             .icon {
-                font-size: 28px;
+                font-size: 22px;
                 position: relative;
-                top: 4px;
+                top: 2px;
             }
             span {
                 margin-left: 5px;
@@ -222,14 +224,15 @@ export default {
         }
     }
     .content {
-        margin-left: 15px;
-        margin-right: 15px;
+        margin-left: 10px;
+        margin-right: 10px;
         padding-top: 5px;
         padding-right: 10px;
         padding-bottom: 5px;
         background-color: #fff;
         position: relative;
         height: 90%;
+        border-radius: 2px;
         .base-station-map {
             width: 100%;
             height: 100%;

@@ -418,23 +418,24 @@ export default {
 <style lang="less">
 .trackQuery {
     width: 100%;
-    height: 95%;
-    padding-top: 10px;
+    height: 99%;
     position: relative;
     .header {
-        height: 64px;
+        height: 50px;
         margin-left: 10px;
         margin-right: 10px;
-        background-color: #e6e6eb;
-        line-height: 64px;
-        font-size: 24px;
+        background-color: #f2f2f2;
+        line-height: 50px;
+        font-size: 20px;
+        color: #444;
+        letter-spacing: 1px;
         .title {
             margin-left: 15px;
             display: inline-block;
             .icon {
-                font-size: 28px;
+                font-size: 22px;
                 position: relative;
-                top: 4px;
+                top: 2px;
             }
             span {
                 margin-left: 5px;
@@ -450,7 +451,7 @@ export default {
                 color: #red;
             }
             .icon{
-                font-size: 22px;
+                font-size: 18px;
                 // float: right;
                 margin-right: 5px;
             }
@@ -458,9 +459,9 @@ export default {
         .fa-map-marker{
           cursor: pointer;
           position: absolute;
-          font-size:30px;
+          font-size:26px;
           right: 80px;
-          top: 26px;
+          top: 12px;
         }
     }
     .content {

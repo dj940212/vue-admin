@@ -312,25 +312,25 @@ export default {
 <style lang="less" scoped>
     .stationData{
         width: 100%;
-        height: 95%;
-        // padding-top: 22px;
+        height: 100%;
         position: relative;
         .header {
             position: relative;
-            height: 64px;
+            height: 50px;
             margin-left: 22px;
             margin-right: 22px;
-            background-color: #e6e6eb;
-            line-height: 64px;
-            font-size: 24px;
-            margin-top: 22px;
+            background-color: #f2f2f2;
+            line-height: 50px;
+            font-size: 20px;
+            color: #444;
+            letter-spacing: 1px;
             .title {
-                margin-left: 15px;
+                margin-left: 10px;
                 display: inline-block;
                 .icon {
-                    font-size: 28px;
+                    font-size: 22px;
                     position: relative;
-                    top: 4px;
+                    top: 2px;
                 }
                 span {
                     margin-left: 5px;
@@ -360,13 +360,13 @@ export default {
             .el-input{
               float: right;
               width: 200px;
-              margin-top: 15px;
-              margin-right: 30px;
+              margin-top: 7px;
+              margin-right: 25px;
             }
         }
         .content{
-            margin-left: 22px;
-            margin-right: 22px;
+            margin-left: 10px;
+            margin-right: 10px;
             padding-top: 0px;
             background-color: #fff;
             height: 88%;
@@ -381,7 +381,7 @@ export default {
           border-right: 1px solid #eee;
           width: 350px;
           height: 220px;
-          top: 64px;
+          top: 50px;
           right: 22px;
           z-index: 100;
           background: #fff;

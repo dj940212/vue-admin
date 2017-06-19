@@ -834,24 +834,25 @@ export default {
 <style lang="less" scoped>
     .userInfoManage{
         width: 100%;
-        height: 95%;
+        height: 100%;
         position: relative;
         .header {
-            height: 64px;
+            height: 50px;
             margin-left: 10px;
             margin-right: 10px;
-            background-color: #e6e6eb;
-            line-height: 64px;
-            font-size: 24px;
-            margin-top: 10px;
+            background-color: #f2f2f2;
+            line-height: 50px;
+            font-size: 20px;
+            color: #444;
+            letter-spacing: 1px;
             position: relative;
             .title {
                 margin-left: 10px;
                 display: inline-block;
                 .icon {
-                    font-size: 28px;
+                    font-size: 22px;
                     position: relative;
-                    top: 4px;
+                    top: 2px;
                 }
                 span {
                     margin-left: 5px;
@@ -859,7 +860,7 @@ export default {
             }
             .el-icon-plus{
               float: right;
-              margin-top: 20px;
+              margin-top: 15px;
               margin-right: 20px;
               cursor: pointer;
               &:hover{
@@ -873,8 +874,8 @@ export default {
             .el-input{
               float: right;
               width: 200px;
-              margin-top: 15px;
-              margin-right: 40px;
+              margin-top: 7px;
+              margin-right: 25px;
             }
             .triangle-up{
               position: absolute;

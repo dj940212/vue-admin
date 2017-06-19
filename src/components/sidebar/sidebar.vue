@@ -7,13 +7,13 @@
           <!-- <span class="title">助动车管理系统</span> -->
         </div>
       </div>
-      <div class="avatar">
+      <!-- <div class="avatar">
           <router-link to="/userinfo"><img src="./avatar.png" alt="" width="64" height="64"></router-link>
           <div class="text">
               <span class="police">警员：</span>
               <span class="name">{{username}}</span>
           </div>
-      </div>
+      </div> -->
       <div class="divider"></div>
       <div class="tab" ref="tab" id="tab">
           <ul class="menu">
@@ -146,7 +146,7 @@ export default {
       },
   },
   mounted:function(){
-      this.$refs.tab.style.height = (window.innerHeight-290)+"px";
+      this.$refs.tab.style.height = (window.innerHeight-132)+"px";
 
       this.global.bus.$on("username",function(id){
         this.username = id;
@@ -251,6 +251,7 @@ export default {
         width: 180px;
         background-color:#424f63;
         overflow-x: hidden;
+        height: 1000px;
         .menu{
             width: 180px;
             .menu-item{

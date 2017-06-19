@@ -8,8 +8,8 @@
     <div class="el-switch">
         <el-switch
           v-model="switchValue"
-          on-color="#4e4c75"
-          off-color="#222222"
+          on-color="#65cea7"
+          off-color="#444"
           on-text="位置"
           off-text="轨迹"
           @change="switchChange">
@@ -516,23 +516,25 @@ export default {
 <style lang="less" scoped>
 .mapsearch {
     width: 100%;
-    height: 96%;
-    padding-top: 10px;
+    height: 100%;
     position: relative;
     .header {
-        height: 64px;
+        height: 50px;
         margin-left: 10px;
         margin-right: 10px;
-        background-color: #e6e6eb;
-        line-height: 64px;
-        font-size: 24px;
+        background-color: #f2f2f2;
+        line-height: 50px;
+        font-size: 20px;
+        color: #444;
+        letter-spacing: 1px;
         .title {
             margin-left: 15px;
             display: inline-block;
+
             .icon {
-                font-size: 28px;
+                font-size: 22px;
                 position: relative;
-                top: 4px;
+                top: 2px;
             }
             .el-button{
               float: right;
@@ -545,7 +547,7 @@ export default {
         }
         .el-switch{
             float: right;
-            top: 10px;
+            top: 6px;
             right: 20px;
             .el-switch__core{
                 width: 70px;
@@ -562,7 +564,6 @@ export default {
           }
 
         }
-
     }
     .content {
         margin-left: 10px;

@@ -52,6 +52,7 @@ export default {
 
 #app {
     position: relative;
+    font-family: "微软雅黑";
     // @sideWidth 180px;
     .routerView{
         float: left;
