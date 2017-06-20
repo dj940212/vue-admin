@@ -430,7 +430,7 @@ export default {
             letter-spacing: 1px;
             position: relative;
             .title {
-                margin-left: 15px;
+                margin-left: 10px;
                 display: inline-block;
                 .icon {
                     font-size: 22px;
@@ -476,8 +476,8 @@ export default {
             }
         }
         .content{
-            margin-left: 15px;
-            margin-right: 15px;
+            margin-left: 10px;
+            margin-right: 10px;
             padding-top: 0px;
             padding-left: 0px;
             padding-right: 0px;

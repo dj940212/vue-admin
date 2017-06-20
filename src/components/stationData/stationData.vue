@@ -26,18 +26,19 @@
                     :data="tableData"
                     border
                     style="width: 100%">
-                    <el-table-column
+                    <!-- <el-table-column
                       prop="id"
                       label="id"
                       width="90">
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column
                       prop="mac"
                       label="基站mac">
                     </el-table-column>
                     <el-table-column
                       prop="altitude"
-                      label="海拔">
+                      label="海拔"
+                      width="90">
                     </el-table-column>
                     <el-table-column
                       prop="longitude"

@@ -1,26 +1,22 @@
 <template>
   <div class="header" id="header">
-      <!-- <span class="toggle"><i class="icon iconfont" v-show="false">&#xe606;</i></span> -->
-      <!-- <i class="el-icon-menu" ></i> -->
       <i class="fa fa-bars" @click="toggleSidebar"></i>
-      <!-- <input type="button" value="增加" @click="increment"> -->
       <el-input icon="search" placeholder="在此输入"></el-input>
       <div class="top-right">
           <div class="rightIcon">
-            <el-popover
-              ref="popover2"
-              placement="bottom"
-              title="标题"
-              width="200"
-              trigger="hover"
-              content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-            </el-popover>
-            <div class="button" @click="reload"><span class="text update"><i class="fa fa-refresh" aria-hidden="true"></i></span></div>
-            <div class="button" v-popover:popover2><span class="text message"><i class="fa fa-bell-o"></i></span></div>
-            <div class="button"><span class="text setting"><i class="fa fa-envelope-o"></i></span></div>
-            <div class="button" @click="logout"><span class="text out"><i class="fa fa-sign-out" aria-hidden="true"></i></span></div>
+            <div class="button" @click="reload"><i class="fa fa-refresh" aria-hidden="true"></i></div>
+            <div class="button"><i class="fa fa-bell-o"></i></div>
+            <div class="button"><i class="fa fa-envelope-o"></i></div>
+            <!-- <div class="button" @click="logout"><span class="text out"><i class="fa fa-sign-out" aria-hidden="true"></i></span></div> -->
+            <div class="button button-user" @mouseover="dropDownValue=true" @mouseout="dropDownValue=false"><i class="fa fa-user" aria-hidden="true"></i><span class="text out">police</span></div>
+          </div>
+          <div class="drop-down" v-show="dropDownValue" @mouseout="dropDownValue=false" @mouseover="dropDownValue=true">
+            <router-link to="/userinfo"><div class="icon-box"><i class="fa fa-address-book-o" aria-hidden="true"></i><span>信息</span></div></router-link>
+            <div class="icon-box"><i class="fa fa-cog" aria-hidden="true"></i><span>设置</span></div>
+            <div class="icon-box" @click="logout"><i class="fa fa-sign-out" aria-hidden="true"></i><span>退出</span></div>
           </div>
       </div>
+      
   </div>
 </template>
 
@@ -49,7 +45,8 @@ export default {
   },
   data:function(){
     return{
-      sidebarValue:true
+      sidebarValue:true,
+      dropDownValue:false
     }
   }
 }
@@ -74,48 +71,86 @@ export default {
   }
   .fa-bars{
     float: left;
-    margin-left: 15px;
+    padding-left: 16px;
     color: #444;
     font-size: 20px;
     line-height: 50px;
     cursor: pointer;
     border-right:1px solid #eee;
     padding-right:18px;
+    &:hover{
+      background-color:#424f63;
+      color: #65CEA7;
+    }
   }
   .top-right {
     float: right;
-    display: inline-block;
+    // display: inline-block;
     position: relative;
     /*width: 100%;*/
     height: 50px;
-      .toggle{
-        color: #fff;
-        font-size: 30px;
-        float: left;
-        margin-left: 15px;
+    .toggle{
+      color: #fff;
+      font-size: 30px;
+      float: left;
+      margin-left: 15px;
+      line-height: 50px;
+      margin-bottom: 20px;
+
+    }
+    .rightIcon{
+      float: right;
+      margin-right: 10px;
+      .button{
+        color: #444;
+        display: inline-block;
+        width: 40px;
+        height: 50px;
+        text-align: center;
+        cursor: pointer;
         line-height: 50px;
-        margin-bottom: 20px;
-      }
-      .rightIcon{
-        float: right;
-        margin-right: 20px;
-        .button{
-          color: #444;
-          display: inline-block;
-          width: 40px;
-          height: 50px;
-          text-align: center;
-          cursor: pointer;
-          &:hover{
-            background-color:#424f63;
-            color: #65CEA7;
-          }
-          .text{
-            line-height: 50px;
-            // font-size: 50px;
-          }
+        &:hover{
+          background-color:#424f63;
+          color: #65CEA7;
         }
       }
+      .button-user{
+        width: 100px;
+        .text{
+          line-height: 50px;
+          margin-left: 10px;
+          overflow:hidden;
+          white-space:nowrap;
+          text-overflow:ellipsis;
+          width: 60px;
+        }
+      }
+    }
+    .drop-down{
+      background-color: #65CEA7;
+      width: 180px;
+      height: 90px;
+      position: absolute;
+      top: 50px;
+      z-index: 200;
+      right: 10px;
+      border-radius: 2px;
+      .icon-box{
+         height: 30px;
+         line-height: 30px;
+         padding-left: 15px;
+         color: #fff;
+         cursor: pointer;
+         span{
+          margin-left: 10px;
+          font-size: 12px;
+         }
+         &:hover{
+          background-color:#424f63;
+          color: #65CEA7;
+        }
+      }
+    }
   }
   .toggleBox{
     position: relative;
@@ -134,7 +169,10 @@ export default {
       }
 
     }
-
+  }
+  .box{
+    width:200px;
+    height: 100px;
   }
 }
 </style>
