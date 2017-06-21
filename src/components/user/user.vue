@@ -166,6 +166,7 @@
              @current-change="paging">
           </el-pagination>
         </div>
+        <!-- 修改用户信息对话框 -->
         <el-dialog
           title="修改用户信息"
           :visible.sync="dialogVisible"
@@ -228,6 +229,7 @@
             <el-button type="primary" @click="openMessageBoxModifyUser">确 定</el-button>
           </span>
         </el-dialog>
+        <!-- 绑定车辆对话框 -->
         <el-dialog
           title="绑定车辆"
           :visible.sync="dialogVisible1"
@@ -541,7 +543,12 @@ export default {
       }).then(() => {
         //获取userid
         this.bindDetailDevicePost.userid = this.tableData[index].id;
+
         this.bindDetailDevice(()=>{
+          if (this.tableData[index].carlist) {
+            this.tableData[index].carlist.push({"car_number":this.bindDetailDevicePost.car_number});
+          }
+          this.tableData[index].carlist=[{"car_number":this.bindDetailDevicePost.car_number}];
           this.$message({
             type: 'success',
             message: '绑定成功!'
@@ -554,8 +561,8 @@ export default {
         })
       }).catch(() => {
         this.$message({
-          type: 'info',
-          message: '取消绑定'
+          type: 'error',
+          message: '绑定失败'
         });
       });
     },

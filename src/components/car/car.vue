@@ -18,252 +18,6 @@
           <div class="triangle-up" v-show="onOffValue"></div>
         </div>
         <div class="content">
-          <!-- 注册用户表单 -->
-          <div class="addUserLocator" v-show="onOffValue">
-              <el-col :span="12">
-                  <el-form ref="form" :model="addUserPost" label-width="100px">
-                    <el-form-item label="姓名">
-                      <el-input v-model="addUserPost.realname"></el-input>
-                    </el-form-item>
-                    <el-form-item label="性别">
-                      <!-- <el-input v-model="addUserPost.sex"></el-input> -->
-                      <el-select v-model="addUserPost.sex" placeholder="请选择">
-                        <el-option
-                          v-for="item in options"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item label="手机号">
-                      <el-input v-model="addUserPost.telephone" :maxlength="11"></el-input>
-                    </el-form-item>
-                    <el-form-item label="身份证正面">
-                        <el-upload
-                          class="avatar-uploader"
-                          action= "http://121.196.194.14/langyang/Home/Police/uploadIdCardFrontPic"
-                          :show-file-list="false"
-                          :on-success="handleAvatarSuccessFront"
-                          :before-upload="beforeAvatarUpload"
-                          style="display:inline-block">
-                          <img v-if="addUserPost.idcard_frontpic" :src="addUserPost.idcard_frontpic" class="avatar" width="160px" height="100px">
-                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
-                    </el-form-item>
-                  </el-form>
-              </el-col>
-              <el-col :span="12">
-                  <el-form ref="form" :model="addUserPost" label-width="100px">
-                    <el-form-item label="地址">
-                      <el-input v-model="addUserPost.address"></el-input>
-                    </el-form-item>
-                    <el-form-item label="生日">
-                      <el-input v-model="addUserPost.birthday"></el-input>
-                    </el-form-item>
-                    <el-form-item label="身份证号">
-                      <el-input v-model="addUserPost.idcardnumber"></el-input>
-                    </el-form-item>
-                    <el-form-item label="身份证背面">
-                        <el-upload
-                          class="avatar-uploader"
-                          action="http://121.196.194.14/langyang/Home/Police/uploadIdCardBackPic"
-                          :show-file-list="false"
-                          :on-success="handleAvatarSuccessBack"
-                          :before-upload="beforeAvatarUpload"
-                          style="display:inline-block">
-                          <img v-if="addUserPost.idcard_backpic" :src="addUserPost.idcard_backpic" class="avatar" width="160px" height="100px">
-                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
-                    </el-form-item>
-                    <el-form-item>
-                      <el-button type="primary" @click="openMessageBoxAddUser">注册用户</el-button>
-                      <el-button @click="onOffValue=false">取消</el-button>
-                    </el-form-item>
-                  </el-form>
-              </el-col>
-          </div>
-          <!-- 用户列表 -->
-          <div class="table-data" v-show="showUserInfo">
-                <el-table
-                    :data="tableData"
-                    border
-                    style="width: 100%">
-                    <!-- 扩展项 -->
-                    <el-table-column type="expand">
-                      <template scope="props">
-                        <el-form label-position="left" inline class="demo-table-expand">
-                          <el-form-item label="性别">
-                            <span>{{ props.row.sex===1 ? "男" : "女" }}</span>
-                          </el-form-item>
-                          <el-form-item label="出生年月">
-                            <span>{{ props.row.birthday }}</span>
-                          </el-form-item>
-                          <el-form-item label="地址">
-                            <span>{{ props.row.address }}</span>
-                          </el-form-item>
-                          <el-form-item label="身份证号">
-                            <span>{{ props.row.idcardnumber }}</span>
-                          </el-form-item>
-                          <el-form-item label="身份证正面">
-                            <img v-bind:src="props.row.idcard_frontpic" width="160px" height="100px">
-                          </el-form-item>
-                          <el-form-item label="身份证背面">
-                            <img v-bind:src="props.row.idcard_backpic" width="160px" height="100px">
-                          </el-form-item>
-                        </el-form>
-                      </template>
-                    </el-table-column>
-                    <el-table-column
-                      prop="id"
-                      label="用户id">
-                    </el-table-column>
-                    <el-table-column
-                      prop="idcardnumber"
-                      label="身份证号">
-                    </el-table-column>
-                    <el-table-column
-                      prop="realname"
-                      label="姓名">
-                    </el-table-column>
-                    <el-table-column
-                      prop="telephone"
-                      label="手机号">
-                    </el-table-column>
-                    <!-- 编辑删除操作项 -->
-                    <el-table-column
-                      fixed="right"
-                      prop="type"
-                      label="操作"
-                      width="160">
-                      <template scope="scope">
-                        <!-- 绑定电动车表单 -->
-                        <el-popover
-                          ref="popover1"
-                          placement="bottom-start"
-                          title=" "
-                          width="600"
-                          trigger="click">
-                          <el-col :span="12">
-                              <el-form ref="form" :model="bindDetailDevicePost" label-width="100px">
-                                <el-form-item label="mac">
-                                  <el-input v-model="bindDetailDevicePost.mac"></el-input>
-                                </el-form-item>
-                                <el-form-item label="定位物标识">
-                                  <el-input v-model="bindDetailDevicePost.lable"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车牌号">
-                                  <el-input v-model="bindDetailDevicePost.car_number" :maxlength="8" :minlength="3"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车辆照片">
-                                    <el-upload
-                                      class="avatar-uploader"
-                                      action= "http://121.196.194.14/langyang/Home/Police/uploadCarPic"
-                                      :show-file-list="false"
-                                      :on-success="handleAvatarSuccessCarPic"
-                                      :before-upload="beforeAvatarUpload"
-                                      style="display:inline-block">
-                                      <img v-if="bindDetailDevicePost.car_pic" :src="bindDetailDevicePost.car_pic" class="avatar" width="160px" height="100px">
-                                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                    </el-upload>
-                                </el-form-item>
-                              </el-form>
-                          </el-col>
-                          <el-col :span="12">
-                            <el-form ref="form" :model="bindDetailDevicePost" label-width="100px">
-                              <el-form-item label="车辆型号">
-                                <el-input v-model="bindDetailDevicePost.car_type"></el-input>
-                              </el-form-item>
-                              <el-form-item label="车辆颜色">
-                                <el-input v-model="bindDetailDevicePost.color"></el-input>
-                              </el-form-item>
-                              <el-form-item label="车辆昵称">
-                                <el-input v-model="bindDetailDevicePost.nickname"></el-input>
-                              </el-form-item>
-                              <el-form-item label="车辆备注">
-                                <el-input v-model="bindDetailDevicePost.remark" type="textarea"></el-input>
-                              </el-form-item>
-
-                              <el-button type="primary" @click="openMessageBoxBindDevice(scope.$index)">绑定车辆</el-button>
-                              </el-form>
-                          </el-col>
-                          <!-- <el-button v-popover:popover1>取消</el-button> -->
-                        </el-popover>
-                        <!-- 修改用户信息表单 -->
-                        <el-popover
-                          ref="popover2"
-                          placement="bottom-start"
-                          title=" "
-                          width="600"
-                          trigger="click">
-                          <el-col :span="12">
-                              <el-form ref="form" :model="addUserPost" label-width="100px">
-                                <!-- <el-form-item label="用户id">
-                                  <el-input v-model="addUserPost.id"></el-input>
-                                </el-form-item> -->
-                                <el-form-item label="姓名">
-                                  <el-input v-model="addUserPost.realname"></el-input>
-                                </el-form-item>
-                                <el-form-item label="性别">
-                                  <el-input v-model="addUserPost.sex"></el-input>
-                                </el-form-item>
-                                <el-form-item label="手机号">
-                                  <el-input v-model="addUserPost.telephone"></el-input>
-                                </el-form-item>
-                                <el-form-item label="身份证正面">
-                                    <el-upload
-                                      class="avatar-uploader"
-                                      action= "http://121.196.194.14/langyang/Home/Police/uploadIdCardFrontPic"
-                                      :show-file-list="false"
-                                      :on-success="handleAvatarSuccessFront"
-                                      :before-upload="beforeAvatarUpload"
-                                      style="display:inline-block">
-                                      <img v-if="addUserPost.idcard_frontpic" :src="addUserPost.idcard_frontpic" class="avatar" width="160px" height="100px">
-                                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                    </el-upload>
-                                </el-form-item>
-                              </el-form>
-                          </el-col>
-                          <el-col :span="12">
-                              <el-form ref="form" :model="addUserPost" label-width="100px">
-                                <el-form-item label="地址">
-                                  <el-input v-model="addUserPost.address"></el-input>
-                                </el-form-item>
-                                <el-form-item label="生日">
-                                  <el-input v-model="addUserPost.birthday" placeholder="0000-00-00"></el-input>
-                                </el-form-item>
-                                <el-form-item label="身份证号">
-                                  <el-input v-model="addUserPost.idcardnumber"></el-input>
-                                </el-form-item>
-                                <el-form-item label="身份证背面">
-                                    <el-upload
-                                      class="avatar-uploader"
-                                      action="http://121.196.194.14/langyang/Home/Police/uploadIdCardBackPic"
-                                      :show-file-list="false"
-                                      :on-success="handleAvatarSuccessBack"
-                                      :before-upload="beforeAvatarUpload"
-                                      style="display:inline-block">
-                                      <img v-if="addUserPost.idcard_backpic" :src="addUserPost.idcard_backpic" class="avatar" width="160px" height="100px">
-                                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                    </el-upload>
-                                </el-form-item>
-                                <el-form-item>
-                                  <el-button type="primary" @click="openMessageBoxModifyUser">修改用户</el-button>
-                                  <el-button @click="onOffValue=false">取消</el-button>
-                                </el-form-item>
-                              </el-form>
-                          </el-col>
-                        </el-popover>
-                        <!-- <el-button type="success" size="small" @click="searchDevice">设备</el-button> -->
-                        <el-button type="warning" size="small" v-popover:popover2 @click="getModifyPost(scope.$index)">修改</el-button>
-                        <el-button type="info" size="small" v-popover:popover1>绑定</el-button>
-                      </template>
-                    </el-table-column>
-                </el-table>
-            </div>
-            <!-- 助动车列表 -->
-            <!-- <div class="d">设备</div> -->
-          <!-- 页码 -->
           <!-- 电动车列表 -->
           <div class="table-data" v-show="showCarInfo">
                 <el-table
@@ -381,7 +135,7 @@
                         </el-popover>
                         <!-- <el-button type="success" size="small" @click="searchUser">用户</el-button> -->
                         <el-tooltip class="item" effect="dark" content="修改车辆信息" placement="top">
-                          <el-button type="warning" icon="edit" size="small" v-popover:popover5 @click="getModifyCarInfoPost(scope.$index)"></el-button>
+                          <el-button type="warning" icon="edit" size="small" @click="getModifyCarInfoPost(scope.$index)"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="删除车辆信息" placement="top">
                           <el-button type="danger" icon="delete" size="small" @click="openMessageBoxDelCar(scope.$index)"> </el-button>
@@ -389,7 +143,7 @@
                       </template>
                     </el-table-column>
                 </el-table>
-            </div>
+          </div>
           <!-- 翻页 -->
           <el-pagination
              layout="prev, pager, next"
@@ -398,6 +152,50 @@
              @current-change="paging">
            </el-pagination>
         </div>
+        <el-dialog
+          title="修改车辆信息"
+          :visible.sync="dialogVisible"
+          size="small">
+          <el-col :span="12">
+              <el-form ref="form" :model="modifyCarInfoPost" label-width="100px">
+                <el-form-item label="车牌号">
+                  <el-input v-model="modifyCarInfoPost.car_number"></el-input>
+                </el-form-item>
+                <el-form-item label="车辆型号">
+                  <el-input v-model="modifyCarInfoPost.car_type"></el-input>
+                </el-form-item>
+                <el-form-item label="车辆照片">
+                  <el-upload
+                    class="avatar-uploader"
+                    action= "http://121.196.194.14/langyang/Home/Police/uploadCarPic"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccessModifyCarPic"
+                    :before-upload="beforeAvatarUpload"
+                    style="display:inline-block">
+                    <img v-if="modifyCarInfoPost.car_pic" :src="modifyCarInfoPost.car_pic" class="avatar" width="160px" height="100px">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+                </el-form-item>
+              </el-form>
+          </el-col>
+          <el-col :span="12">
+              <el-form ref="form" :model="modifyCarInfoPost" label-width="100px">
+                <el-form-item label="备注">
+                  <el-input v-model="modifyCarInfoPost.remark"></el-input>
+                </el-form-item>
+                <el-form-item label="车昵称">
+                  <el-input v-model="modifyCarInfoPost.nickname" placeholder="0000-00-00"></el-input>
+                </el-form-item>
+                <el-form-item label="车辆颜色">
+                  <el-input v-model="modifyCarInfoPost.car_color"></el-input>
+                </el-form-item>
+              </el-form>
+          </el-col>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="openMessageBoxModifyCar">确 定</el-button>
+          </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -618,6 +416,7 @@ export default {
     },
     //获取修改助动车信息
     getModifyCarInfoPost(index){
+      this.dialogVisible = true;
       this.modifyCarInfoPost = this.tableDataCar[index];
       this.modifyCarInfoPost.car_id = this.tableDataCar[index].carid;
       this.modifyCarInfoPost.car_color = this.tableDataCar[index].color;
@@ -758,6 +557,7 @@ export default {
     },
     //修改电动车对话框
     openMessageBoxModifyCar() {
+      this.dialogVisible = false;
       this.$confirm('确定修改用户信息?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -787,6 +587,7 @@ export default {
           urlGetUserList:this.global.port+"/langyang/Home/Police/getUserList",
           urlGetCarList:this.global.port+"/langyang/Home/Police/getCarList",
           tableData:[],
+          dialogVisible:false,
           mac:"",
           username:"王小虎",
           car_id:"",

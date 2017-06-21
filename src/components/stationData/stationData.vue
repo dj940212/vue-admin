@@ -77,8 +77,7 @@
         <el-dialog
           title="修改基站信息"
           :visible.sync="dialogVisible"
-          size="tiny"
-          :before-close="handleClose">
+          size="tiny">
           <el-form ref="form" :model="changeStationPost" label-width="80px">
             <el-form-item label="基站mac">
               <el-input v-model="changeStationPost.mac"></el-input>
@@ -314,14 +313,6 @@ export default {
             message: '取消移除'
           });
         });
-      },
-      //关闭对话框
-      handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
       }
   }
 }

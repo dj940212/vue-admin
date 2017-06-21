@@ -12,8 +12,7 @@
   <el-dialog
     title="历史数据"
     :visible.sync="dialogVisible"
-    size="large"
-    :before-close="handleClose">
+    size="large">
     <div class="tableData">
         <el-table
             :data="tableData"
@@ -136,14 +135,6 @@ export default {
         this.toggleSidebar();
         this.fullScreen();
       }
-    },
-    //关闭对话框
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
     },
     // 初始化地图
     initMap: function() {
