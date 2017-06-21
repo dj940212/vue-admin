@@ -3,7 +3,7 @@
   <div class="header" id="map-header">
     <div class="title">
       <i class="icon iconfont">&#xe612;</i>
-      <span>基站状态查询</span>
+      <span>基站地图</span>
     </div>
   </div>
   <div class="content" id="map-content">

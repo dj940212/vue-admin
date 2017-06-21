@@ -89,19 +89,10 @@
                             <el-form-item label="地区编码">
                               <span>{{ props.row.adcode }}</span>
                             </el-form-item>
-                            <el-form-item label="地址">
-                              <span>{{ props.row.address }}</span>
-                            </el-form-item>
-                            <el-form-item label="报警时间">
-                              <span>{{ props.row.call_time }}</span>
-                            </el-form-item>
-                            <el-form-item label="发生时间">
-                              <span>{{ props.row.heppen_time }}</span>
-                            </el-form-item>
                             <el-form-item label="报警类型">
                               <span>{{ props.row.call_type }}</span>
                             </el-form-item>
-                            <el-form-item label="省份证号码">
+                            <el-form-item label="身份证号码">
                               <span>{{ props.row.idcard_number }}</span>
                             </el-form-item>
                             <el-form-item label="经度">
@@ -113,17 +104,8 @@
                             <el-form-item label="mac">
                               <span>{{ props.row.mac }}</span>
                             </el-form-item>
-                            <el-form-item label="报警备注">
-                              <span>{{ props.row.message }}</span>
-                            </el-form-item>
-                            <el-form-item label="姓名">
-                              <span>{{ props.row.realname }}</span>
-                            </el-form-item>
-                            <el-form-item label="报警状态">
-                              <span>{{ props.row.status }}</span>
-                            </el-form-item>
-                            <el-form-item label="手机号">
-                              <span>{{ props.row.telephone }}</span>
+                            <el-form-item label="地址">
+                              <span>{{ props.row.address }}</span>
                             </el-form-item>
                           </el-form>
                         </template>
@@ -135,19 +117,31 @@
                     </el-table-column> -->
                     <el-table-column
                       prop="realname"
-                      label="姓名">
+                      label="姓名"
+                      width="90">
                     </el-table-column>
                     <el-table-column
                       prop="telephone"
-                      label="电话号码">
+                      label="电话号码"
+                      width="130">
                     </el-table-column>
                     <el-table-column
                       prop="call_time"
-                      label="报警时间">
+                      label="报警时间"
+                      width="190">
                     </el-table-column>
                     <el-table-column
                       prop="heppen_time"
-                      label="发生时间">
+                      label="发生时间"
+                      width="190">
+                    </el-table-column>
+                   <!--  <el-table-column
+                      prop="address"
+                      label="案发地址">
+                    </el-table-column> -->
+                    <el-table-column
+                      prop="message"
+                      label="备注">
                     </el-table-column>
                     <el-table-column
                       prop="status"

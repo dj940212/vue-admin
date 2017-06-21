@@ -3,7 +3,7 @@
         <div class="header">
           <div class="title">
             <i class="icon iconfont">&#xe612;</i>
-            <span>基站数据</span>
+            <span>基站信息管理</span>
           </div>
           <div class="addStation" >
             <el-tooltip class="item" effect="dark" content="添加基站" placement="top">

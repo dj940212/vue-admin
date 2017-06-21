@@ -47,8 +47,8 @@
                       <span>基站管理</span>
                   </div>
                   <ul class="submenu">
-                      <router-link to="/stationData"><li class="submenu-item">基站数据</li></router-link>
-                      <router-link to="/stationmap"><li class="submenu-item">基站状态查询</li></router-link>
+                      <router-link to="/stationData"><li class="submenu-item">基站信息管理</li></router-link>
+                      <router-link to="/stationmap"><li class="submenu-item">基站地图</li></router-link>
                   </ul>
               </li>
               <li class="menu-item">
