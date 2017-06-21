@@ -128,11 +128,11 @@
                           </el-form>
                         </template>
                     </el-table-column>
-                    <el-table-column
+                   <!--  <el-table-column
                       prop="id"
                       label="id"
                       width="100">
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column
                       prop="realname"
                       label="姓名">
@@ -165,7 +165,7 @@
                     <el-table-column
                       fixed="right"
                       label="操作"
-                      width="180">
+                      width="170">
                       <template scope="scope">
                         <el-popover
                           ref="popover1"
@@ -181,14 +181,14 @@
                             <el-button type="success" size="small" @click="changeAlarmsStatus(scope.$index)">确定更改</el-button>
                           </div>
                         </el-popover>
-                        <el-tooltip class="item" effect="dark" content="查看报警车辆位置" placement="top">
-                          <el-button type="info" size="small" icon="search" @click="showMap(scope.$index)"></el-button>
+                        <el-tooltip class="item" effect="dark" content="查看车辆位置" placement="top">
+                          <el-button size="small" icon="search" @click="showMap(scope.$index)"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="处理报警" placement="top">
-                          <el-button type="warning" size="small" icon="edit" v-popover:popover1 @click="getAlarmStatusAndId(scope.$index)"></el-button>
+                          <el-button size="small" icon="edit" v-popover:popover1 @click="getAlarmStatusAndId(scope.$index)"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="删除报警记录" placement="top">
-                          <el-button type="danger" size="small" icon="delete" @click="openMessageBox2(scope.$index)"></el-button>
+                          <el-button size="small" icon="delete" @click="openMessageBox2(scope.$index)"></el-button>
                         </el-tooltip>
                       </template>
                     </el-table-column>

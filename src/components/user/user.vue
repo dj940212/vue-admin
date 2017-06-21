@@ -114,11 +114,11 @@
                         </el-form>
                       </template>
                     </el-table-column>
-                    <el-table-column
+                  <!--   <el-table-column
                       prop="id"
                       label="用户id"
                       width="100">
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column
                       prop="realname"
                       label="姓名"
@@ -147,12 +147,11 @@
                       label="操作"
                       width="120">
                       <template scope="scope">
-                        <!-- <el-button type="success" size="small" @click="searchDevice">设备</el-button> -->
                         <el-tooltip class="item" effect="dark" content="修改信息" placement="top">
-                          <el-button type="warning" icon="edit" size="small" @click="getModifyPost(scope.$index)"></el-button>
+                          <el-button icon="edit" size="small" style="cursor: pointer" @click="getModifyPost(scope.$index)"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="绑定车辆" placement="top">
-                          <el-button type="info" icon="share" size="small" @click="getTableDataIndex(scope.$index)"></el-button>
+                          <el-button icon="share" size="small" @click="getTableDataIndex(scope.$index)"></el-button>
                         </el-tooltip>
                       </template>
                     </el-table-column>

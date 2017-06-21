@@ -54,7 +54,8 @@
                     </el-table-column>
                     <el-table-column
                       prop="adcode"
-                      label="地区编码">
+                      label="地区编码"
+                      width="110">
                     </el-table-column>
                     <el-table-column
                       fixed="right"
@@ -63,10 +64,10 @@
                       width="120">
                       <template scope="scope">
                         <el-tooltip class="item" effect="dark" content="删除基站" placement="top">
-                          <el-button @click="openMessageBoxDelete(scope.$index)" type="danger" icon="delete" size="small"></el-button>
+                          <el-button @click="openMessageBoxDelete(scope.$index)" icon="delete" size="small"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="修改基站" placement="top">
-                          <el-button type="warning" size="small" icon="edit" @click="getChangeStaionPost(scope.$index)"></el-button>
+                          <el-button size="small" icon="edit" @click="getChangeStaionPost(scope.$index)"></el-button>
                         </el-tooltip>
                       </template>
                     </el-table-column>

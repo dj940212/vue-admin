@@ -88,57 +88,12 @@
                       label="操作"
                       width="120">
                       <template scope="scope">
-                        <el-popover
-                          ref="popover5"
-                          placement="bottom-start"
-                          title=" "
-                          width="600"
-                          trigger="click">
-                          <el-col :span="12">
-                              <el-form ref="form" :model="modifyCarInfoPost" label-width="100px">
-                                <el-form-item label="车牌号">
-                                  <el-input v-model="modifyCarInfoPost.car_number"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车辆型号">
-                                  <el-input v-model="modifyCarInfoPost.car_type"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车辆照片">
-                                  <el-upload
-                                    class="avatar-uploader"
-                                    action= "http://121.196.194.14/langyang/Home/Police/uploadCarPic"
-                                    :show-file-list="false"
-                                    :on-success="handleAvatarSuccessModifyCarPic"
-                                    :before-upload="beforeAvatarUpload"
-                                    style="display:inline-block">
-                                    <img v-if="modifyCarInfoPost.car_pic" :src="modifyCarInfoPost.car_pic" class="avatar" width="160px" height="100px">
-                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                  </el-upload>
-                                </el-form-item>
-                              </el-form>
-                          </el-col>
-                          <el-col :span="12">
-                              <el-form ref="form" :model="modifyCarInfoPost" label-width="100px">
-                                <el-form-item label="备注">
-                                  <el-input v-model="modifyCarInfoPost.remark"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车昵称">
-                                  <el-input v-model="modifyCarInfoPost.nickname" placeholder="0000-00-00"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车辆颜色">
-                                  <el-input v-model="modifyCarInfoPost.car_color"></el-input>
-                                </el-form-item>
-                                <el-form-item>
-                                  <el-button type="primary" @click="openMessageBoxModifyCar">修改车辆信息</el-button>
-                                </el-form-item>
-                              </el-form>
-                          </el-col>
-                        </el-popover>
                         <!-- <el-button type="success" size="small" @click="searchUser">用户</el-button> -->
                         <el-tooltip class="item" effect="dark" content="修改车辆信息" placement="top">
-                          <el-button type="warning" icon="edit" size="small" @click="getModifyCarInfoPost(scope.$index)"></el-button>
+                          <el-button  icon="edit" size="small" @click="getModifyCarInfoPost(scope.$index)"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="删除车辆信息" placement="top">
-                          <el-button type="danger" icon="delete" size="small" @click="openMessageBoxDelCar(scope.$index)"> </el-button>
+                          <el-button icon="delete" size="small" @click="openMessageBoxDelCar(scope.$index)"> </el-button>
                         </el-tooltip>
                       </template>
                     </el-table-column>
