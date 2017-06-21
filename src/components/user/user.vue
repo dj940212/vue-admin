@@ -147,64 +147,12 @@
                       label="操作"
                       width="120">
                       <template scope="scope">
-                        <!-- 绑定电动车表单 -->
-                        <el-popover
-                          ref="popover1"
-                          placement="bottom-start"
-                          title=" "
-                          width="600"
-                          trigger="click">
-                          <el-col :span="12">
-                              <el-form ref="form" :model="bindDetailDevicePost" label-width="100px">
-                                <el-form-item label="mac">
-                                  <el-input v-model="bindDetailDevicePost.mac"></el-input>
-                                </el-form-item>
-                                <el-form-item label="定位物标识">
-                                  <el-input v-model="bindDetailDevicePost.lable"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车牌号">
-                                  <el-input v-model="bindDetailDevicePost.car_number" :maxlength="8" :minlength="3"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车辆照片">
-                                    <el-upload
-                                      class="avatar-uploader"
-                                      action= "http://121.196.194.14/langyang/Home/Police/uploadCarPic"
-                                      :show-file-list="false"
-                                      :on-success="handleAvatarSuccessCarPic"
-                                      :before-upload="beforeAvatarUpload"
-                                      style="display:inline-block">
-                                      <img v-if="bindDetailDevicePost.car_pic" :src="bindDetailDevicePost.car_pic" class="avatar" width="160px" height="100px">
-                                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                    </el-upload>
-                                </el-form-item>
-                              </el-form>
-                          </el-col>
-                          <el-col :span="12">
-                            <el-form ref="form" :model="bindDetailDevicePost" label-width="100px">
-                              <el-form-item label="车辆型号">
-                                <el-input v-model="bindDetailDevicePost.car_type"></el-input>
-                              </el-form-item>
-                              <el-form-item label="车辆颜色">
-                                <el-input v-model="bindDetailDevicePost.color"></el-input>
-                              </el-form-item>
-                              <el-form-item label="车辆昵称">
-                                <el-input v-model="bindDetailDevicePost.nickname"></el-input>
-                              </el-form-item>
-                              <el-form-item label="车辆备注">
-                                <el-input v-model="bindDetailDevicePost.remark" type="textarea"></el-input>
-                              </el-form-item>
-
-                              <el-button type="primary" @click="openMessageBoxBindDevice(scope.$index)">绑定车辆</el-button>
-                              </el-form>
-                          </el-col>
-                          <!-- <el-button v-popover:popover1>取消</el-button> -->
-                        </el-popover>
                         <!-- <el-button type="success" size="small" @click="searchDevice">设备</el-button> -->
                         <el-tooltip class="item" effect="dark" content="修改信息" placement="top">
                           <el-button type="warning" icon="edit" size="small" @click="getModifyPost(scope.$index)"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="绑定车辆" placement="top">
-                          <el-button type="info" icon="share" size="small" v-popover:popover1></el-button>
+                          <el-button type="info" icon="share" size="small" @click="getTableDataIndex(scope.$index)"></el-button>
                         </el-tooltip>
                       </template>
                     </el-table-column>
@@ -280,6 +228,56 @@
             <el-button type="primary" @click="openMessageBoxModifyUser">确 定</el-button>
           </span>
         </el-dialog>
+        <el-dialog
+          title="绑定车辆"
+          :visible.sync="dialogVisible1"
+          size="small">
+          <el-col :span="12">
+              <el-form ref="form" :model="bindDetailDevicePost" label-width="100px">
+                <el-form-item label="mac">
+                  <el-input v-model="bindDetailDevicePost.mac"></el-input>
+                </el-form-item>
+                <el-form-item label="定位物标识">
+                  <el-input v-model="bindDetailDevicePost.lable"></el-input>
+                </el-form-item>
+                <el-form-item label="车牌号">
+                  <el-input v-model="bindDetailDevicePost.car_number" :maxlength="8" :minlength="3"></el-input>
+                </el-form-item>
+                <el-form-item label="车辆照片">
+                    <el-upload
+                      class="avatar-uploader"
+                      action= "http://121.196.194.14/langyang/Home/Police/uploadCarPic"
+                      :show-file-list="false"
+                      :on-success="handleAvatarSuccessCarPic"
+                      :before-upload="beforeAvatarUpload"
+                      style="display:inline-block">
+                      <img v-if="bindDetailDevicePost.car_pic" :src="bindDetailDevicePost.car_pic" class="avatar" width="160px" height="100px">
+                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
+              </el-form>
+          </el-col>
+          <el-col :span="12">
+            <el-form ref="form" :model="bindDetailDevicePost" label-width="100px">
+              <el-form-item label="车辆型号">
+                <el-input v-model="bindDetailDevicePost.car_type"></el-input>
+              </el-form-item>
+              <el-form-item label="车辆颜色">
+                <el-input v-model="bindDetailDevicePost.color"></el-input>
+              </el-form-item>
+              <el-form-item label="车辆昵称">
+                <el-input v-model="bindDetailDevicePost.nickname"></el-input>
+              </el-form-item>
+              <el-form-item label="车辆备注">
+                <el-input v-model="bindDetailDevicePost.remark" type="textarea"></el-input>
+              </el-form-item>
+              </el-form>
+          </el-col>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible1 = false">取 消</el-button>
+            <el-button type="primary" @click="openMessageBoxBindDevice(tableDataIndex)">确 定</el-button>
+          </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -348,6 +346,10 @@ export default {
       },(res)=>{
         console.log(res.status)
       })
+    },
+    getTableDataIndex:function(index){
+      this.tableDataIndex = index;
+      this.dialogVisible1 = true;
     },
     //翻页
     paging:function(currentPage){
@@ -531,6 +533,7 @@ export default {
     },
     //车辆绑定对话框
     openMessageBoxBindDevice(index) {
+      this.dialogVisible1= false;
       this.$confirm('确定绑定设备?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -658,6 +661,8 @@ export default {
           urlGetUserList:this.global.port+"/langyang/Home/Police/getUserList",
           tableData:[],
           dialogVisible: false,
+          dialogVisible1: false,
+          tableDataIndex:null,
           mac:"",
           car_id:"",
           pageNum:1,
