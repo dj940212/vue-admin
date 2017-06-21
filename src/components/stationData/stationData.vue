@@ -62,40 +62,43 @@
                       label="操作"
                       width="120">
                       <template scope="scope">
-                        <el-popover
-                          ref="popover4"
-                          placement="bottom-start"
-                          width="350"
-                          trigger="click">
-                          <el-form ref="form" :model="changeStationPost" label-width="80px">
-                            <el-form-item label="基站mac">
-                              <el-input v-model="changeStationPost.mac"></el-input>
-                            </el-form-item>
-                            <el-form-item label="经度">
-                              <el-input v-model="changeStationPost.longitude"></el-input>
-                            </el-form-item>
-                            <el-form-item label="纬度">
-                              <el-input v-model="changeStationPost.latitude"></el-input>
-                            </el-form-item>
-                            <el-form-item label="海拔">
-                              <el-input v-model="changeStationPost.altitude"></el-input>
-                            </el-form-item>
-                          </el-form>
-                          <div style="text-align: center; margin-top:10px">
-                            <el-button type="success" @click="changeStaion(scope.$index)">确定更改</el-button>
-                          </div>
-                        </el-popover>
                         <el-tooltip class="item" effect="dark" content="删除基站" placement="top">
                           <el-button @click="openMessageBoxDelete(scope.$index)" type="danger" icon="delete" size="small"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="修改基站" placement="top">
-                          <el-button type="warning" size="small" icon="edit" v-popover:popover4 @click="getChangeStaionPost(scope.$index)"></el-button>
+                          <el-button type="warning" size="small" icon="edit" @click="getChangeStaionPost(scope.$index)"></el-button>
                         </el-tooltip>
                       </template>
                     </el-table-column>
                 </el-table>
             </div>
         </div>
+
+        <el-dialog
+          title="修改基站信息"
+          :visible.sync="dialogVisible"
+          size="tiny"
+          :before-close="handleClose">
+          <el-form ref="form" :model="changeStationPost" label-width="80px">
+            <el-form-item label="基站mac">
+              <el-input v-model="changeStationPost.mac"></el-input>
+            </el-form-item>
+            <el-form-item label="经度">
+              <el-input v-model="changeStationPost.longitude"></el-input>
+            </el-form-item>
+            <el-form-item label="纬度">
+              <el-input v-model="changeStationPost.latitude"></el-input>
+            </el-form-item>
+            <el-form-item label="海拔">
+              <el-input v-model="changeStationPost.altitude"></el-input>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="changeStaion(tableDataIndex)">确 定</el-button>
+          </span>
+        </el-dialog>
+
         <div class="addForm" v-show="addValue">
             <el-form ref="form" :model="addStationPost" label-width="80px">
               <el-form-item label="基站mac">
@@ -134,6 +137,8 @@ export default {
           tableData:[],
           stationData:[],
           id:"",
+          tableDataIndex:null,
+          dialogVisible: false,
           longitude:"",
           latitude:"",
           altitude:"",
@@ -234,6 +239,7 @@ export default {
       },
       //修改基站
       changeStaion:function(index){
+
         this.$http.post(this.urlChangeStation,this.changeStationPost,{
           emulateJSON:true
         }).then((res)=>{
@@ -243,6 +249,7 @@ export default {
             this.tableData[index].longitude = this.changeStationPost.longitude;
             this.tableData[index].altitude = this.changeStationPost.altitude;
             this.tableData[index].mac = this.changeStationPost.mac;
+            this.dialogVisible = false;
             this.$message({
               type: 'success',
               message: '修改成功!'
@@ -256,6 +263,8 @@ export default {
       },
       //请求参数
       getChangeStaionPost:function(index){
+        this.tableDataIndex = index;
+        this.dialogVisible = true;
         this.changeStationPost.id = "66";
         this.changeStationPost.station_id = this.tableData[index].id;
         this.changeStationPost.latitude = this.tableData[index].latitude;
@@ -305,6 +314,14 @@ export default {
             message: '取消移除'
           });
         });
+      },
+      //关闭对话框
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
       }
   }
 }

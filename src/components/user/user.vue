@@ -59,7 +59,7 @@
                       <el-input v-model="addUserPost.address"></el-input>
                     </el-form-item>
                     <el-form-item label="生日">
-                      <el-input v-model="addUserPost.birthday"></el-input>
+                      <el-input v-model="addUserPost.birthday" placeholder="0000-00-00"></el-input>
                     </el-form-item>
                     <el-form-item label="身份证号">
                       <el-input v-model="addUserPost.idcardnumber"></el-input>
@@ -273,126 +273,14 @@
                       </template>
                     </el-table-column>
                 </el-table>
-            </div>
-            <!-- 助动车列表 -->
-            <!-- <div class="d">设备</div> -->
-          <!-- 页码 -->
-          <!-- 电动车列表 -->
-          <div class="table-data" v-show="showCarInfo">
-                <el-table
-                    :data="tableDataCar"
-                    border
-                    style="width: 100%">
-                    <!-- 扩展项 -->
-                    <el-table-column type="expand">
-                      <template scope="props">
-                        <el-form label-position="left" inline class="demo-table-expand">
-                          <el-form-item label="定位物标识">
-                            <span>{{ props.row.lable }}</span>
-                          </el-form-item>
-                          <el-form-item label="车辆类型">
-                            <span>{{ props.row.car_type }}</span>
-                          </el-form-item>
-                          <el-form-item label="定位物类型">
-                            <span>{{ props.row.device_type }}</span>
-                          </el-form-item>
-                          <el-form-item label="备注">
-                            <span>{{ props.row.remark }}</span>
-                          </el-form-item>
-                          <el-form-item label="车辆昵称">
-                            <span>{{ props.row.nickname }}</span>
-                          </el-form-item>
-                          <el-form-item label="车辆颜色">
-                            <span>{{ props.row.color }}</span>
-                          </el-form-item>
-                          <el-form-item label="车辆照片">
-                            <img v-bind:src="props.row.car_pic" width="160px" height="100px">
-                          </el-form-item>
-                        </el-form>
-                      </template>
-                    </el-table-column>
-                    <el-table-column
-                      prop="car_number"
-                      label="车牌号">
-                    </el-table-column>
-                    <el-table-column
-                      prop="device_id"
-                      label="车辆id">
-                    </el-table-column>
-                    <el-table-column
-                      prop="mac"
-                      label="mac">
-                    </el-table-column>
-                    <el-table-column
-                      prop="setup_time"
-                      label="绑定时间">
-                    </el-table-column>
-                    <!-- 编辑删除操作 -->
-                    <el-table-column
-                      fixed="right"
-                      prop="type"
-                      label="操作"
-                      width="160">
-                      <template scope="scope">
-                        <el-popover
-                          ref="popover5"
-                          placement="bottom-start"
-                          title=" "
-                          width="600"
-                          trigger="click">
-                          <el-col :span="12">
-                              <el-form ref="form" :model="modifyCarInfoPost" label-width="100px">
-                                <el-form-item label="车牌号">
-                                  <el-input v-model="modifyCarInfoPost.car_number"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车辆型号">
-                                  <el-input v-model="modifyCarInfoPost.car_type"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车辆照片">
-                                  <el-upload
-                                    class="avatar-uploader"
-                                    action= "http://121.196.194.14/langyang/Home/Police/uploadCarPic"
-                                    :show-file-list="false"
-                                    :on-success="handleAvatarSuccessModifyCarPic"
-                                    :before-upload="beforeAvatarUpload"
-                                    style="display:inline-block">
-                                    <img v-if="modifyCarInfoPost.car_pic" :src="modifyCarInfoPost.car_pic" class="avatar" width="160px" height="100px">
-                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                  </el-upload>
-                                </el-form-item>
-                              </el-form>
-                          </el-col>
-                          <el-col :span="12">
-                              <el-form ref="form" :model="modifyCarInfoPost" label-width="100px">
-                                <el-form-item label="备注">
-                                  <el-input v-model="modifyCarInfoPost.remark"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车昵称">
-                                  <el-input v-model="modifyCarInfoPost.nickname" placeholder="0000-00-00"></el-input>
-                                </el-form-item>
-                                <el-form-item label="车辆颜色">
-                                  <el-input v-model="modifyCarInfoPost.car_color"></el-input>
-                                </el-form-item>
-                                <el-form-item>
-                                  <el-button type="primary" @click="openMessageBoxModifyCar">修改车辆</el-button>
-                                  <el-button @click="onOffValue=false">取消</el-button>
-                                </el-form-item>
-                              </el-form>
-                          </el-col>
-                        </el-popover>
-                        <!-- <el-button type="success" size="small" @click="searchUser">用户</el-button> -->
-                        <el-button type="warning" size="small" v-popover:popover5 @click="getModifyCarInfoPost(scope.$index)">修改</el-button>
-                        <el-button type="danger" size="small" @click="openMessageBoxDelCar(scope.$index)">删除</el-button>
-                      </template>
-                    </el-table-column>
-                </el-table>
           </div>
+          <!-- 页码 -->
           <el-pagination
              layout="prev, pager, next"
              :page-count="pageNum"
              :page-size="18"
              @current-change="paging">
-           </el-pagination>
+          </el-pagination>
         </div>
     </div>
 </template>

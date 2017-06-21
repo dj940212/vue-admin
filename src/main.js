@@ -5,13 +5,14 @@ import App from './App'
 import router from './router'
 import store from './store/'
 import Resource from 'vue-resource'
-import { TimePicker, Loading, Tag, Radio, Option, Select, RadioGroup, RadioButton, Badge, DatePicker, Pagination, Message, MessageBox, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon, Form, FormItem, Upload, Row, Col, Autocomplete, Card} from 'element-ui'
+import { TimePicker, Dialog, Loading, Tag, Radio, Option, Select, RadioGroup, RadioButton, Badge, DatePicker, Pagination, Message, MessageBox, Table, TableColumn, Tooltip, Input, Switch, Popover, Button, Icon, Form, FormItem, Upload, Row, Col, Autocomplete, Card} from 'element-ui'
 import global_ from './common/vue/global.vue'
 Vue.prototype.global = global_
 
 Vue.config.productionTip = false
 
 Vue.use(TimePicker)
+Vue.use(Dialog)
 Vue.use(DatePicker)
 Vue.use(Table)
 Vue.use(Resource)

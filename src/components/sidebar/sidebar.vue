@@ -57,7 +57,7 @@
                       <span>历史纪录查询</span>
                   </div>
                   <ul class="submenu">
-                      <router-link to="/trackQuery"><li class="submenu-item">助动车行驶轨迹查询</li></router-link>
+                      <router-link to="/trackQuery"><li class="submenu-item">历史轨迹查询</li></router-link>
                       <li class="submenu-item">相关视频调用</li>
                       <li class="submenu-item">低电量电子车牌查询</li>
                       <li class="submenu-item">操作日志查询</li>

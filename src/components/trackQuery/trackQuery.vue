@@ -3,11 +3,51 @@
   <div class="header" id="map-header">
     <div class="title">
       <i class="icon iconfont">&#xe612;</i>
-      <span>行驶轨迹查询</span>
+      <span>历史轨迹查询</span>
     </div>
     <i class="fa fa-map-marker" aria-hidden="true" @click="toggleMarkers"></i>
-    <span class="tableDataOnOff" @click="tableDataToggle = !tableDataToggle"><i class="icon iconfont" >&#xe742;</i></span>
+    <span class="tableDataOnOff" @click="dialogVisible = true"><i class="icon iconfont" >&#xe742;</i></span>
   </div>
+
+  <el-dialog
+    title="历史数据"
+    :visible.sync="dialogVisible"
+    size="large"
+    :before-close="handleClose">
+    <div class="tableData">
+        <el-table
+            :data="tableData"
+            height="460"
+            empty-text="请先输入mac查询"
+            :default-sort = "{prop: 'time', order: 'descending'}">
+            <!-- <el-table-column
+                prop="id"
+                label="id">
+            </el-table-column> -->
+            <el-table-column
+                prop="time"
+                label="时间">
+            </el-table-column>
+            <el-table-column
+                prop="latitude"
+                label="经度">
+            </el-table-column>
+            <el-table-column
+                prop="longitude"
+                label="纬度">
+            </el-table-column>
+            <!-- <el-table-column
+                prop="adcode"
+                label="地区编码">
+            </el-table-column> -->
+            <el-table-column
+                prop="address"
+                label="地址">
+            </el-table-column>
+        </el-table>
+    </div>
+  </el-dialog>
+
   <div class="content" id="map-content">
     <div class="trackQuery-map" id="trackQuery-map">
         <div class="element-input">
@@ -61,38 +101,6 @@
            </el-date-picker>
         </div>
     </div>
-    <div class="tableData" v-show="tableDataToggle">
-        <el-table
-            :data="tableData"
-            height="460"
-            empty-text="请先输入mac查询"
-            :default-sort = "{prop: 'time', order: 'descending'}">
-            <el-table-column
-                prop="id"
-                label="id">
-            </el-table-column>
-            <el-table-column
-                prop="latitude"
-                label="经度">
-            </el-table-column>
-            <el-table-column
-                prop="longitude"
-                label="纬度">
-            </el-table-column>
-            <el-table-column
-                prop="time"
-                label="时间">
-            </el-table-column>
-            <el-table-column
-                prop="adcode"
-                label="地区编码">
-            </el-table-column>
-            <el-table-column
-                prop="address"
-                label="地址">
-            </el-table-column>
-        </el-table>
-    </div>
   </div>
 
 </div>
@@ -128,6 +136,14 @@ export default {
         this.toggleSidebar();
         this.fullScreen();
       }
+    },
+    //关闭对话框
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
     },
     // 初始化地图
     initMap: function() {
@@ -388,6 +404,7 @@ export default {
       urlSearchCarByMac:this.global.port + '/langyang/Home/Police/searchCarByMac',
       user: {},
       track:[],
+      dialogVisible: false,
       marker:{},
       markers:[],
       loading:true,
@@ -484,7 +501,7 @@ export default {
                     margin-right: 20px;
                     margin-top: 10px;
                     box-shadow: 3px 4px 3px 0px silver;
-                    z-index: 5000;
+                    z-index: 2000;
                 }
             }
             .block{
@@ -530,7 +547,7 @@ export default {
         .tableData{
             position: absolute;
             background-color: red;
-            top: 150px;
+            top: 120px;
             left: 24px;
             width: 96%;
             z-index: 200;

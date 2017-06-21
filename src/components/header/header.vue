@@ -132,7 +132,7 @@ export default {
       height: 90px;
       position: absolute;
       top: 50px;
-      z-index: 200;
+      z-index: 10001;
       right: 10px;
       border-radius: 2px;
       .icon-box{
