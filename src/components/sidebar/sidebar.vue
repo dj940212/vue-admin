@@ -1,5 +1,6 @@
 <template>
-  <div class="sidebar" id="sidebar" v-show="isSidebarOpen">
+  <transition name="slide">
+    <div class="sidebar" id="sidebar" v-show="isSidebarOpen">
       <div class="top-left">
         <div class="text">
           <img class="brand" src="./brand.png" alt="" width="38" height="38">
@@ -72,7 +73,9 @@
               <span class="mess">版权所有</span>
           </div>
       </div>
-  </div>
+    </div>
+  </transition>
+  
 </template>
 
 <script>
@@ -164,7 +167,6 @@ export default {
     height: 100%;
     background-color: #424f63;
     z-index: 20;
-    // overflow: hidden;
     .top-left {
       display: inline-block;
       width: 181px;
@@ -332,7 +334,6 @@ export default {
                 color: #eee;
             }
         }
-
     }
 }
 </style>
